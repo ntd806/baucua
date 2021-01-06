@@ -25,6 +25,9 @@ app.get('/', (req, res) => {
     res.send("Home page. Server running okay.");
 });
 
+// ROUTES
+app.use('/game', require('./game/game.controller'));
+
 // For load testing
 app.get('/load/:num', async(req, res) => {
     const numberOfUser = parseInt(req.params.num, 10) || 1000;

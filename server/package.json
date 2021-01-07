@@ -11,7 +11,10 @@
         "start-youtube": "node dist/youtube-index.js NODE_ENV=production",
         "prod": "pm2 start index.js",
         "stop-prod": "pm2 remove index",
-        "test": "jest --verbose"
+        "test": "jest --verbose",
+        "db:create": "npx sequelize db:create",
+        "db:migrate": "npx sequelize db:migrate",
+        "db:seed": "npx sequelize-cli db:seed:all"
     },
     "dependencies": {
         "body-parser": "^1.18.2",
@@ -20,9 +23,13 @@
         "jest": "^22.1.4",
         "jest-each": "^0.3.1",
         "morgan": "^1.9.0",
+        "mysql2": "^2.2.5",
+        "pg": "^8.5.1",
+        "pg-hstore": "^2.3.3",
         "pm2": "^2.9.1",
         "request": "^2.83.0",
         "request-promise": "^4.2.2",
+        "sequelize": "^6.3.5",
         "socket.io": "^2.0.4"
     },
     "devDependencies": {

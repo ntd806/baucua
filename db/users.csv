@@ -1,0 +1,14 @@
+id,permission_id,email,first_name,last_name,username,role,password,status,token_face,token_youtu,created_at,updated_at
+1,0,ntd806@gmail.com,a,Nguyen,ntd806,travel_admin,123456,1,token_face,token_face,1/7/2021 17:29,1/7/2021 17:29
+2,1,ntd807@gmail.com,b,Nguyen,ntd807,travel_admin,123456,1,token_face,token_face,1/7/2021 17:29,1/7/2021 17:29
+3,2,ntd808@gmail.com,c,Nguyen,ntd808,travel_admin,123456,1,token_face,token_face,1/7/2021 17:29,1/7/2021 17:29
+4,3,ntd809@gmail.com,d,Nguyen,ntd809,travel_admin,123456,1,token_face,token_face,1/7/2021 17:29,1/7/2021 17:29
+5,4,ntd810@gmail.com,df,Nguyen,ntd810,travel_admin,123456,1,token_face,token_face,1/7/2021 17:29,1/7/2021 17:29
+6,6,ntd811@gmail.com,e,Nguyen,ntd811,travel_admin,123456,1,token_face,token_face,1/7/2021 17:29,1/7/2021 17:29
+7,7,ntd812@gmail.com,fa,Nguyen,ntd812,travel_admin,123456,1,token_face,token_face,1/7/2021 17:29,1/7/2021 17:29
+8,1,ntd813@gmail.com,fh,Nguyen,ntd813,travel_admin,123456,1,token_face,token_face,1/7/2021 17:29,1/7/2021 17:29
+9,2,ntd814@gmail.com,fs,Nguyen,ntd814,travel_admin,123456,1,token_face,token_face,1/7/2021 17:29,1/7/2021 17:29
+10,3,ntd815@gmail.com,ss,Nguyen,ntd815,travel_admin,123456,1,token_face,token_face,1/7/2021 17:29,1/7/2021 17:29
+11,4,ntd816@gmail.com,f,Nguyen,ntd816,travel_admin,123456,1,token_face,token_face,1/7/2021 17:29,1/7/2021 17:29
+12,6,ntd817@gmail.com,sss,Nguyen,ntd817,travel_admin,123456,1,token_face,token_face,1/7/2021 17:29,1/7/2021 17:29
+13,7,ntd818@gmail.com,sqq,Nguyen,ntd818,travel_admin,123456,1,token_face,token_face,1/7/2021 17:29,1/7/2021 17:29

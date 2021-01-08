@@ -6,36 +6,42 @@ module.exports = {
       'fb_mail', {
         type: Sequelize.STRING,
         allowNull: false,
+        after: "status"
       }
     );
     await queryInterface.addColumn('users',
       'gg_mail', {
         type: Sequelize.STRING,
         allowNull: false,
+        after: "fb_mail"
       }
     );
     await queryInterface.addColumn('users', 
       'address', {
         type: Sequelize.STRING,
         allowNull: false,
+        after: "gg_mail"
       },
     );
    await queryInterface.addColumn('users',  
       'gender', {
         type: Sequelize.STRING,
         allowNull: false,
+        after: "address"
       },
     );
    await queryInterface.addColumn('users', 
       'name', {
         type: Sequelize.STRING,
         allowNull: false,
+        after: "gender"
       },
     );
     await queryInterface.addColumn('users', 
       'birthday', {
         type: Sequelize.DATE(3),
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(3)"),
+        after: "name"
       },
     );
     await queryInterface.removeColumn('users', 

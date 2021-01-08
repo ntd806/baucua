@@ -28,26 +28,26 @@ module.exports = (sequelize, DataTypes) => {
       },
       field: 'permission_id'
     },
-    firstName: {
+    fbMail: {
       type: DataTypes.STRING,
       validate: {
         notEmpty: false
       },
-      field: 'first_name'
+      field: 'fb_mail'
     },
-    lastName: {
+    ggMail: {
       type: DataTypes.STRING,
       validate: {
         notEmpty: false
       },
-      field: 'last_name'
+      field: 'gg_mail'
     },
-    email: {
+    gender: {
       type: DataTypes.STRING,
       validate: {
         notEmpty: false
       },
-      field: 'email'
+      field: 'gender'
     },
     userName: {
       type: DataTypes.STRING,
@@ -56,22 +56,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       field: 'user_name'
     },
-    role: DataTypes.STRING,
+    name: DataTypes.STRING,
     password: DataTypes.STRING,
     status: DataTypes.INTEGER,
-    tokenFace:  {
-      type: DataTypes.STRING,
-      validate: {
-        notEmpty: true
-      },
-      field: 'token_face'
-    },
-    tokenYoutu: {
-      type: DataTypes.STRING,
-      validate: {
-        notEmpty: true
-      },
-      field: 'token_youtu'
+    birthday: {
+      type: DataTypes.DATE,
+      field: 'birthday'
     },
     createdAt: {
       type: DataTypes.DATE,

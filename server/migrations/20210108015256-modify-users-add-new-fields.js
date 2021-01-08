@@ -51,6 +51,9 @@ module.exports = {
       'first_name'
     );
     await queryInterface.removeColumn('users',
+      'role'
+    );
+    await queryInterface.removeColumn('users',
       'last_name'
     );
    await queryInterface.removeColumn('users',  
@@ -71,6 +74,12 @@ module.exports = {
     await queryInterface.addColumn('users', 
       'first_name', {
         type: Sequelize.STRING,
+        allowNull: false,
+      },
+    );
+    await queryInterface.addColumn('users', 
+      'role', {
+        type: Sequelize.ENUM('employee', 'super_admin', 'travel_admin', 'travel_team_manager', 'manager', 'supplier', "customer"),
         allowNull: false,
       },
     );

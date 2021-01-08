@@ -1,24 +1,25 @@
-// 'use strict';
+'use strict';
 
-// module.exports = {
-//   up: (queryInterface, Sequelize) => {
-//     return queryInterface.bulkInsert('users', [{
-//         permissionId: 1,
-//         email: 'ntd806@gmail.com',
-//         firstName: 'Nguyen',
-//         lastName: 'Tien Dat',
-//         userName: 'ntd806',
-//         role: 'super_admin',
-//         password: '123456',
-//         status: 1,
-//         tokenFace: 'facebook',
-//         tokenFace: 'facebook',
-//         createdAt: new Date(),
-//         updatedAt: new Date()
-//     }], {});
-//   },
+module.exports = {
+  up: async(queryInterface, Sequelize) => {
+    await queryInterface.bulkInsert('users', [{
+        permission_id: 1,
+        username: 'ntd806',
+        fb_mail: 'facebook@gmail.com',
+        gg_mail: 'google@gmail.com',
+        address: 'Hồ chí minh',
+        gender: 'male',
+        name: 'Nguyễn Tiến Đạt',
+        birthday: '1999-01-01T00:00:00.000Z',
+        username: 'ntd806',
+        password: '$2y$12$x9izv7/viAuQtY8WJExG..RVELXSEgLpkaJ1t/vbM2q.ohZJNLtNC',
+        status: 1,
+        created_at: new Date('2021-01-01T00:00:00.000Z'),
+        updated_at: new Date('2021-01-01T00:00:00.000Z')
+    }], {});
+  },
 
-//   down: (queryInterface, Sequelize) => {
-//       return queryInterface.bulkDelete('users', null, {});
-//   }
-// };
+  down: async(queryInterface, Sequelize) => {
+    await queryInterface.bulkDelete('users', null, {});
+  }
+};

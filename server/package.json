@@ -17,6 +17,7 @@
         "db:seed": "npx sequelize-cli db:seed:all"
     },
     "dependencies": {
+        "bcrypt": "^5.0.0",
         "body-parser": "^1.18.2",
         "delay": "^3.0.0",
         "express": "^4.16.2",
@@ -30,6 +31,7 @@
         "request": "^2.83.0",
         "request-promise": "^4.2.2",
         "sequelize": "^6.3.5",
+        "sequelize-cli": "^6.2.0",
         "socket.io": "^2.0.4"
     },
     "devDependencies": {

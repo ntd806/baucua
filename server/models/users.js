@@ -2,6 +2,8 @@
 const {
   Model
 } = require('sequelize');
+const bcrypt = require("bcrypt");
+
 module.exports = (sequelize, DataTypes) => {
   class users extends Model {
     /**
@@ -71,7 +73,19 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       field: 'updated_at'
     },
-  }, {
+  }, 
+  {
+    freezeTableName: true,
+    instanceMethods: {
+      generateHash(password) {
+          return bcrypt.hash(password, bcrypt.genSaltSync(10));
+      },
+      validPassword(password) {
+          return bcrypt.compare(password, this.password);
+      }
+    }
+  },
+  {
     sequelize,
     modelName: 'users',
   });

@@ -14,43 +14,42 @@ module.exports = {
       },
       email: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull: false,
       },
-      first_name: {
+      provider: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull: false,
       },
-      last_name: {
+      socialusers_id: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull: false,
       },
       username: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
-      role: {
-        type: Sequelize.ENUM('employee', 'super_admin', 'travel_admin', 'travel_team_manager', 'manager', 'supplier', "customer"),
-        allowNull: false,
-        defaultValue: 'customer',
+      image: {
+        type: Sequelize.STRING,
+        allowNull: true,
       },
       password: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       status: {
-        type: Sequelize.INTEGER(11),
+        type: Sequelize.INTEGER(3),
         allowNull: false,
         defaultValue: 1,
       },
-      token_face: {
+      token: {
         type: Sequelize.STRING,
         allowNull: false,
-        defaultValue: 'facebook',
+        defaultValue: '',
       },
-      token_youtu: {
+      id_token: {
         type: Sequelize.STRING,
         allowNull: false,
-        defaultValue: 'youtube',
+        defaultValue: '',
       },
       created_at: {
         type: Sequelize.DATE(3),

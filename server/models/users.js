@@ -30,26 +30,26 @@ module.exports = (sequelize, DataTypes) => {
       },
       field: 'permission_id'
     },
-    fbMail: {
+    email: {
       type: DataTypes.STRING,
       validate: {
         notEmpty: false
       },
-      field: 'fb_mail'
+      field: 'mail'
     },
-    ggMail: {
+    provider: {
       type: DataTypes.STRING,
       validate: {
         notEmpty: false
       },
-      field: 'gg_mail'
+      field: 'provider'
     },
-    gender: {
+    socialusers_id: {
       type: DataTypes.STRING,
       validate: {
         notEmpty: false
       },
-      field: 'gender'
+      field: 'socialusers_id'
     },
     userName: {
       type: DataTypes.STRING,

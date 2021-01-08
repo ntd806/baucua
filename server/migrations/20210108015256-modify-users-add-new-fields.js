@@ -53,9 +53,6 @@ module.exports = {
     await queryInterface.removeColumn('users',
       'last_name'
     );
-    await queryInterface.removeColumn('users', 
-      'permission_id'
-    );
    await queryInterface.removeColumn('users',  
       'token_face'
     );
@@ -65,12 +62,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.addColumn('users', 
-      'permission_id', {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      }
-    );
     await queryInterface.addColumn('users',
       'email', {
         type: Sequelize.STRING,

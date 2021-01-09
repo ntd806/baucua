@@ -21,7 +21,6 @@ module.exports = class User extends Main {
       where:{
         fb_UID: data.fb_UID,
         gg_email: data.gg_email,
-        password: data.password,
         username: data.username
       }
     });

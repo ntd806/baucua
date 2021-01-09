@@ -27,6 +27,7 @@ app.get('/', (req, res) => {
 
 // ROUTES
 app.use('/game', require('./game/game.controller'));
+app.use('/user', require('./user/user.controller'));
 
 // For load testing
 app.get('/load/:num', async(req, res) => {

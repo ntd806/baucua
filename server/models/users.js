@@ -30,26 +30,19 @@ module.exports = (sequelize, DataTypes) => {
       },
       field: 'permission_id'
     },
-    email: {
+    fbEmail: {
       type: DataTypes.STRING,
       validate: {
         notEmpty: false
       },
-      field: 'mail'
+      field: 'fb_email'
     },
-    provider: {
+    ggEmail: {
       type: DataTypes.STRING,
       validate: {
         notEmpty: false
       },
-      field: 'provider'
-    },
-    socialusers_id: {
-      type: DataTypes.STRING,
-      validate: {
-        notEmpty: false
-      },
-      field: 'socialusers_id'
+      field: 'gg_email'
     },
     userName: {
       type: DataTypes.STRING,
@@ -61,9 +54,9 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     password: DataTypes.STRING,
     status: DataTypes.INTEGER,
-    birthday: {
-      type: DataTypes.DATE,
-      field: 'birthday'
+    address: {
+      type: DataTypes.STRING,
+      field: 'address'
     },
     createdAt: {
       type: DataTypes.DATE,

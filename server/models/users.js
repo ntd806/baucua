@@ -16,5 +16,15 @@ module.exports = class User extends Main {
   createUser(data){
     return this.mUser.create(data);
   }
-
+  async login(data){
+    const result = await this.mUser.findAll({
+      where:{
+        fb_UID: data.fb_UID,
+        gg_email: data.gg_email,
+        password: data.password,
+        username: data.username
+      }
+    });
+    return result[0];
+  }
 }

@@ -1,16 +1,17 @@
 const User = require('../../models/users');
 
 const signUp = (params) => {
-  const { fbMail, ggMail, name, address, gender, birthday } = params;
+  const { provider, id, email, image, token, idToken, accessToken} = params;
   User.create({
-    fbMail,
-    ggMail,
-    name,
-    address,
-    gender,
-    birthday,
+    provider,
+    id,
+    email,
+    image,
+    token,
+    idToken,
+    accessToken
   });
-  return { fbMail, ggMail, name, address, gender, birthday };
+  return { provider, id, email, image, token, idToken, accessToken};
 };
 
 module.exports = {

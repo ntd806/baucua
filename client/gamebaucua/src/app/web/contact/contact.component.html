@@ -1,0 +1,3 @@
+<p *ngIf="(contact$ | async) as contact">
+  Contact Information: {{ contact?.phone  }} - {{ contact?.address }}
+</p>

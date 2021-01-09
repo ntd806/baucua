@@ -1,0 +1,21 @@
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <a mat-button >
+        <mat-icon >fitness_center</mat-icon>
+        The New Gym
+      </a>
+      <span class="menu-spacer"></span>
+      <a mat-button appScrollToView [targetId]="'advertising'">About</a>
+      <a mat-button >Facilities</a>
+      <a mat-button >Services</a>
+      <a mat-button >Membership</a>
+      <a mat-button class="logout">
+        <mat-icon >account_circle</mat-icon>
+        {{ currentUser.username }}
+      </a>
+      <span class="menu-spacer"></span>
+      <div class="btn-join-container" (click)="this.logout.emit()" >
+        <span class="btn-join-text" >Sign Out</span>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>

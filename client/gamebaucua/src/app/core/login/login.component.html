@@ -1,0 +1,46 @@
+<div class="login-container" appBackgroundAnimation [bgImages]="backgroundImages">
+  <div class="login-form">
+    <h2 class="login-header">Login Form</h2>
+    <div class="login-body">
+      <form [formGroup]="loginForm">
+        <div class="login-form-group">
+          <input type="text" class="login-form-input" placeholder="Username" formControlName="username" [ngClass]="{'is-invalid': submitted && f.username.errors }"/>
+          <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+            <p *ngIf="f.username.errors.required">Usernme is required</p>
+          </div>
+        </div>
+        <div class="login-form-group">
+          <input type="password" class="login-form-input" placeholder="Password" formControlName="password" [ngClass]="{'is-invalid': submitted && f.password.errors }"/>
+          <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+            <p *ngIf="f.password.errors.required">Password is required</p>
+          </div>
+        </div>
+        <div class="login-form-group">
+          <a class="btn-link">Forgot password?</a>
+        </div>
+        <div class="login-form-group">
+          <a class="btn-login" (click)="onSubmit()">
+            <span *ngIf="loading; else login" class="spinner-border spinner-border-sm mr-1"></span>
+            <ng-template #login>
+              login
+            </ng-template>
+          </a>
+        </div>
+        <div class="login-form-group">
+          <p>or login with</p>
+          <a class="btn-third-party-login btn-facebook u-margin-right-small">
+            <i class="fa fa-facebook"></i>
+            facebook
+          </a>
+          <a (click)="signInWithGoogle()" class="btn-third-party-login btn-instagram">
+            <i class="fa fa-google"></i>
+            google
+          </a>
+        </div>
+        <div class="login-form-group u-margin-top-small">
+          <p>Don't have any account? <a class="btn-link">Sign up now</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

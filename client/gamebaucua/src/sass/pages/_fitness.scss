@@ -1,0 +1,201 @@
+.section-welcome {
+  height: 100vh;
+  position: relative;
+  .bg-image {
+    position: relative;
+    height: 100%;
+    filter: blur(0.3rem);
+    -webkit-filter: blur(0.3rem);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-image: url("https://wallpaperset.com/w/full/a/1/3/52595.jpg");
+  }
+
+  .fitness-wapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    line-height: 1.75rem;
+    height: 25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+  }
+}
+
+.advertising {
+  height: 100vh;
+  position: relative;
+  z-index: 1;
+  &-container {
+    position: absolute;
+    width: 80%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-wrap: wrap;
+    box-shadow: 1rem 1.5rem 1.5rem grey;
+    border: 1px solid lightgray;
+    border-radius: 1rem;
+    overflow: hidden;
+    background-color: $color-white;
+  }
+  &-item {
+    width: 50%;
+    height: auto;
+    cursor: pointer;
+    img {
+      width: 100%;
+      height: auto;
+    }
+    &:nth-child(2),
+    &:nth-child(3) {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      .paragraph {
+        font-weight: 300;
+        color: #000;
+      }
+    }
+    &--content {
+      text-align: justify;
+      margin: 0 auto;
+      width: 80%;
+    }
+  }
+}
+
+.services {
+  height: 80vh;
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  background: #c4306b;
+  &-header {
+    width: 50%;
+    text-align: center;
+    .paragraph {
+      color: #fff;
+      margin: 1rem 0;
+      text-align: center;
+    }
+  }
+  &-picture-list {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &-picture-items {
+    height: 40rem;
+    width: 100%;
+    overflow: hidden;
+    margin: 0 1rem;
+    cursor: pointer;
+    &:first-child {
+      margin-left: 0;
+    }
+    &:last-child {
+      margin-right: 0rem;
+    }
+    img {
+      width: 100%;
+      height: auto;
+      transition: all 0.8s;
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+.contact {
+  position: relative;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &-body {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &--items {
+      width: 50%;
+      height: 60vh;
+      padding: 1rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      &-title {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        height: 5rem;
+        mat-icon {
+          font-size: 4rem;
+          height: 4rem;
+          width: 4rem;
+        }
+        &.last-items {
+          justify-content: center;
+        }
+      }
+      .paragraph {
+        color: #000;
+        margin: 1rem 0;
+        font-size: 2rem;
+        font-weight: 300;
+      }
+      .logo-icons {
+        margin: 1rem 0;
+        i {
+          font-size: 2rem;
+          margin: 0 1rem;
+          &:first-child {
+            margin-left: 0;
+          }
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+      &-top {
+        padding: 0.5rem 1rem;
+        .sub-menu-list {
+          list-style-type: none;
+          text-align: center;
+          .sub-menu-items {
+            margin: 1rem 0;
+            padding: 1rem 0;
+            &:first-child {
+              margin-top: 0;
+            }
+            &:last-child {
+              margin-bottom: 0;;
+            }
+            .sub-menu-links {
+              font-size: 2rem;
+              font-weight: 300;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+
+      &-bottom {
+        padding: 0.5rem 1rem;
+        text-align: center;
+      }
+    }
+  }
+}

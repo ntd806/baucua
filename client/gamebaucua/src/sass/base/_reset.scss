@@ -1,0 +1,19 @@
+*,
+*::after,
+*::before {
+    padding: 0;
+    margin: 0;
+    box-sizing: inherit;
+};
+
+html {
+    // this is root font-size;
+    // default browser = 16px ~ 1rem ; 
+    // => 10px ~ 0.625rem ~ 62.5%
+    font-size: 62.5%; // This defines what 1 rem is.
+}
+
+body {
+    box-sizing: border-box;
+}
+

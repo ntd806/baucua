@@ -1,0 +1,34 @@
+<div class="col-md-6 offset-md-3 mt-5">
+  <div class="alert alert-info">
+    <h2>Register form</h2>
+  </div>
+  <div class="card">
+    <h4 class="card-header">Angular 8 Role Based Auth Example</h4>
+    <div class="card-body">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm.value)" appPasswordMatchingValidator>
+        <div class="form-group">
+          <app-valid-input [placeholder]="'User name'" [control]="registerForm.get('usename')" [inputType]="'text'">
+          </app-valid-input>
+        </div>
+        <div class="form-group">
+          <app-valid-input [placeholder]="'Email'" [control]="registerForm.get('email')" [inputType]="'email'">
+          </app-valid-input>
+        </div>
+        <div class="form-group">
+          <app-valid-input [placeholder]="'Password'" [control]="registerForm.get('password')" [inputType]="'password'">
+          </app-valid-input>
+        </div>
+        <div class="form-group">
+          <app-valid-input [placeholder]="'Confirm Password'" [control]="registerForm.get('confirmPassword')" [inputType]="'password'"></app-valid-input>
+        </div>
+        <p *ngIf="registerForm.errors?.notMatchingPassword" class="text-danger">Password did not match.</p>
+        <button [disabled]="registerForm.invalid" class="btn btn-success">
+          Submit
+        </button>
+        <button class="btn btn-warning" [routerLink]="['/login']">
+          Login
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

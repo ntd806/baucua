@@ -1,0 +1,8 @@
+<label for="">{{ placeholder }}</label>
+<input [placeholder]="placeholder" [type]="inputType" [formControl]="control" class="form-control" [ngClass]="{'is-invalid': showError()}">
+<div *ngIf="showError()" class="invalid-feedback">
+  <p *ngIf="control.errors.required">{{ placeholder }} is required</p>
+  <p *ngIf="control.errors.minlength">you have entered {{ control.errors.minlength.actualLength }} characters but it requires {{ control.errors.minlength.requiredLength }} characters</p>
+  <p *ngIf="control.errors.maxlength">you have entered {{ control.errors.maxlength.actualLength }} characters but it requires {{ control.errors.maxlength.requiredLength }} characters</p>
+  <p *ngIf="control.errors.email">This is a not valid email.</p>
+</div>

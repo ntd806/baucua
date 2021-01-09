@@ -1,0 +1,45 @@
+:host
+  .menu-spacer {
+    flex: 1 1 auto;
+  }
+  .mat-toolbar {
+    background-color: white;
+    .mat-toolbar-row {
+      padding-right: 0;
+      .logout {
+        ::ng-deep .mat-button-wrapper {
+          color: #c4306b;
+          display: flex;
+          align-items: center;
+          mat-icon {
+            margin-right: 0.5rem;
+          }
+        }
+      } 
+    }
+  }
+
+  .mat-button {
+    font-size: 2rem;
+    margin: 0 1.8rem;
+    text-transform: uppercase;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .btn-join-container {
+    display: flex;
+    background-color: rgba(196, 48, 107, 1);
+    border: solid rgba(118, 119, 116, 1) 0px;
+    align-self: stretch;
+    align-items: center;
+    padding: 10px 40px;
+    .btn-join-text {
+      color: white;
+      font-weight: 100;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }

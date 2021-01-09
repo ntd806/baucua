@@ -1,0 +1,4 @@
+<div *ngIf=" (message$ | async) as message" [ngClass]="message.cssClass">
+    {{ message.text }} 
+    <a (click)="close()">x</a>
+</div>

@@ -8,9 +8,15 @@ const router = express();
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(express.json());
 router.use(upload.array()); 
+
+
+
+
 router.post('/register', signUp);
 
-router.post('/login',signIn);
+router.post('/login', signIn);
+
+router.post('/deposit', deposit);
 
 module.exports = router;
 
@@ -48,4 +54,16 @@ async function signIn(req, res, next) {
     res.status(400).json({ Error: e.message })
   }
   
+}
+
+async function deposit(req, res, next) {
+  try {
+    var user = await service.deposit(req.body);
+    return res.status(200).json({
+      success: true,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
 }

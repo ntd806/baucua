@@ -33,7 +33,7 @@ async function signIn(req, res, next) {
       return res.status(200).json({
         result:{
           avatar: user.image,
-          name: user.username
+          name: user.name
         },
         success: true,
         message: ""

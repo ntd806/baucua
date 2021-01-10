@@ -11,10 +11,9 @@ module.exports = class AllModel {
         class modelUser extends Sequelize.Model {}
         modelUser.init({
                 id: {type: Sequelize.INTEGER, autoIncrement: true, allowNull: false, primaryKey: true},
-                permission_id: {type: Sequelize.INTEGER},
-                fb_UID:{type: Sequelize.STRING},
+                fbUID:{type: Sequelize.STRING},
                 gg_email:{type: Sequelize.STRING},
-                username:{type: Sequelize.STRING},
+                name:{type: Sequelize.STRING},
                 address:{type: Sequelize.STRING},
                 created_at:{type: Sequelize.DATE},
                 updated_at:{type: Sequelize.DATE},

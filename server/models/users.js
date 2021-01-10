@@ -19,9 +19,9 @@ module.exports = class User extends Main {
   async login(data){
     const result = await this.mUser.findAll({
       where:{
-        fb_UID: data.fb_UID,
+        fbUID: data.fbUID,
         gg_email: data.gg_email,
-        username: data.username
+        name: data.name
       }
     });
     return result[0];

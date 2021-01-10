@@ -57,7 +57,7 @@ export const ButtonGroup = styled.div`
   flex-direction: column;
   align-items: center;
   position: absolute;
-  top: 40%;
+  top: 20%;
   right: 0;
   left: 0;
 `;
@@ -73,16 +73,23 @@ export const InfoGroup = styled(Space)`
   width: 100%;
   display: flex;
   align-items: center;
-  .ant-space-item:not(:first-child) {
+  justify-content: center;
+  .ant-space-item {
     width: 60%;
+    text-align: center;
   }
 `;
 
-export const Login = styled.div`
+export const Register = styled.div`
   text-align: center;
 `;
 
-export const ActionButtonGroup = styled.div`
-  display: flex;
-  justify-content: space-between;
+export const StyledRedirect = styled.div`
+  text-align: end;
+  color: #1890ff;
+  cursor: pointer;
+`;
+
+export const Title = styled.h2`
+  text-align: center;
 `;

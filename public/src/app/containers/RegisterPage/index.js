@@ -4,6 +4,7 @@ import { Steps, Space, Button, Avatar, Input } from 'antd';
 import { FacebookOutlined, GoogleOutlined } from '@ant-design/icons';
 import _ from 'lodash';
 import GoogleLogin from 'react-google-login';
+import { Link } from 'react-router-dom';
 
 import {
   Container,
@@ -12,9 +13,10 @@ import {
   ButtonGroup,
   ActionContainer,
   InfoGroup,
+  Login,
+  ActionButtonGroup,
 } from './styled';
 import { register } from 'Src/services/register';
-import Background from 'Src/images/tetsumvay.jpg';
 import AvatarImage from 'Src/images/avatar.png';
 
 const { Step } = Steps;
@@ -22,8 +24,8 @@ const { Step } = Steps;
 export default memo(function RegisterPage({ loading }) {
   const [currentStep, setCurrentStep] = useState(0);
   const [state, setState] = useState({
-    fbUID: undefined,
-    ggMail: undefined,
+    fb_UID: undefined,
+    gg_Mail: undefined,
     name: undefined,
     address: undefined,
     phone: undefined,
@@ -81,7 +83,7 @@ export default memo(function RegisterPage({ loading }) {
       (response) => {
         setState((e) => ({
           ...e,
-          fbUID: _.get(response, 'authResponse.userID', undefined),
+          fb_UID: _.get(response, 'authResponse.userID', undefined),
         }));
       },
       {
@@ -95,7 +97,7 @@ export default memo(function RegisterPage({ loading }) {
     (response) => {
       setState((e) => ({
         ...e,
-        ggMail: _.get(response, 'profileObj.email', undefined),
+        gg_Mail: _.get(response, 'profileObj.email', undefined),
         name: _.get(response, 'profileObj.name', undefined),
       }));
     },
@@ -121,12 +123,12 @@ export default memo(function RegisterPage({ loading }) {
   }, [loading.current]);
 
   return (
-    <Container style={{ backgroundImage: `url(${Background})` }}>
+    <Container>
       <FormContainer>
         <Steps type="navigation" size="small" current={currentStep}>
           <Step
             title="Bước 1"
-            status={!(state.fbUID && state.ggMail) ? 'finish' : 'process'}
+            status={!(state.fb_UID && state.gg_Mail) ? 'finish' : 'process'}
             description="Liên kết tài khoản."
           />
           <Step
@@ -161,7 +163,7 @@ export default memo(function RegisterPage({ loading }) {
           <ButtonGroup>
             <Space direction={'vertical'} size={'middle'}>
               <StyledButton
-                disabled={state.fbUID}
+                disabled={state.fb_UID}
                 onClick={onLoginFacebook}
                 icon={<FacebookOutlined />}
                 type={'facebook'}
@@ -172,7 +174,7 @@ export default memo(function RegisterPage({ loading }) {
                 clientId={process.env.GG_ID}
                 render={(renderProps) => (
                   <StyledButton
-                    disabled={state.ggMail}
+                    disabled={state.gg_Mail}
                     onClick={renderProps.onClick}
                     icon={<GoogleOutlined />}
                     type={'google'}
@@ -188,25 +190,30 @@ export default memo(function RegisterPage({ loading }) {
             </Space>
           </ButtonGroup>
         )}
-        <ActionContainer>
-          {currentStep ? (
-            <Button title={'Trước'} onClick={onClick}>
-              {'Trước'}
+        <ActionContainer direction={'vertical'} size={'large'}>
+          <Login>
+            {'Đã có tài khoản?'} <Link to="/login">{'Đăng nhập'}</Link>
+          </Login>
+          <ActionButtonGroup>
+            {currentStep ? (
+              <Button title={'Trước'} onClick={onClick}>
+                {'Trước'}
+              </Button>
+            ) : (
+              <div />
+            )}
+            <Button
+              title={currentStep ? 'Đăng ký' : 'Tiếp'}
+              disabled={
+                !(currentStep
+                  ? state.name && state.address && state.phone
+                  : state.fb_UID && state.gg_Mail)
+              }
+              onClick={onClick}
+            >
+              {currentStep ? 'Đăng ký' : 'Tiếp'}
             </Button>
-          ) : (
-            <div />
-          )}
-          <Button
-            title={currentStep ? 'Đăng ký' : 'Tiếp'}
-            disabled={
-              !(currentStep
-                ? state.name && state.address && state.phone
-                : state.fbUID && state.ggMail)
-            }
-            onClick={onClick}
-          >
-            {currentStep ? 'Đăng ký' : 'Tiếp'}
-          </Button>
+          </ActionButtonGroup>
         </ActionContainer>
       </FormContainer>
     </Container>

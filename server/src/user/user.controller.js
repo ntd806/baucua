@@ -1,18 +1,22 @@
 const express = require('express');
 const service = require('./user.service');
+const bodyParser = require('body-parser');
+var multer = require('multer');
+var upload = multer();
 
-const router = express.Router();
-
-// routes
+const router = express();
+router.use(bodyParser.urlencoded({ extended: true }));
+router.use(express.json());
+router.use(upload.array()); 
 router.post('/register', signUp);
 
-router.post('/login', signIn);
+router.post('/login',signIn);
 
 module.exports = router;
 
 async function signUp(req, res, next) {
   try {
-    await service.signUp(req.query);
+    await service.signUp(req.body);
     return res.status(200).json({
       success: true,
       message: ""
@@ -24,8 +28,7 @@ async function signUp(req, res, next) {
 
 async function signIn(req, res, next) {
   try {
-    var user = await service.signIn(req.query);
-    console.log(user);
+    var user = await service.signIn(req.body);
     if(user && user.status){
       return res.status(200).json({
         result:{

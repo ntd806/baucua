@@ -6,6 +6,7 @@ import HomePage from 'Containers/HomePage';
 import LoginPage from 'Containers/LoginPage';
 import RegisterPage from 'Containers/RegisterPage';
 import Loading from 'Components/Loading';
+import Background from 'Src/images/tetsumvay.jpg';
 
 function PrivateRoute({ children, isLogin, ...rest }) {
   return (
@@ -32,24 +33,24 @@ function App() {
   const loading = useRef();
 
   useEffect(() => {
-    if (window.location.pathname === '/') {
+    if (!['/login', '/register', '/home'].includes(window.location.pathname)) {
       window.location.href = '/home';
     }
   }, []);
 
   return (
-    <React.Fragment>
+    <div style={{ backgroundImage: `url(${Background})` }}>
       <Loading ref={loading} />
       <BrowserRouter>
         <Switch>
           <PrivateRoute path="/home" isLogin={isLogin}>
             <HomePage />
           </PrivateRoute>
-          <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/login" component={() => <LoginPage loading={loading} />} />
           <Route exact path="/register" component={() => <RegisterPage loading={loading} />} />
         </Switch>
       </BrowserRouter>
-    </React.Fragment>
+    </div>
   );
 }
 

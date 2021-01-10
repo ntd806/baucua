@@ -9,6 +9,7 @@ module.exports = {
         'permission_id'
     );
     await queryInterface.renameColumn('users', oldNameColumn, newNameColumn);
+    await queryInterface.renameColumn('users', 'username', 'name');
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -21,5 +22,6 @@ module.exports = {
     );
 
     await queryInterface.renameColumn('users', newNameColumn, oldNameColumn);
+    await queryInterface.renameColumn('users', 'username', 'name');
   }
 };

@@ -20,15 +20,13 @@ module.exports = class User extends Main {
     if(data.fbUID){
       const result = await this.mUser.findAll({
         where:{
-          fbUID: data.fbUID,
-          name: data.name
+          fbUID: data.fbUID
         }
       });
     } else {
       const result = await this.mUser.findAll({
         where:{
-          gg_email: data.gg_email,
-          name: data.name
+          gg_email: data.gg_email
         }
       });
     }

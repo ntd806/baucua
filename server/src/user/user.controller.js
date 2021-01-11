@@ -18,6 +18,8 @@ router.post('/login', signIn);
 
 router.post('/deposit', deposit);
 
+router.post('/setting', setting);
+
 module.exports = router;
 
 async function signUp(req, res, next) {
@@ -59,6 +61,18 @@ async function signIn(req, res, next) {
 async function deposit(req, res, next) {
   try {
     var user = await service.deposit(req.body);
+    return res.status(200).json({
+      success: true,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+async function setting(req, res, next) {
+  try {
+    await service.createOption(req.body);
     return res.status(200).json({
       success: true,
       message: ''

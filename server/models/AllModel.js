@@ -62,5 +62,31 @@ module.exports = class AllModel {
 
         return modelTransferHistory;
     }
+
+    mainOption(){
+        class modelOption extends Sequelize.Model {}
+        modelOption.init({
+            game_type: Sequelize.INTEGER,
+            proportionality: Sequelize.INTEGER,
+            created_at: {
+                type: Sequelize.DATE,
+                field: 'created_at'
+            },
+            updated_at: {
+                type: Sequelize.DATE,
+                field: 'updated_at'
+            },
+            is_play: {
+                type: Sequelize.TINYINT,
+                field: 'is_play'
+            }
+        },
+        { sequelize, modelName: 'options',
+            tableName: 'options',
+            timestamps: false
+        });
+
+        return modelOption;
+    }
 }
 

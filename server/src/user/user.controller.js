@@ -22,6 +22,8 @@ router.post('/setting', setting);
 
 router.get('/matches-history', matchesHistory);
 
+router.get('/transfers-history', getTransfersHistory);
+
 module.exports = router;
 
 async function signUp(req, res, next) {
@@ -87,6 +89,19 @@ async function setting(req, res, next) {
 async function matchesHistory(req, res, next){
   try {
     var result = await service.getMatchesHistory(req.query);
+    return res.status(200).json({
+      success: true,
+      result: result,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+async function getTransfersHistory(req, res, next){
+  try {
+    var result = await service.getTransfersHistory(req.query);
     return res.status(200).json({
       success: true,
       result: result,

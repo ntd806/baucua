@@ -30,35 +30,35 @@ module.exports = class AllModel {
     mainTransferHistory(){
         class modelTransferHistory extends Sequelize.Model {}
         modelTransferHistory.init({
-                user_id: {
-                    type: Sequelize.INTEGER,
-                    validate: {
-                        notEmpty: true
-                    },
-                    field: 'user_id'
+            user_id: {
+                type: Sequelize.INTEGER,
+                validate: {
+                    notEmpty: true
                 },
-                bank_acc_id: Sequelize.INTEGER,
-                summand: Sequelize.INTEGER,
-                destination_id: Sequelize.INTEGER,
-                arrival_id: Sequelize.INTEGER,
-                transfer_at: {
-                    type: Sequelize.DATE,
-                    field: 'transfer_at'
-                },
-                status: Sequelize.INTEGER,
-                created_at: {
-                    type: Sequelize.DATE,
-                    field: 'created_at'
-                },
-                updated_at: {
-                    type: Sequelize.DATE,
-                    field: 'updated_at'
-                },
+                field: 'user_id'
             },
-            { sequelize, modelName: 'transfershistories',
-                tableName: 'transfershistories',
-                timestamps: false
-            });
+            bank_acc_id: Sequelize.INTEGER,
+            summand: Sequelize.INTEGER,
+            destination: Sequelize.INTEGER,
+            arrival: Sequelize.INTEGER,
+            transfer_at: {
+                type: Sequelize.DATE,
+                field: 'transfer_at'
+            },
+            status: Sequelize.INTEGER,
+            created_at: {
+                type: Sequelize.DATE,
+                field: 'created_at'
+            },
+            updated_at: {
+                type: Sequelize.DATE,
+                field: 'updated_at'
+            },
+        },
+        { sequelize, modelName: 'transfershistories',
+            tableName: 'transfershistories',
+            timestamps: false
+        });
 
         return modelTransferHistory;
     }

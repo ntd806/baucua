@@ -1,11 +1,12 @@
 const User = require('../../models/users');
 const TransferHistory = require('../../models/transfershistory');
 const Option = require('../../models/options');
-
+const MatchesHistory = require('../../models/matcheshistory');
 
 let user = new User();
 let transferhistory = new TransferHistory();
 let option = new Option();
+let matcheshistory = new MatchesHistory();
 
 
 
@@ -27,6 +28,10 @@ const deposit = async(params) => {
 const createOption = async(params) => {
   const result = await option.createOption(params);
 }
+
+const getMatchesHistory = async(params) => {
+  return await matcheshistory.getMatchesHistory(params);
+}
 module.exports = {
-  signUp, signIn, deposit, createOption
+  signUp, signIn, deposit, createOption, getMatchesHistory
 };

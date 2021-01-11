@@ -88,5 +88,50 @@ module.exports = class AllModel {
 
         return modelOption;
     }
+
+    mainMatchesHistory(){
+        class modelMatchesHistory extends Sequelize.Model {}
+        modelMatchesHistory.init({
+            user_id: {
+                type: Sequelize.INTEGER,
+                validate: {
+                    notEmpty: true
+                },
+                field: 'user_id'
+            },
+            win: Sequelize.STRING,
+            lose: Sequelize.STRING,
+            type_bet: {
+                type: Sequelize.INTEGER,
+                validate: {
+                    notEmpty: true
+                },
+                field: 'type_bet'
+            },
+            place_bet: {
+                type: Sequelize.STRING,
+                validate: {
+                    notEmpty: true
+                },
+                field: 'place_bet'
+            },
+            stake: Sequelize.INTEGER,
+            status: Sequelize.STRING,
+            created_at: {
+                type: Sequelize.DATE,
+                field: 'created_at'
+            },
+            updated_at: {
+                type: Sequelize.DATE,
+                field: 'updated_at'
+            },
+        },
+        { sequelize, modelName: 'matcheshistories',
+            tableName: 'matcheshistories',
+            timestamps: false
+        });
+
+        return modelMatchesHistory;
+    }
 }
 

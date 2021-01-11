@@ -21,6 +21,30 @@ const deposit = async(params) => {
   params.status = 1;
   const result = await transferhistory.createTransferHistory(params);
 }
+
+const blockUser = async (params) => {
+  const {user_id, is_block} = params;
+
+  const userInstance = user.getInstance();
+
+  const oUser = await userInstance.findByPk(user_id);
+
+  if (oUser === null) {
+    return false;
+  }
+  else {
+    if (is_block && oUser.status) {
+      await oUser.update({status: 0});
+    }
+
+    if (!is_block && !oUser.status) {
+      await oUser.update({status: 1});
+    }
+    return true;
+  }
+
+};
+
 module.exports = {
-  signUp, signIn, deposit
+  signUp, signIn, deposit, blockUser
 };

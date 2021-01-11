@@ -18,6 +18,8 @@ router.post('/login', signIn);
 
 router.post('/deposit', deposit);
 
+router.post('/blockUser', blockUser);
+
 module.exports = router;
 
 async function signUp(req, res, next) {
@@ -59,6 +61,26 @@ async function signIn(req, res, next) {
 async function deposit(req, res, next) {
   try {
     var user = await service.deposit(req.body);
+    return res.status(200).json({
+      success: true,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+async function blockUser(req,res,next) {
+  try {
+    let isSuccess = await service.blockUser(req.body);
+
+    if (!isSuccess) {
+      return res.status(404).json({
+        success: false,
+        message: "Not Found"
+      })
+    }
+
     return res.status(200).json({
       success: true,
       message: ''

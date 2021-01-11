@@ -32,17 +32,18 @@ const blockUser = async (params) => {
   if (oUser === null) {
     return false;
   }
-  else {
-    if (is_block && oUser.status) {
-      await oUser.update({status: 0});
-    }
 
-    if (!is_block && !oUser.status) {
-      await oUser.update({status: 1});
-    }
-    return true;
+  //When want to block user and status of user is actived
+  if (is_block && oUser.status) {
+    await oUser.update({status: 0});
   }
 
+  //When want to unblock user and status of user is blocked
+  if (!is_block && !oUser.status) {
+    await oUser.update({status: 1});
+  }
+
+  return true;
 };
 
 module.exports = {

@@ -1,34 +1,39 @@
-const Sequelize = require('sequelize');
+const {Sequelize, DataTypes} = require('sequelize');
 const sequelize = require('../helper/Database');
 
 module.exports = class AllModel {
 
-    constructor(){
+    constructor() {
         this.Op = Sequelize.Op;
     }
 
-    mainUser(){
-        class modelUser extends Sequelize.Model {}
+    mainUser() {
+        class modelUser extends Sequelize.Model {
+        }
+
         modelUser.init({
-            id: {type: Sequelize.INTEGER, autoIncrement: true, allowNull: false, primaryKey: true},
-            fbUID:{type: Sequelize.STRING},
-            gg_email:{type: Sequelize.STRING},
-            name:{type: Sequelize.STRING},
-            address:{type: Sequelize.STRING},
-            created_at:{type: Sequelize.DATE},
-            updated_at:{type: Sequelize.DATE},
-            status:{type: Sequelize.INTEGER},
-            password:{type: Sequelize.STRING},
-        },
-        { sequelize, modelName: 'users',
-            tableName: 'users',
-            timestamps: false
-        });
+                id: {type: Sequelize.INTEGER, autoIncrement: true, allowNull: false, primaryKey: true},
+                fbUID: {type: Sequelize.STRING},
+                gg_email: {type: Sequelize.STRING},
+                name: {type: Sequelize.STRING},
+                address: {type: Sequelize.STRING},
+                created_at: {type: Sequelize.DATE},
+                updated_at: {type: Sequelize.DATE},
+                status: {type: Sequelize.INTEGER},
+                password: {type: Sequelize.STRING},
+            },
+            {
+                sequelize, modelName: 'users',
+                tableName: 'users',
+                timestamps: false
+            });
         return modelUser;
     }
 
-    mainTransferHistory(){
-        class modelTransferHistory extends Sequelize.Model {}
+    mainTransferHistory() {
+        class modelTransferHistory extends Sequelize.Model {
+        }
+
         modelTransferHistory.init({
                 user_id: {
                     type: Sequelize.INTEGER,
@@ -55,12 +60,57 @@ module.exports = class AllModel {
                     field: 'updated_at'
                 },
             },
-            { sequelize, modelName: 'transfershistories',
+            {
+                sequelize, modelName: 'transfershistories',
                 tableName: 'transfershistories',
                 timestamps: false
             });
 
         return modelTransferHistory;
+    }
+
+    mainBankAccount() {
+        class bankaccounts extends Sequelize.Model {
+            /**
+             * Helper method for defining associations.
+             * This method is not a part of Sequelize lifecycle.
+             * The `models/index` file will call this method automatically.
+             */
+            static associate(models) {
+                // will be user.users()
+                users.belongsTo(models.users, {foreignKey: 'user_id', as: 'users'})
+            }
+        };
+        bankaccounts.init({
+            userId: {
+                type: DataTypes.INTEGER,
+                validate: {
+                    notEmpty: true
+                },
+                field: 'user_id'
+            },
+            amount: DataTypes.INTEGER,
+            isBlock: {
+                type: DataTypes.INTEGER,
+                validate: {
+                    notEmpty: true
+                },
+                field: 'is_block'
+            },
+            status: DataTypes.INTEGER,
+            createdAt: {
+                type: DataTypes.DATE,
+                field: 'created_at'
+            },
+            updatedAt: {
+                type: DataTypes.DATE,
+                field: 'updated_at'
+            },
+        }, {
+            sequelize,
+            modelName: 'bankaccounts',
+        });
+        return bankaccounts;
     }
 }
 

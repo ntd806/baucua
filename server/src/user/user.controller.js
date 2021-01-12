@@ -18,6 +18,8 @@ router.post('/login', signIn);
 
 router.post('/deposit', deposit);
 
+router.get('/account', getAccount);
+
 module.exports = router;
 
 async function signUp(req, res, next) {
@@ -61,6 +63,27 @@ async function deposit(req, res, next) {
     var user = await service.deposit(req.body);
     return res.status(200).json({
       success: true,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+async function getAccount(req, res, next) {
+  try {
+    let wallets = await service.getWallet(req.body)
+
+    if(!wallets.length) {
+      return res.status(404).json({
+        success: false,
+        message: 'Entity Not Found'
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      result: wallets,
       message: ''
     });
   } catch (e) {

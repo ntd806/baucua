@@ -18,7 +18,11 @@ router.post('/login', signIn);
 
 router.post('/deposit', deposit);
 
+
 router.post('/setting', setting);
+
+router.post('/blockUser', blockUser);
+
 
 module.exports = router;
 
@@ -70,9 +74,30 @@ async function deposit(req, res, next) {
   }
 }
 
+
 async function setting(req, res, next) {
   try {
     await service.createOption(req.body);
+    return res.status(200).json({
+      success: true,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+async function blockUser(req,res,next) {
+  try {
+    let isSuccess = await service.blockUser(req.body);
+
+    if (!isSuccess) {
+      return res.status(404).json({
+        success: false,
+        message: "Entity Not Found"
+      })
+    }
+
     return res.status(200).json({
       success: true,
       message: ''

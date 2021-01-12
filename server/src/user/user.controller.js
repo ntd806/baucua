@@ -18,11 +18,15 @@ router.post('/login', signIn);
 
 router.post('/deposit', deposit);
 
+
 router.post('/setting', setting);
 
 router.get('/matches-history', matchesHistory);
 
-module.exports = router;
+router.post('/blockUser', blockUser);
+
+
+
 
 async function signUp(req, res, next) {
   try {
@@ -72,6 +76,7 @@ async function deposit(req, res, next) {
   }
 }
 
+
 async function setting(req, res, next) {
   try {
     await service.createOption(req.body);
@@ -90,6 +95,26 @@ async function matchesHistory(req, res, next){
     return res.status(200).json({
       success: true,
       result: result,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+async function blockUser(req,res,next) {
+  try {
+    let isSuccess = await service.blockUser(req.body);
+
+    if (!isSuccess) {
+      return res.status(404).json({
+        success: false,
+        message: "Entity Not Found"
+      })
+    }
+
+    return res.status(200).json({
+      success: true,
       message: ''
     });
   } catch (e) {

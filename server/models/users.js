@@ -16,6 +16,7 @@ module.exports = class User extends Main {
   createUser(data){
     return this.mUser.create(data);
   }
+
   async login(data){
     if(data.fbUID){
       const result = await this.mUser.findAll({
@@ -33,4 +34,9 @@ module.exports = class User extends Main {
     
     return result[0];
   }
+
+  getInstance() {
+    return this.mUser;
+  }
+
 }

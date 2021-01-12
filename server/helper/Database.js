@@ -7,11 +7,4 @@ if (config.use_env_variable) {
   var sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
-// const sequelize = new Sequelize('database_development', 'root', '', {
-//   host: 'localhost',
-//   dialect: 'mysql',
-//   logging: false,
-//   timezone: '+07:00'
-// });
-
 module.exports = sequelize;

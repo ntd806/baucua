@@ -14,7 +14,7 @@ function setup() {
    newGame();
   // Start a socket connection to the server
   // Some day we would run this server somewhere else
-  socket = io.connect(LOCALHOST);
+  socket = io.connect();
   // We make a named event called 'mouse' and write an
   // anonymous callback function
   socket.on('bet',
@@ -69,10 +69,10 @@ function draw() {
  */
 function preload() {
    // define sounds
-   soundsBegin = loadSound("audio/bgm.mp3");
-   soundsCancel = loadSound("audio/cancel1.mp3");
-   soundsEnding = loadSound("audio/drum-roll1.mp3");
-   soundsFinish = loadSound("audio/dondonpafupafu1.mp3");
+   soundsBegin = loadSound("../audio/bgm.mp3");
+   soundsCancel = loadSound("../audio/cancel1.mp3");
+   soundsEnding = loadSound("../audio/drum-roll1.mp3");
+   soundsFinish = loadSound("../audio/dondonpafupafu1.mp3");
  }
 
 /**

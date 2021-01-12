@@ -171,8 +171,8 @@ function wellcome(){
          is_click = true;
          time_set_up =  millis();
          // run effect
-         count_distance_left.show();
-         count_distance_left.html(total_distance_left);
+         //count_distance_left.show();
+         //count_distance_left.html(total_distance_left);
       }
    }
 }

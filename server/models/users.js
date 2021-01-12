@@ -33,4 +33,8 @@ module.exports = class User extends Main {
     
     return result[0];
   }
+
+  getInstance() {
+    return this.mUser;
+  }
 }

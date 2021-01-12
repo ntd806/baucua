@@ -18,6 +18,8 @@ router.post('/login', signIn);
 
 router.post('/deposit', deposit);
 
+router.post('/blockUser', blockUser);
+
 router.get('/account', getAccount);
 
 module.exports = router;
@@ -70,20 +72,19 @@ async function deposit(req, res, next) {
   }
 }
 
-async function getAccount(req, res, next) {
+async function blockUser(req,res,next) {
   try {
-    let wallets = await service.getWallet(req.body)
+    let isSuccess = await service.blockUser(req.body);
 
-    if(!wallets.length) {
+    if (!isSuccess) {
       return res.status(404).json({
         success: false,
-        message: 'Entity Not Found'
-      });
+        message: "Entity Not Found"
+      })
     }
 
     return res.status(200).json({
       success: true,
-      result: wallets,
       message: ''
     });
   } catch (e) {

@@ -5,6 +5,7 @@ import { Space, Input, Button } from 'antd';
 import { FacebookOutlined, GoogleOutlined } from '@ant-design/icons';
 import GoogleLogin from 'react-google-login';
 import _ from 'lodash';
+import Cookies from 'js-cookie';
 
 import {
   Container,
@@ -13,7 +14,7 @@ import {
   ButtonGroup,
   ActionContainer,
   Register,
-  StyledRedirect,
+  // StyledRedirect,
   InfoGroup,
   Title,
 } from './styled';
@@ -21,8 +22,8 @@ import { login } from 'Src/services/login';
 
 export default memo(function LoginPage({ loading }) {
   const [state, setState] = useState({
-    fb_UID: undefined,
-    gg_mail: undefined,
+    fbUID: undefined,
+    gg_email: undefined,
     username: '',
     password: '',
     is_admin: false,
@@ -51,12 +52,12 @@ export default memo(function LoginPage({ loading }) {
     };
   }, []);
 
-  const onRoleChange = useCallback(() => {
-    setState((e) => ({
-      ...e,
-      is_admin: !e.is_admin,
-    }));
-  }, [setState]);
+  // const onRoleChange = useCallback(() => {
+  //   setState((e) => ({
+  //     ...e,
+  //     is_admin: !e.is_admin,
+  //   }));
+  // }, [setState]);
 
   const onInputChange = useCallback(({ currentTarget: { title }, target: { value } }) => {
     setState((e) => ({
@@ -75,7 +76,12 @@ export default memo(function LoginPage({ loading }) {
       loading.current.add('login');
       login(params)
         .then((res) => {
-          console.log(res);
+          console.log('res', res);
+          console.log('type res', typeof res);
+          if (_.get(res, 'success')) {
+            Cookies.set('isLogin', true);
+            window.location.href = '/';
+          }
         })
         .finally(() => loading.current.remove('login'));
     },
@@ -85,8 +91,8 @@ export default memo(function LoginPage({ loading }) {
   const onLoginFacebook = useCallback(() => {
     FB.login(
       (response) => {
-        const fb_UID = _.get(response, 'authResponse.userID', undefined);
-        if (fb_UID) onLogin('fb_UID', fb_UID);
+        const fbUID = _.get(response, 'authResponse.userID', undefined);
+        if (fbUID) onLogin('fbUID', fbUID);
       },
       {
         scope: 'email',
@@ -97,8 +103,8 @@ export default memo(function LoginPage({ loading }) {
 
   const onLoginGoogle = useCallback(
     (response) => {
-      const gg_Mail = _.get(response, 'profileObj.email', undefined);
-      if (gg_Mail) onLogin('gg_Mail', gg_Mail);
+      const gg_email = _.get(response, 'profileObj.email', undefined);
+      if (gg_email) onLogin('gg_email', gg_email);
     },
     [onLogin],
   );
@@ -113,13 +119,13 @@ export default memo(function LoginPage({ loading }) {
               onChange={onInputChange}
               title={'username'}
               value={state.username}
-              placeholder={'Tên đăng nhập'}
+              placeholder={'User name'}
             />
             <Input
               onChange={onInputChange}
               title={'password'}
               value={state.password}
-              placeholder={'Mật khẩu'}
+              placeholder={'Password'}
             />
             <Button disabled={!(state.username && state.password)} onClick={onLogin}>
               {'Đăng nhập'}
@@ -129,7 +135,7 @@ export default memo(function LoginPage({ loading }) {
           <ButtonGroup>
             <Space direction={'vertical'} size={'large'}>
               <StyledButton onClick={onLoginFacebook} icon={<FacebookOutlined />} type={'facebook'}>
-                {'Đăng nhập bằng Facebook'}
+                {'Login with Facebook'}
               </StyledButton>
               <GoogleLogin
                 clientId={process.env.GG_ID}
@@ -139,7 +145,7 @@ export default memo(function LoginPage({ loading }) {
                     icon={<GoogleOutlined />}
                     type={'google'}
                   >
-                    {'Đăng nhập bằng Google'}
+                    {'Login with Google'}
                   </StyledButton>
                 )}
                 buttonText="Login"
@@ -152,11 +158,14 @@ export default memo(function LoginPage({ loading }) {
         )}
         <ActionContainer direction={'vertical'} size={'large'}>
           <Register>
-            {'Không có tài khoản?'} <Link to="/register">{'Đăng ký'}</Link>
+            {`Don't have an Acount? `}
+            <Link style={{ color: 'white' }} to="/register">
+              {'Register now!'}
+            </Link>
           </Register>
-          <StyledRedirect onClick={onRoleChange}>{`Bạn là ${
+          {/* <StyledRedirect onClick={onRoleChange}>{`Bạn là ${
             state.is_admin ? 'người chơi' : 'Admin'
-          }?`}</StyledRedirect>
+          }?`}</StyledRedirect> */}
         </ActionContainer>
       </FormContainer>
     </Container>

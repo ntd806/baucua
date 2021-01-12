@@ -41,7 +41,32 @@ const getTransfersHistory = async(params) => {
 const getChoiceToNumbberMap = async() =>{
   return await character.getChoiceToNumbberMap();
 }
+  
+
+const blockUser = async (params) => {
+  const {user_id, is_block} = params;
+
+  const userInstance = user.getInstance();
+
+  const oUser = await userInstance.findByPk(user_id);
+
+  if (oUser === null) {
+    return false;
+  }
+
+  //When want to block user and status of user is actived
+  if (is_block && oUser.status) {
+    await oUser.update({status: 0});
+  }
+
+  //When want to unblock user and status of user is blocked
+  if (!is_block && !oUser.status) {
+    await oUser.update({status: 1});
+  }
+
+  return true;
+};
 
 module.exports = {
-  signUp, signIn, deposit, createOption, getMatchesHistory, getTransfersHistory, getChoiceToNumbberMap
+  signUp, signIn, deposit, blockUser, createOption, getMatchesHistory, getTransfersHistory, getChoiceToNumbberMap
 };

@@ -5,6 +5,7 @@ import { FacebookOutlined, GoogleOutlined } from '@ant-design/icons';
 import _ from 'lodash';
 import GoogleLogin from 'react-google-login';
 import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import {
   Container,
@@ -22,10 +23,11 @@ import AvatarImage from 'Src/images/avatar.png';
 const { Step } = Steps;
 
 export default memo(function RegisterPage({ loading }) {
+  const history = useHistory();
   const [currentStep, setCurrentStep] = useState(0);
   const [state, setState] = useState({
-    fb_UID: undefined,
-    gg_Mail: undefined,
+    fbUID: undefined,
+    gg_email: undefined,
     name: undefined,
     address: undefined,
     phone: undefined,
@@ -44,7 +46,9 @@ export default memo(function RegisterPage({ loading }) {
           loading.current.add('register');
           register(state)
             .then((res) => {
-              console.log(res);
+              if (_.get(res, 'success')) {
+                history.push('/login');
+              }
             })
             .finally(() => loading.current.remove('register'));
           break;
@@ -52,7 +56,7 @@ export default memo(function RegisterPage({ loading }) {
           break;
       }
     },
-    [setCurrentStep, state, loading],
+    [setCurrentStep, state, loading, history],
   );
 
   useEffect(() => {
@@ -83,7 +87,7 @@ export default memo(function RegisterPage({ loading }) {
       (response) => {
         setState((e) => ({
           ...e,
-          fb_UID: _.get(response, 'authResponse.userID', undefined),
+          fbUID: _.get(response, 'authResponse.userID', undefined),
         }));
       },
       {
@@ -97,7 +101,7 @@ export default memo(function RegisterPage({ loading }) {
     (response) => {
       setState((e) => ({
         ...e,
-        gg_Mail: _.get(response, 'profileObj.email', undefined),
+        gg_email: _.get(response, 'profileObj.email', undefined),
         name: _.get(response, 'profileObj.name', undefined),
       }));
     },
@@ -128,7 +132,7 @@ export default memo(function RegisterPage({ loading }) {
         <Steps type="navigation" size="small" current={currentStep}>
           <Step
             title="Bước 1"
-            status={!(state.fb_UID && state.gg_Mail) ? 'finish' : 'process'}
+            status={!(state.fbUID && state.gg_email) ? 'finish' : 'process'}
             description="Liên kết tài khoản."
           />
           <Step
@@ -144,42 +148,42 @@ export default memo(function RegisterPage({ loading }) {
               onChange={onInputChange}
               title={'name'}
               value={state.name}
-              placeholder={'Họ và tên'}
+              placeholder={'Full name'}
             />
             <Input
               onChange={onInputChange}
               title={'address'}
               value={state.address}
-              placeholder={'Địa chỉ'}
+              placeholder={'Address'}
             />
             <Input
               onChange={onInputChange}
               title={'phone'}
               value={state.phone}
-              placeholder={'Số điện thoại'}
+              placeholder={'Phone'}
             />
           </InfoGroup>
         ) : (
           <ButtonGroup>
             <Space direction={'vertical'} size={'middle'}>
               <StyledButton
-                disabled={state.fb_UID}
+                disabled={state.fbUID}
                 onClick={onLoginFacebook}
                 icon={<FacebookOutlined />}
                 type={'facebook'}
               >
-                {'Liên kết với Facebook'}
+                {'Connect with Facebook'}
               </StyledButton>
               <GoogleLogin
                 clientId={process.env.GG_ID}
                 render={(renderProps) => (
                   <StyledButton
-                    disabled={state.gg_Mail}
+                    disabled={state.gg_email}
                     onClick={renderProps.onClick}
                     icon={<GoogleOutlined />}
                     type={'google'}
                   >
-                    {'Liên kết với Google'}
+                    {'Connect with Google'}
                   </StyledButton>
                 )}
                 buttonText="Login"
@@ -192,7 +196,10 @@ export default memo(function RegisterPage({ loading }) {
         )}
         <ActionContainer direction={'vertical'} size={'large'}>
           <Login>
-            {'Đã có tài khoản?'} <Link to="/login">{'Đăng nhập'}</Link>
+            {'Have already an account? '}
+            <Link style={{ color: 'white' }} to="/login">
+              {'Login here'}
+            </Link>
           </Login>
           <ActionButtonGroup>
             {currentStep ? (
@@ -207,7 +214,7 @@ export default memo(function RegisterPage({ loading }) {
               disabled={
                 !(currentStep
                   ? state.name && state.address && state.phone
-                  : state.fb_UID && state.gg_Mail)
+                  : state.fbUID && state.gg_email)
               }
               onClick={onClick}
             >

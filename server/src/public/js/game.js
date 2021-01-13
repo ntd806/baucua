@@ -1,9 +1,9 @@
 let startBtn, dice, dice_position,
 startTitle, canvas, startTitle_hideTime, 
-height_stop, div_holder, bg_default = 0.0, div_renda, distance = 0.0, 
-count_distance_left, div_bord1, is_finish = false, begin_climb = false,
-panel_finish, div_bord2, div_kiroku, panel_score,
-scale, condition_stop_background = 0.0,
+height_stop, div_holder, bg_default = 0.0, 
+count_distance_left, div_bord1,
+ panel_score,
+scale,
 total_distance_left = 0.0, speed = 0.0, bg_up = 0.0,
 is_sound_climb = false, dice_move = 0, is_click = false, dice_top, time_set_up, time_flag = 0, time,
 soundFinish_Loop = 0, result, flag_sound = false, time_place;
@@ -46,22 +46,6 @@ function draw() {
    if(millis() > START_WAITING_TIME){
      wellcome();
    }
-   // Check begin_climb then show time 
-   // if(begin_climb){
-      if (is_click) {
-         time = millis();
-         time = (time - time_set_up)/1000;
-         time_place -= time;
-         div_bord1.html(time_place.toFixed(3));
-      }
-      
-   // Show point
-   // if(!is_finish){
-      //div_bord1.html(time.toFixed(3));
-      // panel_score.show();
-      // panel_score.html(time.toFixed(3));
-   // }
-   // }
 }
 
 /**
@@ -95,8 +79,6 @@ function newGame() {
    dice.position(height_stop,height_stop);
    dice.hide();
    dice.attribute('flag', '0');
-   // set condition stop 
-   condition_stop_background = CONDITION_STOP*scale;
    // Set positison background
    bg_default = BACKGROUNG_DEFAULT * scale;
 
@@ -142,11 +124,6 @@ function startBtnClicked(){
    // }
    
    if(is_click){
-      // assigned for bolean show the time 
-      if(!begin_climb){
-      begin_climb = true;
-      }
-
       sound_dice_climb();
       show_distance_left();
       dice_changes_image();

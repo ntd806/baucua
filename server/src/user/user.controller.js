@@ -23,14 +23,16 @@ router.post('/setting', setting);
 
 router.get('/matches-history', matchesHistory);
 
+
 router.get('/transfers-history', getTransfersHistory);
 
 router.get('/choice-to-number-map', getChoiceToNumbberMap);
-=======
+
 router.post('/blockUser', blockUser);
 
+router.post('/blockUser', blockUser);
 
-
+router.get('/transfers-history', getTransfersHistory);
 
 async function signUp(req, res, next) {
   try {
@@ -119,6 +121,7 @@ async function getTransfersHistory(req, res, next){
   }
 }
 
+
 async function getChoiceToNumbberMap(req, res, next){
   try {
     var result = await service.getChoiceToNumbberMap();
@@ -131,6 +134,8 @@ async function getChoiceToNumbberMap(req, res, next){
     res.status(400).json({ Error: e.message })
   }
 }
+
+
 async function blockUser(req,res,next) {
   try {
     let isSuccess = await service.blockUser(req.body);

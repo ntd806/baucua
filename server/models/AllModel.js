@@ -125,6 +125,18 @@ module.exports = class AllModel {
                 type: Sequelize.DATE,
                 field: 'updated_at'
             },
+            },
+            stake: Sequelize.INTEGER,
+            status: Sequelize.STRING,
+            created_at: {
+                type: Sequelize.DATE,
+                field: 'created_at'
+            },
+            updated_at: {
+                type: Sequelize.DATE,
+                field: 'updated_at'
+            },
+
         },
         { sequelize, modelName: 'matcheshistories',
             tableName: 'matcheshistories',
@@ -133,6 +145,7 @@ module.exports = class AllModel {
 
         return modelMatchesHistory;
     }
+
     mainCharacter(){
         class modelCharacter extends Sequelize.Model {}
         modelCharacter.init({

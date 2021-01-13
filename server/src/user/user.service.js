@@ -4,6 +4,7 @@ const Option = require('../../models/options');
 const MatchesHistory = require('../../models/matcheshistory');
 const Character = require('../../models/characters');
 
+
 let user = new User();
 let transferhistory = new TransferHistory();
 let option = new Option();
@@ -34,6 +35,7 @@ const createOption = async(params) => {
 const getMatchesHistory = async(params) => {
   return await matcheshistory.getMatchesHistory(params);
 }
+
 const getTransfersHistory = async(params) => {
   return await transferhistory.getTransferHistory(params);
 }
@@ -42,6 +44,11 @@ const getChoiceToNumbberMap = async() =>{
   return await character.getChoiceToNumbberMap();
 }
   
+
+const getTransfersHistory = async(params) => {
+  return await transferhistory.getTransferHistory(params);
+}
+
 
 const blockUser = async (params) => {
   const {user_id, is_block} = params;

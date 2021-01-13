@@ -95,7 +95,6 @@ function newGame() {
    dice.position(height_stop,height_stop);
    dice.hide();
    dice.attribute('flag', '0');
-   dice_top = dice_TOP_FINISH*scale;
    // set condition stop 
    condition_stop_background = CONDITION_STOP*scale;
    // Set positison background

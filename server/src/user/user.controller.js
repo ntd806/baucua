@@ -35,7 +35,6 @@ router.get('/account', getBankAccount);
 router.post('/end-game', endGame);
 
 
-module.exports = router;
 
 async function signUp(req, res, next) {
   try {
@@ -126,6 +125,7 @@ async function getTransfersHistory(req, res, next){
   }
 }
 
+
 async function getChoiceToNumbberMap(req, res, next){
   try {
     var result = await service.getChoiceToNumbberMap();
@@ -151,6 +151,7 @@ async function getBankAccount(req, res, next){
     res.status(400).json({ Error: e.message })
   }
 }
+
 
 async function blockUser(req,res,next) {
   try {

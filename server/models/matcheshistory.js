@@ -19,5 +19,9 @@ module.exports = class MatchesHistory extends Main {
       limit: 10
     });
   }
+
+  async createMatchesHistory(data){
+    await this.mMatchesHistory.create(data);
+  }
   
 }

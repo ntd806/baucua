@@ -16,4 +16,29 @@ module.exports = class BankAccount extends Main {
     });
   }
 
+  async getAmount(user_id){
+    let result = await this.mBankAccount.findAll({
+      where: {
+        user_id: user_id,
+      }
+    });
+    return result[0].amount;
+  }
+
+  async getIsBlock(user_id){
+    let result = await this.mBankAccount.findAll({
+      where: {
+        user_id: user_id,
+      }
+    });
+    return result[0].is_block;
+  }
+
+  async addAmount(user_id, amount){
+    await this.mBankAccount.update(
+      { amount: amount },
+      { where: { user_id: user_id } }
+    )
+  }
+
 }

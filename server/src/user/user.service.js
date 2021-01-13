@@ -5,6 +5,7 @@ const MatchesHistory = require('../../models/matcheshistory');
 const Character = require('../../models/characters');
 const BankAccount = require('../../models/bankaccounts');
 
+
 let user = new User();
 let transferhistory = new TransferHistory();
 let option = new Option();
@@ -36,6 +37,7 @@ const createOption = async(params) => {
 const getMatchesHistory = async(params) => {
   return await matcheshistory.getMatchesHistory(params);
 }
+
 const getTransfersHistory = async(params) => {
   return await transferhistory.getTransferHistory(params);
 }
@@ -48,6 +50,31 @@ const getBankAccount = async(params) => {
   return await bankaccount.getBankAccount(params);
 }
 
+
+const blockUser = async (params) => {
+  const {user_id, is_block} = params;
+
+  const userInstance = user.getInstance();
+
+  const oUser = await userInstance.findByPk(user_id);
+
+  if (oUser === null) {
+    return false;
+  }
+
+  //When want to block user and status of user is actived
+  if (is_block && oUser.status) {
+    await oUser.update({status: 0});
+  }
+
+  //When want to unblock user and status of user is blocked
+  if (!is_block && !oUser.status) {
+    await oUser.update({status: 1});
+  }
+
+  return true;
+};
+
 module.exports = {
-  signUp, signIn, deposit, createOption, getMatchesHistory, getTransfersHistory, getChoiceToNumbberMap, getBankAccount
+  signUp, signIn, deposit, blockUser, createOption, getMatchesHistory, getTransfersHistory, getChoiceToNumbberMap, getBankAccount
 };

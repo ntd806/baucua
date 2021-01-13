@@ -16,15 +16,17 @@ module.exports = class User extends Main {
   createUser(data){
     return this.mUser.create(data);
   }
+
   async login(data){
+    let result;
     if(data.fbUID){
-      const result = await this.mUser.findAll({
+      result = await this.mUser.findAll({
         where:{
           fbUID: data.fbUID
         }
       });
     } else {
-      const result = await this.mUser.findAll({
+      result = await this.mUser.findAll({
         where:{
           gg_email: data.gg_email
         }
@@ -33,4 +35,9 @@ module.exports = class User extends Main {
     
     return result[0];
   }
+
+  getInstance() {
+    return this.mUser;
+  }
+
 }

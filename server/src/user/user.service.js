@@ -4,6 +4,7 @@ const Option = require('../../models/options');
 const MatchesHistory = require('../../models/matcheshistory');
 const TransfersHistory = require('../../models/transfershistory');
 
+
 let user = new User();
 let transferhistory = new TransferHistory();
 let option = new Option();
@@ -26,7 +27,6 @@ const deposit = async(params) => {
   params.status = 1;
   const result = await transferhistory.createTransferHistory(params);
 }
-
 
 const createOption = async(params) => {
   const result = await option.createOption(params);

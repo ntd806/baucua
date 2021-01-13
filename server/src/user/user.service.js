@@ -3,12 +3,14 @@ const TransferHistory = require('../../models/transfershistory');
 const Option = require('../../models/options');
 const MatchesHistory = require('../../models/matcheshistory');
 const Character = require('../../models/characters');
+const BankAccount = require('../../models/bankaccounts');
 
 let user = new User();
 let transferhistory = new TransferHistory();
 let option = new Option();
 let matcheshistory = new MatchesHistory();
 let character = new Character();
+let bankaccount = new BankAccount();
 
 
 
@@ -42,6 +44,10 @@ const getChoiceToNumbberMap = async() =>{
   return await character.getChoiceToNumbberMap();
 }
 
+const getBankAccount = async(params) => {
+  return await bankaccount.getBankAccount(params);
+}
+
 module.exports = {
-  signUp, signIn, deposit, createOption, getMatchesHistory, getTransfersHistory, getChoiceToNumbberMap
+  signUp, signIn, deposit, createOption, getMatchesHistory, getTransfersHistory, getChoiceToNumbberMap, getBankAccount
 };

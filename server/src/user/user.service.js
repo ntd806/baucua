@@ -35,11 +35,11 @@ const createOption = async(params) => {
 const getMatchesHistory = async(params) => {
   return await matcheshistory.getMatchesHistory(params);
 }
+
 const getTransfersHistory = async(params) => {
   return await transferhistory.getTransferHistory(params);
 }
 module.exports = {
-  
 
 const blockUser = async (params) => {
   const {user_id, is_block} = params;

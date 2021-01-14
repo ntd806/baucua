@@ -27,6 +27,10 @@ module.exports = {
       is_play: {
         type: Sequelize.TINYINT(1),
         allowNull: false,
+      },
+      is_active: {
+        type: Sequelize.TINYINT(1),
+        allowNull: false,
       }
     });
   },

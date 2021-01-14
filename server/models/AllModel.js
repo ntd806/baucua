@@ -135,66 +135,6 @@ module.exports = class AllModel {
                 type: Sequelize.DATE,
                 field: 'updated_at'
             },
-        },
-        { sequelize, modelName: 'matcheshistories',
-            tableName: 'matcheshistories',
-            timestamps: false
-        });
-
-        return modelMatchesHistory;
-    }
-
-    mainOption(){
-        class modelOption extends Sequelize.Model {}
-        modelOption.init({
-            game_type: Sequelize.INTEGER,
-            proportionality: Sequelize.INTEGER,
-            created_at: {
-                type: Sequelize.DATE,
-                field: 'created_at'
-            },
-            updated_at: {
-                type: Sequelize.DATE,
-                field: 'updated_at'
-            },
-            is_play: {
-                type: Sequelize.TINYINT,
-                field: 'is_play'
-            }
-        },
-        { sequelize, modelName: 'options',
-            tableName: 'options',
-            timestamps: false
-        });
-
-        return modelOption;
-    }
-
-    mainMatchesHistory(){
-        class modelMatchesHistory extends Sequelize.Model {}
-        modelMatchesHistory.init({
-            user_id: {
-                type: Sequelize.INTEGER,
-                validate: {
-                    notEmpty: true
-                },
-                field: 'user_id'
-            },
-            win: Sequelize.STRING,
-            lose: Sequelize.STRING,
-            type_bet: {
-                type: Sequelize.INTEGER,
-                validate: {
-                    notEmpty: true
-                },
-                field: 'type_bet'
-            },
-            place_bet: {
-                type: Sequelize.STRING,
-                validate: {
-                    notEmpty: true
-                },
-                field: 'place_bet'
             },
             stake: Sequelize.INTEGER,
             status: Sequelize.STRING,
@@ -206,6 +146,7 @@ module.exports = class AllModel {
                 type: Sequelize.DATE,
                 field: 'updated_at'
             },
+
         },
         { sequelize, modelName: 'matcheshistories',
             tableName: 'matcheshistories',
@@ -215,11 +156,53 @@ module.exports = class AllModel {
         return modelMatchesHistory;
     }
 
-    mainOption(){
-        class modelOption extends Sequelize.Model {}
-        modelOption.init({
-            game_type: Sequelize.INTEGER,
-            proportionality: Sequelize.INTEGER,
+    mainCharacter(){
+        class modelCharacter extends Sequelize.Model {}
+        modelCharacter.init({
+            game_type: {
+                type: Sequelize.INTEGER,
+                field: 'game_type'
+            },
+            character_1: {
+                type: Sequelize.STRING,
+                field: 'character_1'
+            },
+            character_2: {
+                type: Sequelize.STRING,
+                field: 'character_2'
+            },
+            character_3: {
+                type: Sequelize.STRING,
+                field: 'character_3'
+            },
+            character_4: {
+                type: Sequelize.STRING,
+                field: 'character_4'
+            },
+            character_5: {
+                type: Sequelize.STRING,
+                field: 'character_5'
+            },
+            character_6: {
+                type: Sequelize.STRING,
+                field: 'character_6'
+            },
+            character_7: {
+                type: Sequelize.STRING,
+                field: 'character_7'
+            },
+            character_8: {
+                type: Sequelize.STRING,
+                field: 'character_8'
+            },
+            character_9: {
+                type: Sequelize.STRING,
+                field: 'character_9'
+            },
+            character_10: {
+                type: Sequelize.STRING,
+                field: 'character_10'
+            },
             created_at: {
                 type: Sequelize.DATE,
                 field: 'created_at'
@@ -228,17 +211,13 @@ module.exports = class AllModel {
                 type: Sequelize.DATE,
                 field: 'updated_at'
             },
-            is_play: {
-                type: Sequelize.TINYINT,
-                field: 'is_play'
-            }
         },
-        { sequelize, modelName: 'options',
-            tableName: 'options',
+        { sequelize, modelName: 'characters',
+            tableName: 'characters',
             timestamps: false
         });
 
-        return modelOption;
+        return modelCharacter;
     }
 
     mainBankAccount() {

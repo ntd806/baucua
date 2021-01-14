@@ -24,6 +24,7 @@ router.post('/setting', setting);
 router.get('/matches-history', matchesHistory);
 
 
+router.get('/account', getAccount);
 router.get('/transfers-history', getTransfersHistory);
 
 router.get('/choice-to-number-map', getChoiceToNumbberMap);
@@ -149,6 +150,27 @@ async function blockUser(req,res,next) {
 
     return res.status(200).json({
       success: true,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+async function getAccount(req, res, next) {
+  try {
+    let wallets = await service.getWallet(req.body)
+
+    if(!wallets.length) {
+      return res.status(404).json({
+        success: false,
+        message: 'Entity Not Found'
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      result: wallets,
       message: ''
     });
   } catch (e) {

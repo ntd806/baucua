@@ -1,13 +1,7 @@
-let startBtn, dice, dice_position,
-startTitle, canvas, startTitle_hideTime, 
-height_stop, div_holder, bg_default = 0.0, 
-count_distance_left, div_bord1,
- panel_score,
-scale,
-total_distance_left = 0.0, speed = 0.0, bg_up = 0.0,
-is_sound_climb = false, dice_move = 0, is_click = false, dice_top, time_set_up, time_flag = 0, time,
-soundFinish_Loop = 0, result, flag_sound = false, time_place;
-
+// Config canvas
+let startBtn, canvas, div_holder, scale, bg2;
+// Config start
+let start_1, start_2, start_3, start_4, start_5, start_6, start_7, start_8;
 // Keep track of our socket connection
 var socket;
 function setup() {
@@ -31,18 +25,6 @@ function draw() {
       soundsBegin.loop();
    }
 
-   // run sound
-   if(!soundsFinish.isPlaying() && flag_sound == true){
-      soundFinish_Loop ++;
-      if (soundFinish_Loop > 3) {
-         noLoop();
-         result.send();
-      }
-      else{
-         soundsFinish.play();
-      }
-   }
-
    if(millis() > START_WAITING_TIME){
      wellcome();
    }
@@ -54,9 +36,6 @@ function draw() {
 function preload() {
    // define sounds
    soundsBegin = loadSound("../audio/bgm.mp3");
-   soundsCancel = loadSound("../audio/cancel1.mp3");
-   soundsEnding = loadSound("../audio/drum-roll1.mp3");
-   soundsFinish = loadSound("../audio/dondonpafupafu1.mp3");
  }
 
 /**
@@ -67,80 +46,66 @@ function newGame() {
    frameRate(60);
    // define canvas
    canvas = select("#game2");
-   // height stop
-   height_stop = canvas.height/2;
    // Set scale for screen
    scale = canvas.width/CANVAS_HEIGHT;
    // define div holder
    div_holder = select("#holder");
-   // define dice
-   dice = select(".gastan");
-   dice.show();
-   dice.position(height_stop,height_stop);
-   dice.hide();
-   dice.attribute('flag', '0');
-   // Set positison background
-   bg_default = BACKGROUNG_DEFAULT * scale;
-
+   // Set background 
+   bg2 = select("#bg2");
+   var bg2_width = bg2.width*scale;
+   var bg2_height = bg2.height*scale;
+   bg2.style("width",  bg2_width + "px");
+   bg2.style("height", bg2_height + "px");
+   // Set start
+   start_1 = select("#start_1");
+   let start_1_W = start_1.width*scale;
+   let start_1_H = start_1.height*scale;
+   start_1.style("width",  start_1_W + "px");
+   start_1.style("height", start_1_H + "px");
+   start_2 = select("#start_2");
+   let start_2_W = start_2.width*scale;
+   let start_2_H = start_2.height*scale;
+   start_2.style("width",  start_2_W + "px");
+   start_2.style("height", start_2_H + "px");
+   start_3 = select("#start_3");
+   let start_3_W = start_3.width*scale;
+   let start_3_H = start_3.height*scale;
+   start_3.style("width",  start_3_W + "px");
+   start_3.style("height", start_3_W + "px");
+   start_4 = select("#start_4");
+   let start_4_W = start_4.width*scale;
+   let start_4_H = start_4.height*scale;
+   start_4.style("width",  start_4_W + "px");
+   start_4.style("height", start_4_W + "px");
+   start_5 = select("#start_5");
+   let start_5_W = start_5.width*scale;
+   let start_5_H = start_5.height*scale;
+   start_5.style("width",  start_5_W + "px");
+   start_5.style("height", start_5_W + "px");
+   start_6 = select("#start_6");
+   let start_6_W = start_6.width*scale;
+   let start_6_H = start_6.height*scale;
+   start_6.style("width",  start_6_W + "px");
+   start_6.style("height", start_6_W + "px");
+   start_7 = select("#start_7");
+   let start_7_W = start_7.width*scale;
+   let start_7_H = start_7.height*scale;
+   start_7.style("width",  start_7_W + "px");
+   start_7.style("height", start_7_W + "px");
+   start_8 = select("#start_8");
+   let start_8_W = start_8.width*scale;
+   let start_8_H = start_8.height*scale;
+   start_8.style("width",  start_8_W + "px");
+   start_8.style("height", start_8_W + "px");
    var loaddingScreen = select("#loadding");
    loaddingScreen.remove();
 }
 
 function wellcome(){
-  
-   //replace display == block for button start
-   if(startTitle.style("display") == "block"){
-      // get position current
-      var startTitlePosition = startTitle.position();
-      // set stop position
-      var startTitleStopPosition = canvas.width * (150/CANVAS_HEIGHT);
-      if(startTitlePosition.x > startTitleStopPosition){
-         startTitle.position(startTitlePosition.x - 5, startTitlePosition.y);
-      }
-      else
-      {
-         startBtn.mousePressed(startBtnClicked);
-      }
-
-      if(millis() >= startTitle_hideTime){
-         startTitle.hide();
-         is_click = true;
-         time_set_up =  millis();
-         // run effect
-         //count_distance_left.show();
-         //count_distance_left.html(total_distance_left);
-      }
-   }
 }
 
 /**
- * handle button start to click
+ * handled button start to click
  */
 function startBtnClicked(){
-   dice.show();
-   time_flag ++;
-   // if(time_flag == 1){
-   //    time_set_up =  millis();
-   // }
-   
-   if(is_click){
-      sound_dice_climb();
-      show_distance_left();
-      dice_changes_image();
-      // dice change position with images change
-      var dice_position_recent = dice.position();
-      if(dice_position_recent.y >= height_stop) {
-         dice.position(dice_position, dice_position_recent.y - speed);
-      }
-      else {
-        bg_default += speed;
-        bg2.position(0,bg_default);
-      }
-      // check stop
-      if (bg_default >= condition_stop_background) {
-         set_dice_stop();
-         var requirePoint = new KYTypeRequirement(TYPE_REQUIRE_POINT_1, TYPE_REQUIRE_POINT_2);
-         result           = new KYResult(GAME_ID, time, requirePoint);
-      }
-   }
 }

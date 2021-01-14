@@ -1,0 +1,17 @@
+  .circle {
+    clip-path: circle(50% at 50% 50%);
+  }
+  
+  .circle.circle__start {
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    background-color: cornflowerblue;
+  }
+  
+  .circle.circle__item {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    background-color: chartreuse;
+  }

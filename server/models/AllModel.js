@@ -1,34 +1,39 @@
-const Sequelize = require('sequelize');
+const {Sequelize, DataTypes} = require('sequelize');
 const sequelize = require('../helper/Database');
 
 module.exports = class AllModel {
 
-    constructor(){
+    constructor() {
         this.Op = Sequelize.Op;
     }
 
-    mainUser(){
-        class modelUser extends Sequelize.Model {}
+    mainUser() {
+        class modelUser extends Sequelize.Model {
+        }
+
         modelUser.init({
-            id: {type: Sequelize.INTEGER, autoIncrement: true, allowNull: false, primaryKey: true},
-            fbUID:{type: Sequelize.STRING},
-            gg_email:{type: Sequelize.STRING},
-            name:{type: Sequelize.STRING},
-            address:{type: Sequelize.STRING},
-            created_at:{type: Sequelize.DATE},
-            updated_at:{type: Sequelize.DATE},
-            status:{type: Sequelize.INTEGER},
-            password:{type: Sequelize.STRING},
-        },
-        { sequelize, modelName: 'users',
-            tableName: 'users',
-            timestamps: false
-        });
+                id: {type: Sequelize.INTEGER, autoIncrement: true, allowNull: false, primaryKey: true},
+                fbUID: {type: Sequelize.STRING},
+                gg_email: {type: Sequelize.STRING},
+                name: {type: Sequelize.STRING},
+                address: {type: Sequelize.STRING},
+                created_at: {type: Sequelize.DATE},
+                updated_at: {type: Sequelize.DATE},
+                status: {type: Sequelize.INTEGER},
+                password: {type: Sequelize.STRING},
+            },
+            {
+                sequelize, modelName: 'users',
+                tableName: 'users',
+                timestamps: false
+            });
         return modelUser;
     }
 
-    mainTransferHistory(){
-        class modelTransferHistory extends Sequelize.Model {}
+    mainTransferHistory() {
+        class modelTransferHistory extends Sequelize.Model {
+        }
+
         modelTransferHistory.init({
             user_id: {
                 type: Sequelize.INTEGER,
@@ -121,10 +126,27 @@ module.exports = class AllModel {
                 type: Sequelize.DATE,
                 field: 'created_at'
             },
+            {
+                sequelize, modelName: 'transfershistories',
+                tableName: 'transfershistories',
+                timestamps: false
+            });
             updated_at: {
                 type: Sequelize.DATE,
                 field: 'updated_at'
             },
+            },
+            stake: Sequelize.INTEGER,
+            status: Sequelize.STRING,
+            created_at: {
+                type: Sequelize.DATE,
+                field: 'created_at'
+            },
+            updated_at: {
+                type: Sequelize.DATE,
+                field: 'updated_at'
+            },
+
         },
         { sequelize, modelName: 'matcheshistories',
             tableName: 'matcheshistories',
@@ -196,40 +218,50 @@ module.exports = class AllModel {
 
         return modelCharacter;
     }
-    mainBankAccount(){
-        class modelBankAccount extends Sequelize.Model {}
-        modelBankAccount.init({
-            user_id: {
-                type: Sequelize.INTEGER,
+
+
+    mainBankAccount() {
+        class bankaccounts extends Sequelize.Model {
+            /**
+             * Helper method for defining associations.
+             * This method is not a part of Sequelize lifecycle.
+             * The `models/index` file will call this method automatically.
+             */
+            static associate(models) {
+                // will be user.users()
+                users.belongsTo(models.users, {foreignKey: 'user_id', as: 'users'})
+            }
+        };
+        bankaccounts.init({
+            userId: {
+                type: DataTypes.INTEGER,
                 validate: {
-                  notEmpty: true
+                    notEmpty: true
                 },
                 field: 'user_id'
-              },
-              amount: Sequelize.INTEGER,
-              is_block: {
-                type: Sequelize.INTEGER,
+            },
+            amount: DataTypes.INTEGER,
+            isBlock: {
+                type: DataTypes.INTEGER,
                 validate: {
-                  notEmpty: true
+                    notEmpty: true
                 },
                 field: 'is_block'
-              },
-              status: Sequelize.INTEGER,
-              created_at: {
-                type: Sequelize.DATE,
+            },
+            status: DataTypes.INTEGER,
+            createdAt: {
+                type: DataTypes.DATE,
                 field: 'created_at'
-              },
-              updated_at: {
-                type: Sequelize.DATE,
+            },
+            updatedAt: {
+                type: DataTypes.DATE,
                 field: 'updated_at'
-              },
-        },
-        { sequelize, modelName: 'bankaccounts',
-            tableName: 'bankaccounts',
-            timestamps: false
+            },
+        }, {
+            sequelize,
+            modelName: 'bankaccounts',
         });
-
-        return modelBankAccount;
+        return bankaccounts;
     }
 }
 

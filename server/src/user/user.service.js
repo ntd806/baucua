@@ -1,9 +1,15 @@
 const User = require('../../models/users');
 const TransferHistory = require('../../models/transfershistory');
+const BankAccountModel = require('../../models/bankaccounts');
+
+let user = new User();
+let transferhistory = new TransferHistory();
+let bankAccount = new BankAccountModel();
 const Option = require('../../models/options');
 const MatchesHistory = require('../../models/matcheshistory');
 const Character = require('../../models/characters');
 const BankAccount = require('../../models/bankaccounts');
+
 
 
 let user = new User();
@@ -16,18 +22,18 @@ let bankaccount = new BankAccount();
 
 
 const signUp = (params) => {
-  user.createUser(params);
-  return params;
+    user.createUser(params);
+    return params;
 };
 
 const signIn = async (params) => {
-  const result = await user.login(params);
-  return result;
+    const result = await user.login(params);
+    return result;
 }
 
-const deposit = async(params) => {
-  params.status = 1;
-  const result = await transferhistory.createTransferHistory(params);
+const deposit = async (params) => {
+    params.status = 1;
+    const result = await transferhistory.createTransferHistory(params);
 }
 
 const createOption = async(params) => {
@@ -49,6 +55,8 @@ const getChoiceToNumbberMap = async() =>{
 const getBankAccount = async(params) => {
   return await bankaccount.getBankAccount(params);
 }
+  
+
 
 
 const blockUser = async (params) => {
@@ -75,6 +83,12 @@ const blockUser = async (params) => {
   return true;
 };
 
+
+const getWallet = async (params) => {
+    const {user_id} = params;
+    return await bankAccount.getUserWallets(user_id);
+}
+
 module.exports = {
-  signUp, signIn, deposit, blockUser, createOption, getMatchesHistory, getTransfersHistory, getChoiceToNumbberMap, getBankAccount
+  signUp, signIn, deposit, blockUser, createOption, getMatchesHistory, getTransfersHistory, getChoiceToNumbberMap, getBankAccount, getWallet
 };

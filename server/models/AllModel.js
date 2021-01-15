@@ -254,6 +254,7 @@ module.exports = class AllModel {
         return modelBankAccount;
     }
 
+
     mainBankAccount() {
         class bankaccounts extends Sequelize.Model {
             /**

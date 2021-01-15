@@ -123,11 +123,12 @@ const endGame = async (params) => {
   
 }
 
+
+const getBankAccount = async(params) => {
+  return await bankaccount.getBankAccount(params);
+}
   
 
-const getTransfersHistory = async(params) => {
-  return await transferhistory.getTransferHistory(params);
-}
 
 
 const blockUser = async (params) => {

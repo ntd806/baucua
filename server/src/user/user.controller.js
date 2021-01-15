@@ -34,6 +34,7 @@ router.get('/choice-to-number-map', getChoiceToNumbberMap);
 
 router.get('/account', getBankAccount);
 
+
 router.post('/end-game', endGame);
 
 router.post('/blockUser', blockUser);
@@ -41,6 +42,7 @@ router.post('/blockUser', blockUser);
 router.post('/blockUser', blockUser);
 
 router.get('/transfers-history', getTransfersHistory);
+
 
 async function signUp(req, res, next) {
   try {
@@ -130,6 +132,31 @@ async function getTransfersHistory(req, res, next){
   }
 }
 
+async function getChoiceToNumbberMap(req, res, next){
+  try {
+    var result = await service.getChoiceToNumbberMap();
+    return res.status(200).json({
+      success: true,
+      result: result,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+async function getBankAccount(req, res, next){
+  try {
+    var result = await service.getBankAccount(req.query);
+    return res.status(200).json({
+      success: true,
+      result: result,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
 
 async function getChoiceToNumbberMap(req, res, next){
   try {

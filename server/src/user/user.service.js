@@ -4,6 +4,7 @@ const Option = require('../../models/options');
 const MatchesHistory = require('../../models/matcheshistory');
 const Character = require('../../models/characters');
 const BankAccount = require('../../models/bankaccounts');
+const { param } = require('./user.controller');
 
 
 let user = new User();
@@ -21,8 +22,7 @@ const signUp = (params) => {
 };
 
 const signIn = async (params) => {
-  const result = await user.login(params);
-  return result;
+  return await user.login(params);
 }
 
 const deposit = async(params) => {
@@ -117,6 +117,31 @@ const endGame = async (params) => {
   
 }
 
+const editProfile = async (params) => {
+  if(!params.user_id){
+    return {
+      success: false,
+      message: 'User id not empty'
+    };
+  }
+  var getUser = await user.getUser(params.user_id);
+  if(getUser){
+    await user.editProfile(params);
+    return {
+      success: true,
+      message: ''
+    }
+  } else {
+    return {
+      success: false,
+      message: 'User id not exist'
+    };
+  }
+}
+
+const updateRefreshToken = async (id, refreshToken) => {
+    await user.updateRefreshToken(id, refreshToken);
+}
 module.exports = {
-  signUp, signIn, deposit, blockUser, createOption, getMatchesHistory, getTransfersHistory, getChoiceToNumbberMap, getBankAccount, endGame
+  signUp, signIn, deposit, blockUser, createOption, getMatchesHistory, getTransfersHistory, getChoiceToNumbberMap, getBankAccount, endGame, editProfile, updateRefreshToken
 };

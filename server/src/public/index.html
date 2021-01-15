@@ -13,23 +13,26 @@
 <script src="../js/socket.io.js" charset="utf-8"></script>
 </head>
 
-<body id = "animation" style="background-image: url('../img/Shooting.gif'); height: 100%;">
+<body style="background-image: url('../img/Shooting.gif'); height: 100%;">
 <div id="game2">
 <div id="holder">
-    <div class="circle circle__start" id = "start_1"></div>
-    <div class="circle circle__item"  id = "start_2" style="top: 0"></div>
-    <div class="circle circle__item" id = "start_3"  style="top: 20%; right: 5%"></div>
-    <div class="circle circle__item" id = "start_4" style="bottom: 20%; right: 5%"></div>
-    <div class="circle circle__item" id = "start_5" style="bottom: 0"></div>
-    <div class="circle circle__item" id = "start_6" style="bottom: 20%; left: 5%"></div>
-    <div class="circle circle__item" id = "start_7" style="top: 20%; left: 5%"></div>
-    <div class="circle circle__item" id = "start_8" style="top: 20%; left: 5%"></div>
-    <div class="circle circle__item" id = "start_9" >
-        <p>00.00</p>
+    <div class="circle circle__start"id = "start_1"></div>
+    <div class="circle circle__item" id = "start_2"></div>
+    <div class="circle circle__item" id = "start_3" ></div>
+    <div class="circle circle__item" id = "start_4"></div>
+    <div class="circle circle__item" id = "start_5"></div>
+    <div class="circle circle__item" id = "start_6"></div>
+    <div class="circle circle__item" id = "start_7"></div>
+    <div class="circle circle__item" id = "start_8"></div>
+    <div class="start_9">
+        <p>TIME</p>
+        <p>0.0 <span>s</span></p>
     </div>
+    <div class="circle circle__item" id ="oval" style="left: 3%;"></div>
+    <div class="circle circle__item" id = "oval" style="right: 1%;"></div>
 	<img src="../img/bg2.png" id = "bg2" class="bg2">
 </div>
 </div>
-<div id="loadding" style="width: 100%; height: 100%; background-color: #fff; position: absolute; top: 0; left: 0; z-index: 10000;"></div>
+<div id="loadding"></div>
 </body>
 </html>

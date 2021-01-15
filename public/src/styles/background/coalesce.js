@@ -1,12 +1,4 @@
-const { PI, cos, sin, abs, random, atan2 } = Math;
-const HALF_PI = 0.5 * PI;
-const rand = (n) => n * random();
-const fadeInOut = (t, m) => {
-  let hm = 0.5 * m;
-  return abs(((t + hm) % m) - hm) / hm;
-};
-const angle = (x1, y1, x2, y2) => atan2(y2 - y1, x2 - x1);
-const lerp = (n1, n2, speed) => (1 - speed) * n1 + speed * n2;
+import { HALF_PI, fadeInOut, angle, lerp, cos, sin, rand } from './utils';
 
 const particleCount = 700;
 const particlePropCount = 9;

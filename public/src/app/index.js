@@ -4,9 +4,11 @@ import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom';
 import HomePage from 'Containers/HomePage';
 import LoginPage from 'Containers/LoginPage';
 import RegisterPage from 'Containers/RegisterPage';
+import ProfilePage from 'Containers/ProfilePage';
 import Loading from 'Components/Loading';
 import { validateLogin } from 'Src/utils/auth';
-import { setup, resize } from 'Src/styles/background';
+import { setup as setupCoalesce, resize as resizeCoalesce } from 'Src/styles/background/coalesce';
+import { setup as setupPipeline, resize as resizePipeline } from 'Src/styles/background/pipeline';
 import styled from 'styled-components';
 
 function PrivateRoute({ children, isLogin, ...rest }) {
@@ -34,8 +36,18 @@ function App() {
   const loading = useRef();
 
   useEffect(() => {
-    if (!['/login', '/register', '/home'].includes(window.location.pathname)) {
+    if (!['/login', '/register', '/home', '/profile'].includes(window.location.pathname)) {
       window.location.href = '/home';
+    }
+    let setup = () => {};
+    let resize = () => {};
+    if (['/login', '/register'].includes(window.location.pathname)) {
+      setup = setupCoalesce;
+      resize = resizeCoalesce;
+    }
+    if (['/profile'].includes(window.location.pathname)) {
+      setup = setupPipeline;
+      resize = resizePipeline;
     }
     setup();
     window.addEventListener('resize', resize);
@@ -61,6 +73,7 @@ function App() {
               isLogin ? <Redirect to="/home" /> : <RegisterPage loading={loading} />
             }
           />
+          <Route exact path="/profile" component={() => <ProfilePage loading={loading} />} />
         </Switch>
       </BrowserRouter>
     </Container>

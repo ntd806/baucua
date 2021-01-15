@@ -155,7 +155,6 @@ module.exports = class AllModel {
 
         return modelMatchesHistory;
     }
-
     mainCharacter(){
         class modelCharacter extends Sequelize.Model {}
         modelCharacter.init({
@@ -219,6 +218,7 @@ module.exports = class AllModel {
 
         return modelCharacter;
     }
+
 
     mainBankAccount() {
         class bankaccounts extends Sequelize.Model {

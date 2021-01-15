@@ -16,7 +16,6 @@ module.exports = class User extends Main {
   createUser(data){
     return this.mUser.create(data);
   }
-
   async login(data){
     let result;
     if(data.fbUID){
@@ -39,5 +38,4 @@ module.exports = class User extends Main {
   getInstance() {
     return this.mUser;
   }
-
 }

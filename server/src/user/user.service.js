@@ -1,5 +1,10 @@
 const User = require('../../models/users');
 const TransferHistory = require('../../models/transfershistory');
+const BankAccountModel = require('../../models/bankaccounts');
+
+let user = new User();
+let transferhistory = new TransferHistory();
+let bankAccount = new BankAccountModel();
 const Option = require('../../models/options');
 const MatchesHistory = require('../../models/matcheshistory');
 const Character = require('../../models/characters');
@@ -17,18 +22,18 @@ let bankaccount = new BankAccount();
 
 
 const signUp = (params) => {
-  user.createUser(params);
-  return params;
+    user.createUser(params);
+    return params;
 };
 
 const signIn = async (params) => {
-  const result = await user.login(params);
-  return result;
+    const result = await user.login(params);
+    return result;
 }
 
-const deposit = async(params) => {
-  params.status = 1;
-  const result = await transferhistory.createTransferHistory(params);
+const deposit = async (params) => {
+    params.status = 1;
+    const result = await transferhistory.createTransferHistory(params);
 }
 
 const createOption = async(params) => {
@@ -118,6 +123,13 @@ const endGame = async (params) => {
   
 }
 
+  
+
+const getTransfersHistory = async(params) => {
+  return await transferhistory.getTransferHistory(params);
+}
+
+
 const blockUser = async (params) => {
   const {user_id, is_block} = params;
 
@@ -142,6 +154,12 @@ const blockUser = async (params) => {
   return true;
 };
 
+
+const getWallet = async (params) => {
+    const {user_id} = params;
+    return await bankAccount.getUserWallets(user_id);
+}
+
 module.exports = {
-  signUp, signIn, deposit, blockUser, createOption, getMatchesHistory, getTransfersHistory, getChoiceToNumbberMap, getBankAccount, endGame
+  signUp, signIn, deposit, blockUser, createOption, getMatchesHistory, getTransfersHistory, getChoiceToNumbberMap, getBankAccount, endGame, getWallet
 };

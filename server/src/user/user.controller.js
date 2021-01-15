@@ -23,9 +23,11 @@ router.post('/setting', setting);
 
 router.get('/matches-history', matchesHistory);
 
-router.post('/blockUser', blockUser);
 
+router.get('/account', getAccount);
 router.get('/transfers-history', getTransfersHistory);
+
+router.get('/choice-to-number-map', getChoiceToNumbberMap);
 
 
 router.get('/choice-to-number-map', getChoiceToNumbberMap);
@@ -34,7 +36,11 @@ router.get('/account', getBankAccount);
 
 router.post('/end-game', endGame);
 
+router.post('/blockUser', blockUser);
 
+router.post('/blockUser', blockUser);
+
+router.get('/transfers-history', getTransfersHistory);
 
 async function signUp(req, res, next) {
   try {
@@ -111,7 +117,6 @@ async function matchesHistory(req, res, next){
   }
 }
 
-
 async function getTransfersHistory(req, res, next){
   try {
     var result = await service.getTransfersHistory(req.query);
@@ -139,6 +144,7 @@ async function getChoiceToNumbberMap(req, res, next){
   }
 }
 
+
 async function getBankAccount(req, res, next){
   try {
     var result = await service.getBankAccount(req.query);
@@ -151,6 +157,7 @@ async function getBankAccount(req, res, next){
     res.status(400).json({ Error: e.message })
   }
 }
+
 
 
 async function blockUser(req,res,next) {
@@ -173,10 +180,31 @@ async function blockUser(req,res,next) {
   }
 }
 
+
 async function endGame(req, res, next) {
   try {
     let endGame = await service.endGame(req.body);
     return res.status(200).json(endGame);
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+async function getAccount(req, res, next) {
+  try {
+    let wallets = await service.getWallet(req.body)
+
+    if(!wallets.length) {
+      return res.status(404).json({
+        success: false,
+        message: 'Entity Not Found'
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      result: wallets,
+      message: ''
+    });
   } catch (e) {
     res.status(400).json({ Error: e.message })
   }

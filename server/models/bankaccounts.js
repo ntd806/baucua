@@ -1,14 +1,11 @@
+'use strict';
 const Main = require('./AllModel');
-
-
 module.exports = class BankAccount extends Main {
-
-  constructor() {
-    super();
-    this.mBankAccount = this.mainBankAccount();
-  }
-
-  async getBankAccount(data){
+    constructor() {
+        super();
+        this.bankAccount = this.mainBankAccount();
+    }
+    async getBankAccount(data){
     return await this.mBankAccount.findAll({
       where: {
         user_id: data.user_id,
@@ -41,4 +38,17 @@ module.exports = class BankAccount extends Main {
     )
   }
 
+    getInstance() {
+        return this.bankAccount;
+    }
+
+    async getUserWallets(user_id) {
+        return await this.bankAccount.findAll({
+            where: {
+                user_id: user_id
+            },
+            attributes: [['id', 'bankaccount_id'], 'amount', 'status']
+        })
+    }
 }
+

@@ -9,3 +9,4 @@ if (config.use_env_variable) {
 
 
 module.exports = sequelize;
+

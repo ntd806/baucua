@@ -1,5 +1,5 @@
 import styled from 'styled-components/macro';
-import { Layout } from 'antd';
+import { Layout, Select, Space } from 'antd';
 import { media } from 'Src/styles/media';
 
 const { Content, Header: HeaderAntd } = Layout;
@@ -27,4 +27,15 @@ export const GroupButton = styled.div`
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+`;
+
+export const StyledSpace = styled(Space)`
+  display: flex;
+  .ant-space-item {
+    flex: 1;
+  }
+`;
+
+export const StyledSelect = styled(Select)`
+  width: 100%;
 `;

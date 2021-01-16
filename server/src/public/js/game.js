@@ -118,5 +118,4 @@ function wellcome(){
 }
 // this function fires with any click anywhere
 function mousePressed() {
-  d = d + 10;
 }

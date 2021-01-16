@@ -1,19 +1,14 @@
 const User = require('../../models/users');
 const TransferHistory = require('../../models/transfershistory');
 const BankAccountModel = require('../../models/bankaccounts');
-
-let user = new User();
-let transferhistory = new TransferHistory();
-let bankAccount = new BankAccountModel();
 const Option = require('../../models/options');
 const MatchesHistory = require('../../models/matcheshistory');
 const Character = require('../../models/characters');
 const BankAccount = require('../../models/bankaccounts');
 
-
-
 let user = new User();
 let transferhistory = new TransferHistory();
+let bankAccount = new BankAccountModel();
 let option = new Option();
 let matcheshistory = new MatchesHistory();
 let character = new Character();
@@ -122,39 +117,6 @@ const endGame = async (params) => {
   }
   
 }
-
-
-const getBankAccount = async(params) => {
-  return await bankaccount.getBankAccount(params);
-}
-  
-
-
-
-const blockUser = async (params) => {
-  const {user_id, is_block} = params;
-
-  const userInstance = user.getInstance();
-
-  const oUser = await userInstance.findByPk(user_id);
-
-  if (oUser === null) {
-    return false;
-  }
-
-  //When want to block user and status of user is actived
-  if (is_block && oUser.status) {
-    await oUser.update({status: 0});
-  }
-
-  //When want to unblock user and status of user is blocked
-  if (!is_block && !oUser.status) {
-    await oUser.update({status: 1});
-  }
-
-  return true;
-};
-
 
 const getWallet = async (params) => {
     const {user_id} = params;

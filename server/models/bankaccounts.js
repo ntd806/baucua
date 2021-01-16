@@ -1,47 +1,55 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class bankaccounts extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // will be user.users()
-      users.belongsTo(models.users, { foreignKey: 'user_id', as: 'users' })
+const Main = require('./AllModel');
+
+
+module.exports = class bankaccounts extends Model {
+  
+    constructor() {
+    super();
     }
-  };
-  bankaccounts.init({
-    userId: {
-      type: DataTypes.INTEGER,
-      validate: {
-        notEmpty: true
-      },
-      field: 'user_id'
-    },
-    amount: DataTypes.INTEGER,
-    isBlock: {
-      type: DataTypes.INTEGER,
-      validate: {
-        notEmpty: true
-      },
-      field: 'is_block'
-    },
-    status: DataTypes.INTEGER,
-    createdAt: {
-      type: DataTypes.DATE,
-      field: 'created_at'
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      field: 'updated_at'
-    },
-  }, {
-    sequelize,
-    modelName: 'bankaccounts',
-  });
-  return bankaccounts;
-};
+
+  async getBankAccount(data){
+    return await this.mBankAccount.findAll({
+      where: {
+        user_id: data.user_id,
+      }
+    });
+  }
+
+  async getAmount(user_id){
+    let result = await this.mBankAccount.findAll({
+      where: {
+        user_id: user_id,
+      }
+    });
+    return result[0].amount;
+  }
+
+  async getIsBlock(user_id){
+    let result = await this.mBankAccount.findAll({
+      where: {
+        user_id: user_id,
+      }
+    });
+    return result[0].is_block;
+  }
+
+  async addAmount(user_id, amount){
+    await this.mBankAccount.update(
+      { amount: amount },
+      { where: { user_id: user_id } }
+    )
+  }
+
+    getInstance() {
+        return this.bankAccount;
+    }
+
+    async getUserWallets(user_id) {
+        return await this.bankAccount.findAll({
+            where: {
+                user_id: user_id
+            },
+            attributes: [['id', 'bankaccount_id'], 'amount', 'status']
+        })
+    }
+}

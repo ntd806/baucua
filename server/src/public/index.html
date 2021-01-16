@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Betting</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<link rel="stylesheet" type="text/css" href="../css/game2.css">
+<link rel="stylesheet" type="text/css" href="../css/circle.css">
+<script src="../js/p5.js"></script>
+<script src="../js/p5.sound.js"></script>
+<script src="../js/config.js" charset="utf-8"></script>
+<script src="../js/game.js" charset="utf-8"></script>
+<script src="../js/socket.io.js" charset="utf-8"></script>
+</head>
+
+<body style="background-image: url('../img/Shooting.gif'); height: 100%;">
+<div id="game2">
+<div id="holder">
+    <div class="circle circle__item" id = "start_1" onclick="BtnClicked(this)" att = "1"></div>
+    <div class="circle circle__item" id = "start_2" onclick="BtnClicked(this)"></div>
+    <div class="circle circle__item" id = "start_3" onclick="BtnClicked(this)"></div>
+    <div class="circle circle__item" id = "start_4" onclick="BtnClicked(this)"></div>
+    <div class="circle circle__item" id = "start_5" onclick="BtnClicked(this)"></div>
+    <div class="circle circle__item" id = "start_6" onclick="BtnClicked(this)"></div>
+    <div class="circle circle__item" id = "start_7" onclick="BtnClicked(this)"></div>
+    <div class="circle circle__item" id = "start_8" onclick="BtnClicked(this)"></div>
+    <div class="start_9" id = "start_9">
+        <p><span>0.0</span></p>
+    </div>
+    <div class="circle circle__item" id ="oval" style="left: 3%;"></div>
+    <div class="circle circle__item" id = "oval" style="right: 1%;"></div>
+	<img src="../img/bg2.png" id = "bg2" class="bg2">
+</div>
+</div>
+<div id="loadding"></div>
+</body>
+</html>

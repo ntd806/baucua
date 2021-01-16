@@ -119,3 +119,7 @@ function wellcome(){
 // this function fires with any click anywhere
 function mousePressed() {
 }
+
+function BtnClicked(start) {
+  start.classList.add("bg-white-color");
+}

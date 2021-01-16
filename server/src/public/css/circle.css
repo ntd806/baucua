@@ -1,3 +1,17 @@
+h1 {
+  font-size: calc(2em * var(--text-multiplier, 1));
+}
+
+p {
+  font-size: calc(1em * var(--text-multiplier, 1));
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --text-multiplier: 1.25;
+  }
+}
+  /********************************************************************/
   .circle {
     clip-path: circle(50% at 50% 50%);
   }
@@ -20,13 +34,15 @@
     left: 0;
     right: 0;
     text-align: center;
-    height: 45px;
-    width: 110px;
     border-radius: 0 0 90px 90px;
-    background:green;
+    /* background:green; */
   }
   /*****************************************************************/
   /*****************************************************************/
+  #start_9{
+    height: 9%;
+    width: 19%;
+  }
   #oval {
      bottom: 15%;
      height: 7.5%;

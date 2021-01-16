@@ -1,25 +1,38 @@
 // Config canvas
 let startBtn, canvas, div_holder, scale, bg2;
 // Config start
-let start_1, start_2, start_3, start_4, start_5, start_6, start_7, start_8;
+let start_1, start_2, start_3, start_4, start_5, start_6, start_7, start_8, start_9;
+// Time setup
+let time_setup = 0.0, time = 0.0, time_run = 0.0;
+// Setting colors
+let d;
+let g;
+// check event
+let is_click = true;
 // Keep track of our socket connection
 var socket;
 function setup() {
    newGame();
   // Start a socket connection to the server
   // Some day we would run this server somewhere else
-  socket = io.connect();
+  // socket = io.connect();
   // We make a named event called 'mouse' and write an
   // anonymous callback function
-  socket.on('bet',
-    // When we receive data
-    function(data) {
-      console.log("Got: " + data);
-    }
-  );
+  // socket.on('bet',
+  //   // When we receive data
+  //   function(data) {
+  //     console.log("Got: " + data);
+  //   }
+  // );
+  // canvas click only
+  d = 10;
+  g = 100;
+  
 }
 
 function draw() {
+   background(g);
+   ellipse(width / 2, height / 2, d, d);
    // run sound
    if(!soundsBegin.isPlaying()){
       soundsBegin.loop();
@@ -28,6 +41,13 @@ function draw() {
    if(millis() > START_WAITING_TIME){
      wellcome();
    }
+   time_run = TIME;
+   time = millis()/1000;
+   time_run -= time;
+   if (time_run <= 0) {
+     start_9.html("TIME IS UP");
+     is_click = false;
+   } else {start_9.html(time_run.toFixed(2)); }
 }
 
 /**
@@ -97,15 +117,15 @@ function newGame() {
    let start_8_H = start_8.height*scale;
    start_8.style("width",  start_8_W + "px");
    start_8.style("height", start_8_W + "px");
+   start_9 = select('#start_9');
+   start_9.html(0);
    var loaddingScreen = select("#loadding");
    loaddingScreen.remove();
 }
-
+// this function fires when initial running game
 function wellcome(){
 }
-
-/**
- * handled button start to click
- */
-function startBtnClicked(){
+// this function fires with any click anywhere
+function mousePressed() {
+  d = d + 10;
 }

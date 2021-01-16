@@ -130,29 +130,8 @@ module.exports = class AllModel {
                 sequelize, modelName: 'transfershistories',
                 tableName: 'transfershistories',
                 timestamps: false
-            });
-            updated_at: {
-                type: Sequelize.DATE,
-                field: 'updated_at'
-            },
-            },
-            stake: Sequelize.INTEGER,
-            status: Sequelize.STRING,
-            created_at: {
-                type: Sequelize.DATE,
-                field: 'created_at'
-            },
-            updated_at: {
-                type: Sequelize.DATE,
-                field: 'updated_at'
-            },
-
-        },
-        { sequelize, modelName: 'matcheshistories',
-            tableName: 'matcheshistories',
-            timestamps: false
-        });
-
+            }
+        );
         return modelMatchesHistory;
     }
     mainCharacter(){

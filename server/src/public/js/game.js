@@ -4,9 +4,6 @@ let startBtn, canvas, div_holder, scale, bg2;
 let start_1, start_2, start_3, start_4, start_5, start_6, start_7, start_8, start_9;
 // Time setup
 let time_setup = 0.0, time = 0.0, time_run = 0.0;
-// Setting colors
-let d;
-let g;
 // check event
 let is_click = true;
 // Keep track of our socket connection
@@ -15,24 +12,18 @@ function setup() {
    newGame();
   // Start a socket connection to the server
   // Some day we would run this server somewhere else
-  // socket = io.connect();
+  socket = io.connect();
   // We make a named event called 'mouse' and write an
   // anonymous callback function
-  // socket.on('bet',
-  //   // When we receive data
-  //   function(data) {
-  //     console.log("Got: " + data);
-  //   }
-  // );
-  // canvas click only
-  d = 10;
-  g = 100;
-  
+  socket.on('bet',
+    // When we receive data
+    function(data) {
+      console.log("Got: " + data);
+    }
+  );
 }
 
 function draw() {
-   background(g);
-   ellipse(width / 2, height / 2, d, d);
    // run sound
    if(!soundsBegin.isPlaying()){
       soundsBegin.loop();

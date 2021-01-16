@@ -1,8 +1,8 @@
+'use strict';
 const Main = require('./AllModel');
 
 
-module.exports = class bankaccounts extends Model {
-  
+module.exports = class bankaccounts extends Main {
     constructor() {
     super();
     }

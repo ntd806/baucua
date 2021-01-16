@@ -62,5 +62,152 @@ module.exports = class AllModel {
 
         return modelTransferHistory;
     }
+
+    mainOption(){
+        class modelOption extends Sequelize.Model {}
+        modelOption.init({
+            game_type: Sequelize.INTEGER,
+            proportionality: Sequelize.INTEGER,
+            created_at: {
+                type: Sequelize.DATE,
+                field: 'created_at'
+            },
+            updated_at: {
+                type: Sequelize.DATE,
+                field: 'updated_at'
+            },
+            is_play: {
+                type: Sequelize.TINYINT,
+                field: 'is_play'
+            }
+        },
+        { sequelize, modelName: 'options',
+            tableName: 'options',
+            timestamps: false
+        });
+
+        return modelOption;
+    }
+
+    mainMatchesHistory(){
+        class modelMatchesHistory extends Sequelize.Model {}
+        modelMatchesHistory.init({
+            user_id: {
+                type: Sequelize.INTEGER,
+                validate: {
+                    notEmpty: true
+                },
+                field: 'user_id'
+            },
+            win: Sequelize.STRING,
+            lose: Sequelize.STRING,
+            type_bet: {
+                type: Sequelize.INTEGER,
+                validate: {
+                    notEmpty: true
+                },
+                field: 'type_bet'
+            },
+            place_bet: {
+                type: Sequelize.STRING,
+                validate: {
+                    notEmpty: true
+                },
+                field: 'place_bet'
+            },
+            stake: Sequelize.INTEGER,
+            status: Sequelize.STRING,
+            created_at: {
+                type: Sequelize.DATE,
+                field: 'created_at'
+            },
+        },
+        {
+        sequelize, modelName: 'transfershistories',
+        tableName: 'transfershistories',
+        timestamps: false
+        });
+        return modelMatchesHistory;
+    }
+
+    mainBankAccount(){
+        class modelBankAccount extends Sequelize.Model {}
+        modelBankAccount.init({
+            user_id: {
+                type: Sequelize.INTEGER,
+                validate: {
+                  notEmpty: true
+                },
+                field: 'user_id'
+              },
+              amount: Sequelize.INTEGER,
+              is_block: {
+                type: Sequelize.INTEGER,
+                validate: {
+                  notEmpty: true
+                },
+                field: 'is_block'
+              },
+              status: Sequelize.INTEGER,
+              created_at: {
+                type: Sequelize.DATE,
+                field: 'created_at'
+              },
+              updated_at: {
+                type: Sequelize.DATE,
+                field: 'updated_at'
+              },
+        },
+        { sequelize, modelName: 'bankaccounts',
+            tableName: 'bankaccounts',
+            timestamps: false
+        });
+
+        return modelBankAccount;
+    }
+
+    mainBankAccount() {
+        class bankaccounts extends Sequelize.Model {
+            /**
+             * Helper method for defining associations.
+             * This method is not a part of Sequelize lifecycle.
+             * The `models/index` file will call this method automatically.
+             */
+            static associate(models) {
+                // will be user.users()
+                users.belongsTo(models.users, {foreignKey: 'user_id', as: 'users'})
+            }
+        };
+        bankaccounts.init({
+            userId: {
+                type: DataTypes.INTEGER,
+                validate: {
+                    notEmpty: true
+                },
+                field: 'user_id'
+            },
+            amount: DataTypes.INTEGER,
+            isBlock: {
+                type: DataTypes.INTEGER,
+                validate: {
+                    notEmpty: true
+                },
+                field: 'is_block'
+            },
+            status: DataTypes.INTEGER,
+            createdAt: {
+                type: DataTypes.DATE,
+                field: 'created_at'
+            },
+            updatedAt: {
+                type: DataTypes.DATE,
+                field: 'updated_at'
+            },
+        }, {
+            sequelize,
+            modelName: 'bankaccounts',
+        });
+        return bankaccounts;
+    }
 }
 

@@ -4,6 +4,8 @@ let startBtn, canvas, div_holder, scale, bg2;
 let start_1, start_2, start_3, start_4, start_5, start_6, start_7, start_8, start_9;
 // Time setup
 let time_setup = 0.0, time = 0.0, time_run = 0.0;
+
+let spin = 0;
 // check event
 let is_click = true;
 // Keep track of our socket connection
@@ -37,8 +39,16 @@ function draw() {
    time_run -= time;
    if (time_run <= 0) {
      start_9.html("TIME IS UP");
+     spinBonus(-time_run);
      is_click = false;
    } else {start_9.html(time_run.toFixed(2)); }
+}
+
+function spinBonus(time){
+    var a = document.getElementById("start_"+ (parseInt(time) % 8 + 1));
+    a.classList.add("bg-spin-color");
+    var b= document.getElementById("start_"+ ((parseInt(time) % 8) == 0 ? 8 : (parseInt(time) % 8)) );
+    b.classList.remove("bg-spin-color");  
 }
 
 /**
@@ -118,4 +128,19 @@ function wellcome(){
 }
 // this function fires with any click anywhere
 function mousePressed() {
+}
+
+
+function BtnClicked(start) {
+  if(time_run >0){
+    if(start.classList.contains('bg-white-color')){
+      start.classList.remove('bg-white-color');
+      start.classList.add("bg-chartreuse-color");
+    } else {
+      start.classList.remove("bg-chartreuse-color");
+      start.classList.add("bg-white-color");
+    }
+  }
+  
+  
 }

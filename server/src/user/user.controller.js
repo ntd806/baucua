@@ -35,6 +35,8 @@ router.get('/choice-to-number-map', getChoiceToNumbberMap);
 router.get('/account', getBankAccount);
 
 
+router.post('/end-game', endGame);
+
 router.post('/blockUser', blockUser);
 
 router.post('/blockUser', blockUser);
@@ -170,6 +172,21 @@ async function getChoiceToNumbberMap(req, res, next){
 }
 
 
+async function getBankAccount(req, res, next){
+  try {
+    var result = await service.getBankAccount(req.query);
+    return res.status(200).json({
+      success: true,
+      result: result,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+
+
 async function blockUser(req,res,next) {
   try {
     let isSuccess = await service.blockUser(req.body);
@@ -190,6 +207,15 @@ async function blockUser(req,res,next) {
   }
 }
 
+
+async function endGame(req, res, next) {
+  try {
+    let endGame = await service.endGame(req.body);
+    return res.status(200).json(endGame);
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
 async function getAccount(req, res, next) {
   try {
     let wallets = await service.getWallet(req.body)

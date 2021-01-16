@@ -55,6 +55,78 @@ const getChoiceToNumbberMap = async() =>{
 const getBankAccount = async(params) => {
   return await bankaccount.getBankAccount(params);
 }
+
+
+const blockUser = async (params) => {
+  const {user_id, is_block} = params;
+
+  const userInstance = user.getInstance();
+
+  const oUser = await userInstance.findByPk(user_id);
+
+  if (oUser === null) {
+    return false; 
+  }
+
+  //When want to block user and status of user is actived
+  if (is_block && oUser.status) {
+    await oUser.update({status: 0});
+  }
+
+  //When want to unblock user and status of user is blocked
+  if (!is_block && !oUser.status) {
+    await oUser.update({status: 1});
+  }
+
+  return true;
+};
+
+const endGame = async (params) => {
+  if(!params.user_id){
+    return {
+      success: false,
+      message: 'User id not empty'
+    };
+  }
+  let is_block = await bankaccount.getIsBlock(params.user_id);
+  if(is_block){
+    return {
+      success: false,
+      message: 'User is block'
+    };
+  }
+  let amount = await bankaccount.getAmount(params.user_id);
+  var data = {
+    user_id: params.user_id,
+    win: params.winer == 1 ? 1 : 0,
+    lose: params.winer ==2 ? 1 : 0,
+    type_bet: params.type_bet,
+    place_bet: params.place_bet,
+    stake: params.stake
+  }
+  if((parseInt(amount) + parseInt(params.stake)) > 0 ){
+    bankaccount.addAmount(params.user_id, parseInt(amount) + parseInt(params.stake));
+    data.status = 1;
+    matcheshistory.createMatchesHistory(data);
+    return {
+      success: true,
+      message: ''
+    };
+  } else {
+    data.status = 0;
+    matcheshistory.createMatchesHistory(data);
+    return {
+      success: false,
+      message: 'Stake greater Amount'
+    };
+  }
+  
+}
+
+
+const getBankAccount = async(params) => {
+  return await bankaccount.getBankAccount(params);
+}
   
 
 
@@ -90,5 +162,5 @@ const getWallet = async (params) => {
 }
 
 module.exports = {
-  signUp, signIn, deposit, blockUser, createOption, getMatchesHistory, getTransfersHistory, getChoiceToNumbberMap, getBankAccount, getWallet
+  signUp, signIn, deposit, blockUser, createOption, getMatchesHistory, getTransfersHistory, getChoiceToNumbberMap, getBankAccount, endGame, getWallet
 };

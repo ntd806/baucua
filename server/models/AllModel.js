@@ -218,6 +218,41 @@ module.exports = class AllModel {
 
         return modelCharacter;
     }
+    mainBankAccount(){
+        class modelBankAccount extends Sequelize.Model {}
+        modelBankAccount.init({
+            user_id: {
+                type: Sequelize.INTEGER,
+                validate: {
+                  notEmpty: true
+                },
+                field: 'user_id'
+              },
+              amount: Sequelize.INTEGER,
+              is_block: {
+                type: Sequelize.INTEGER,
+                validate: {
+                  notEmpty: true
+                },
+                field: 'is_block'
+              },
+              status: Sequelize.INTEGER,
+              created_at: {
+                type: Sequelize.DATE,
+                field: 'created_at'
+              },
+              updated_at: {
+                type: Sequelize.DATE,
+                field: 'updated_at'
+              },
+        },
+        { sequelize, modelName: 'bankaccounts',
+            tableName: 'bankaccounts',
+            timestamps: false
+        });
+
+        return modelBankAccount;
+    }
 
 
     mainBankAccount() {

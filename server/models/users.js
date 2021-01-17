@@ -1,3 +1,4 @@
+'use strict';
 const Main = require('./AllModel');
 
 
@@ -17,15 +18,14 @@ module.exports = class User extends Main {
     return this.mUser.create(data);
   }
   async login(data){
-    let result;
     if(data.fbUID){
-      result = await this.mUser.findAll({
+      const result = await this.mUser.findAll({
         where:{
           fbUID: data.fbUID
         }
       });
     } else {
-      result = await this.mUser.findAll({
+      const result = await this.mUser.findAll({
         where:{
           gg_email: data.gg_email
         }
@@ -33,9 +33,5 @@ module.exports = class User extends Main {
     }
     
     return result[0];
-  }
-
-  getInstance() {
-    return this.mUser;
   }
 }

@@ -14,15 +14,15 @@ function setup() {
    newGame();
   // Start a socket connection to the server
   // Some day we would run this server somewhere else
-  socket = io.connect();
-  // We make a named event called 'mouse' and write an
-  // anonymous callback function
-  socket.on('bet',
-    // When we receive data
-    function(data) {
-      console.log("Got: " + data);
-    }
-  );
+  // socket = io.connect();
+  // // We make a named event called 'mouse' and write an
+  // // anonymous callback function
+  // socket.on('bet',
+  //   // When we receive data
+  //   function(data) {
+  //     console.log("Got: " + data);
+  //   }
+  // );
 }
 
 function draw() {
@@ -34,21 +34,20 @@ function draw() {
    if(millis() > START_WAITING_TIME){
      wellcome();
    }
-   time_run = TIME;
-   time = millis()/1000;
-   time_run -= time;
+   time_run = TIME_DICE;
+   time_spin = TIME_SPIN;
+   time_run -= millis()/1000;
    if (time_run <= 0) {
-     start_9.html("TIME IS UP");
-     spinBonus(-time_run);
-     is_click = false;
+    var time_stamp = millis();
+    start_9.html("TIME IS UP");
+    is_click = false;
+    time_spin = TIME_SPIN + millis()-time_stamp;
+    time_spin -= millis()/1000;
+    console.log(time_spin);
+    if (time_spin > 0) {
+     spinBonus(-time_run*SPEED);
+    }
    } else {start_9.html(time_run.toFixed(2)); }
-}
-
-function spinBonus(time){
-    var a = document.getElementById("start_"+ (parseInt(time) % 8 + 1));
-    a.classList.add("bg-spin-color");
-    var b= document.getElementById("start_"+ ((parseInt(time) % 8) == 0 ? 8 : (parseInt(time) % 8)) );
-    b.classList.remove("bg-spin-color");  
 }
 
 /**
@@ -141,6 +140,23 @@ function BtnClicked(start) {
       start.classList.add("bg-white-color");
     }
   }
-  
-  
+}
+
+/**
+ * Images spin
+ */
+function spinBonus(time){
+    var a = document.getElementById("start_"+ (parseInt(time) % 8 + 1));
+    a.classList.add("bg-spin-color");
+    var b= document.getElementById("start_"+ ((parseInt(time) % 8) == 0 ? 8 : (parseInt(time) % 8)) );
+    b.classList.remove("bg-spin-color");  
+}
+
+/**
+ * Random bonus
+ */
+function random(){
+  var number = Math.floor(Math.random() * 8) + 1;
+  var start = select('#start_'+number);
+  start.addClass('bg-spin-color');
 }

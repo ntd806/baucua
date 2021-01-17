@@ -17,13 +17,14 @@ export const Container = styled.div`
 
 export const FormContainer = styled.div`
   padding: 10px;
-  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
-  border-radius: 5px;
   max-width: 700px;
   min-height: 500px;
   width: 100%;
   position: relative;
-  background: white;
+  .ant-steps-item-title,
+  .ant-steps-item-description {
+    color: white !important;
+  }
 `;
 
 export const StyledButton = styled(Button)`

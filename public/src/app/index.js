@@ -1,12 +1,15 @@
 import React, { useEffect, useRef } from 'react';
 import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom';
-import Cookies from 'js-cookie';
 
 import HomePage from 'Containers/HomePage';
 import LoginPage from 'Containers/LoginPage';
 import RegisterPage from 'Containers/RegisterPage';
+import ProfilePage from 'Containers/ProfilePage';
 import Loading from 'Components/Loading';
-import Background from 'Src/images/tetsumvay.jpg';
+import { validateLogin } from 'Src/utils/auth';
+import { setup as setupCoalesce, resize as resizeCoalesce } from 'Src/styles/background/coalesce';
+import { setup as setupPipeline, resize as resizePipeline } from 'Src/styles/background/pipeline';
+import styled from 'styled-components';
 
 function PrivateRoute({ children, isLogin, ...rest }) {
   return (
@@ -29,29 +32,56 @@ function PrivateRoute({ children, isLogin, ...rest }) {
 }
 
 function App() {
-  const isLogin = Boolean(Cookies.get('token'));
+  const isLogin = validateLogin();
   const loading = useRef();
 
   useEffect(() => {
-    if (!['/login', '/register', '/home'].includes(window.location.pathname)) {
+    if (!['/login', '/register', '/home', '/profile'].includes(window.location.pathname)) {
       window.location.href = '/home';
     }
+    let setup = () => {};
+    let resize = () => {};
+    if (['/login', '/register'].includes(window.location.pathname)) {
+      setup = setupCoalesce;
+      resize = resizeCoalesce;
+    }
+    if (['/profile'].includes(window.location.pathname)) {
+      setup = setupPipeline;
+      resize = resizePipeline;
+    }
+    setup();
+    window.addEventListener('resize', resize);
   }, []);
 
   return (
-    <div style={{ backgroundImage: `url(${Background})` }}>
+    <Container className={'content--canvas'}>
       <Loading ref={loading} />
       <BrowserRouter>
         <Switch>
           <PrivateRoute path="/home" isLogin={isLogin}>
             <HomePage />
           </PrivateRoute>
-          <Route exact path="/login" component={() => <LoginPage loading={loading} />} />
-          <Route exact path="/register" component={() => <RegisterPage loading={loading} />} />
+          <Route
+            exact
+            path="/login"
+            component={() => (isLogin ? <Redirect to="/home" /> : <LoginPage loading={loading} />)}
+          />
+          <Route
+            exact
+            path="/register"
+            component={() =>
+              isLogin ? <Redirect to="/home" /> : <RegisterPage loading={loading} />
+            }
+          />
+          <Route exact path="/profile" component={() => <ProfilePage loading={loading} />} />
         </Switch>
       </BrowserRouter>
-    </div>
+    </Container>
   );
 }
 
 export default App;
+
+const Container = styled.div`
+  color: white !important;
+`;

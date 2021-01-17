@@ -7,7 +7,7 @@ let time_setup = 0.0, time = 0.0, time_run = 0.0;
 
 let spin = 0;
 // check event
-let is_click = true, time_click = 6;
+let time_click = TIME_CLICK;
 // Keep track of our socket connection
 var socket;
 function setup() {
@@ -34,7 +34,6 @@ function draw() {
    if(millis() > START_WAITING_TIME){
      wellcome();
    }
-
    check_time();
 }
 
@@ -145,9 +144,8 @@ function check_time() {
    if (time_run <= 0) {
     var time_stamp = millis();
     start_9.html("TIME IS UP");
-    time_spin = TIME_SPIN + millis()-time_stamp;
+    time_spin = TIME_SPIN + (millis()-time_stamp);
     time_spin -= millis()/1000;
-    console.log(time_spin);
     if (time_spin <= 0) {
     }
     else{
@@ -159,6 +157,15 @@ function check_time() {
 /**
  */
 function BtnClicked(start) {
+  if (time_click > 0 && time_click <= 6) {
+    change_image (start);
+  }
+  console.log(time_click);
+}
+
+/**
+ */
+function change_image (start) {
   if(time_run > 0){
     if(start.classList.contains('bg-white-color')){
       start.classList.remove('bg-white-color');
@@ -170,5 +177,4 @@ function BtnClicked(start) {
       time_click--;
     }
   }
-  console.log(time_click);
 }

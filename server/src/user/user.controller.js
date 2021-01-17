@@ -9,9 +9,6 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(express.json());
 router.use(upload.array()); 
 
-
-
-
 router.post('/register', signUp);
 router.post('/login', signIn);
 router.post('/deposit', deposit);
@@ -24,6 +21,7 @@ router.post('/end-game', endGame);
 router.post('/blockUser', blockUser);
 router.post('/wallet', getWallet);
 
+module.exports = router; 
 
 async function signUp(req, res, next) {
   try {
@@ -169,7 +167,7 @@ async function endGame(req, res, next) {
   }
 }
 
-async function getAccount(req, res, next) {
+async function getWallet(req, res, next) {
   try {
     let wallets = await service.getWallet(req.body)
 

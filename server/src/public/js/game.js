@@ -7,7 +7,7 @@ let time_setup = 0.0, time = 0.0, time_run = 0.0;
 
 let spin = 0;
 // check event
-let is_click = true;
+let is_click = true, times_click = 6;
 // Keep track of our socket connection
 var socket;
 function setup() {
@@ -34,20 +34,8 @@ function draw() {
    if(millis() > START_WAITING_TIME){
      wellcome();
    }
-   time_run = TIME_DICE;
-   time_spin = TIME_SPIN;
-   time_run -= millis()/1000;
-   if (time_run <= 0) {
-    var time_stamp = millis();
-    start_9.html("TIME IS UP");
-    is_click = false;
-    time_spin = TIME_SPIN + millis()-time_stamp;
-    time_spin -= millis()/1000;
-    console.log(time_spin);
-    if (time_spin > 0) {
-     spinBonus(-time_run*SPEED);
-    }
-   } else {start_9.html(time_run.toFixed(2)); }
+
+   check_time();
 }
 
 /**
@@ -131,25 +119,28 @@ function mousePressed() {
 
 
 function BtnClicked(start) {
-  if(time_run >0){
+  if(time_run > 0 && times_click <= 6){
     if(start.classList.contains('bg-white-color')){
       start.classList.remove('bg-white-color');
       start.classList.add("bg-chartreuse-color");
+      times_click++;
     } else {
       start.classList.remove("bg-chartreuse-color");
       start.classList.add("bg-white-color");
+      if (times_click >0) {times_click--;}
     }
   }
+  console.log(times_click);
 }
 
 /**
  * Images spin
  */
 function spinBonus(time){
-    var a = document.getElementById("start_"+ (parseInt(time) % 8 + 1));
-    a.classList.add("bg-spin-color");
-    var b= document.getElementById("start_"+ ((parseInt(time) % 8) == 0 ? 8 : (parseInt(time) % 8)) );
-    b.classList.remove("bg-spin-color");  
+    var a = select('#start_'+ (parseInt(time) % 8 + 1));
+    a.addClass("bg-spin-color");
+    var b= select('#start_'+ ((parseInt(time) % 8) == 0 ? 8 : (parseInt(time) % 8)) );
+    b.removeClass("bg-spin-color");  
 }
 
 /**
@@ -159,4 +150,25 @@ function random(){
   var number = Math.floor(Math.random() * 8) + 1;
   var start = select('#start_'+number);
   start.addClass('bg-spin-color');
+}
+
+/**
+ */
+function check_time() {
+   time_run = TIME_DICE;
+   time_spin = TIME_SPIN;
+   time_run -= millis()/1000;
+   if (time_run <= 0) {
+    var time_stamp = millis();
+    start_9.html("TIME IS UP");
+    is_click = false;
+    time_spin = TIME_SPIN + millis()-time_stamp;
+    time_spin -= millis()/1000;
+    console.log(time_spin);
+    if (time_spin <= 0) {
+    }
+    else{
+      spinBonus(-time_run*SPEED);
+    }
+   } else {start_9.html(time_run.toFixed(2)); }
 }

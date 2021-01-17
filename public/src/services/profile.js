@@ -1,22 +1,23 @@
 import axios from 'axios';
+import getUrl from 'Constants/url';
 
 export function getProfile() {
   return axios
-    .get('https://5ffdb3f7d9ddad0017f6867b.mockapi.io/profile')
+    .get(getUrl('profile'))
     .then((res) => res.data)
     .catch(() => {});
 }
 
 export function getTransactionH() {
   return axios
-    .get('https://5ffdb3f7d9ddad0017f6867b.mockapi.io/transaction')
+    .get(getUrl('transactionHistory'))
     .then((res) => res.data)
     .catch(() => {});
 }
 
 export function getGameH() {
   return axios
-    .get('https://5ffdb3f7d9ddad0017f6867b.mockapi.io/game')
+    .get(getUrl('gameHistory'))
     .then((res) => res.data)
     .catch(() => {});
 }

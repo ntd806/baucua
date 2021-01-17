@@ -13,35 +13,16 @@ router.use(upload.array());
 
 
 router.post('/register', signUp);
-
 router.post('/login', signIn);
-
 router.post('/deposit', deposit);
-
-
 router.post('/setting', setting);
-
 router.get('/matches-history', matchesHistory);
-
-
-router.get('/account', getAccount);
 router.get('/transfers-history', getTransfersHistory);
-
 router.get('/choice-to-number-map', getChoiceToNumbberMap);
-
-
-router.get('/choice-to-number-map', getChoiceToNumbberMap);
-
 router.get('/account', getBankAccount);
-
-
 router.post('/end-game', endGame);
-
 router.post('/blockUser', blockUser);
-
-router.post('/blockUser', blockUser);
-
-router.get('/transfers-history', getTransfersHistory);
+router.post('/wallet', getWallet);
 
 
 async function signUp(req, res, next) {
@@ -158,35 +139,6 @@ async function getBankAccount(req, res, next){
   }
 }
 
-async function getChoiceToNumbberMap(req, res, next){
-  try {
-    var result = await service.getChoiceToNumbberMap();
-    return res.status(200).json({
-      success: true,
-      result: result,
-      message: ''
-    });
-  } catch (e) {
-    res.status(400).json({ Error: e.message })
-  }
-}
-
-
-async function getBankAccount(req, res, next){
-  try {
-    var result = await service.getBankAccount(req.query);
-    return res.status(200).json({
-      success: true,
-      result: result,
-      message: ''
-    });
-  } catch (e) {
-    res.status(400).json({ Error: e.message })
-  }
-}
-
-
-
 async function blockUser(req,res,next) {
   try {
     let isSuccess = await service.blockUser(req.body);
@@ -216,6 +168,7 @@ async function endGame(req, res, next) {
     res.status(400).json({ Error: e.message })
   }
 }
+
 async function getAccount(req, res, next) {
   try {
     let wallets = await service.getWallet(req.body)

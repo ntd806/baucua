@@ -9,16 +9,19 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(express.json());
 router.use(upload.array()); 
 
-
-
-
 router.post('/register', signUp);
-
 router.post('/login', signIn);
-
 router.post('/deposit', deposit);
+router.post('/setting', setting);
+router.get('/matches-history', matchesHistory);
+router.get('/transfers-history', getTransfersHistory);
+router.get('/choice-to-number-map', getChoiceToNumbberMap);
+router.get('/account', getBankAccount);
+router.post('/end-game', endGame);
+router.post('/blockUser', blockUser);
+router.post('/wallet', getWallet);
 
-module.exports = router;
+module.exports = router; 
 
 async function signUp(req, res, next) {
   try {
@@ -61,6 +64,123 @@ async function deposit(req, res, next) {
     var user = await service.deposit(req.body);
     return res.status(200).json({
       success: true,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+
+async function setting(req, res, next) {
+  try {
+
+    await service.createOption(req.body);
+    return res.status(200).json({
+      success: true,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+async function matchesHistory(req, res, next){
+  try {
+    var result = await service.getMatchesHistory(req.query);
+    return res.status(200).json({
+      success: true,
+      result: result,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+async function getTransfersHistory(req, res, next){
+  try {
+    var result = await service.getTransfersHistory(req.query);
+    return res.status(200).json({
+      success: true,
+      result: result,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+async function getChoiceToNumbberMap(req, res, next){
+  try {
+    var result = await service.getChoiceToNumbberMap();
+    return res.status(200).json({
+      success: true,
+      result: result,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+async function getBankAccount(req, res, next){
+  try {
+    var result = await service.getBankAccount(req.query);
+    return res.status(200).json({
+      success: true,
+      result: result,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+async function blockUser(req,res,next) {
+  try {
+    let isSuccess = await service.blockUser(req.body);
+
+    if (!isSuccess) {
+      return res.status(404).json({
+        success: false,
+        message: "Entity Not Found"
+      })
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+
+async function endGame(req, res, next) {
+  try {
+    let endGame = await service.endGame(req.body);
+    return res.status(200).json(endGame);
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+async function getWallet(req, res, next) {
+  try {
+    let wallets = await service.getWallet(req.body)
+
+    if(!wallets.length) {
+      return res.status(404).json({
+        success: false,
+        message: 'Entity Not Found'
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      result: wallets,
       message: ''
     });
   } catch (e) {

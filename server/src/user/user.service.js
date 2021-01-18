@@ -146,6 +146,7 @@ const endGame = async (params) => {
 const getWallet = async (params) => {
     const {user_id} = params;
     return await bankAccount.getUserWallets(user_id);
+}
 
 const getMembers = async (query) => {
   let { page = 1, limit = 10, search } = query;

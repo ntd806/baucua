@@ -16,26 +16,66 @@ let bankaccount = new BankAccount();
 
 
 const signUp = async (params) => {
-  var account;
+  // var account;
+  // if(params.fbUID){
+  //   account = await user.getAccountByFB(params.fbUID);
+  // } else if (params.gg_mail) {
+  //   account = await user.getAccountByGG(params.gg_mail)
+  // } else {
+  //   return {
+  //     success: false,
+  //     message: 'Register fail',
+  //   };
+  // }
+  // if(account){
+  //   return {
+  //     success: false,
+  //     message: 'Account is exist',
+  //   }
+  // }
+  // user.createUser(params);
+  // return {
+  //   success: true,
+  //   message: ''
+  // };
+
+  // Fix đăng ký
+  let account = [];
+
   if(params.fbUID){
     account = await user.getAccountByFB(params.fbUID);
-  } else if (params.gg_mail) {
-    account = await user.getAccountByGG(params.gg_mail)
-  } else {
+  }
+
+  if (account && account.length === 0 && params.gg_email) {
+    account = await user.getAccountByGG(params.gg_email)
+  }
+
+  if(account && account.length > 0){
     return {
       success: false,
-      message: 'Register fail',
-    };
-  }
-  if(account){
-    return {
-      success: false, 
       message: 'Account is exist',
     }
   }
-  user.createUser(params);
+
+  let dataCreate = {}
+  let isReq = params.fbUID && params.gg_email;
+  if (!isReq) {
+    return {
+      success: false,
+      message: 'Register fail - Thiếu trường bắt buộc',
+    };
+  } else {
+    dataCreate.fbUID = params.fbUID;
+    dataCreate.gg_email = params.gg_email;
+    dataCreate.name = params.name;
+    dataCreate.address = params.address;
+    dataCreate.phone = params.phone;
+  }
+
+  user.createUser(dataCreate);
+
   return {
-    success: true, 
+    success: true,
     message: ''
   };
 };

@@ -26,7 +26,7 @@ module.exports = router;
 
 async function signUp(req, res, next) {
   try {
-    var result =  await service.signUp(req.body);
+    let result =  await service.signUp(req.body);
     return res.status(200).json(result);
   } catch (e) {
     res.status(400).json({ Error: e.message });

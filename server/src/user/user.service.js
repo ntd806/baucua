@@ -15,9 +15,29 @@ let character = new Character();
 let bankaccount = new BankAccount();
 
 
-const signUp = (params) => {
+const signUp = async (params) => {
+  var account;
+  if(params.fbUID){
+    account = await user.getAccountByFB(params.fbUID);
+  } else if (params.gg_mail) {
+    account = await user.getAccountByGG(params.gg_mail)
+  } else {
+    return {
+      success: false,
+      message: 'Register fail',
+    };
+  }
+  if(account){
+    return {
+      success: false, 
+      message: 'Account is exist',
+    }
+  }
   user.createUser(params);
-  return params;
+  return {
+    success: true, 
+    message: ''
+  };
 };
 
 const signIn = async (params) => {
@@ -82,12 +102,18 @@ const endGame = async (params) => {
       message: 'User id not empty'
     };
   }
+
   let is_block = await bankaccount.getIsBlock(params.user_id);
-  if(is_block){
+  if(is_block ==1){
     return {
       success: false,
       message: 'User is block'
     };
+  } else if(is_block == -1){
+    return {
+      success: false,
+      message: 'Not have bank account'
+    }
   }
   let amount = await bankaccount.getAmount(params.user_id);
   var data = {

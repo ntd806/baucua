@@ -26,11 +26,11 @@ export default memo(function RegisterPage({ loading }) {
   const history = useHistory();
   const [currentStep, setCurrentStep] = useState(0);
   const [state, setState] = useState({
-    fbUID: undefined,
-    gg_email: undefined,
-    name: undefined,
-    address: undefined,
-    phone: undefined,
+    fbUID: null,
+    gg_email: null,
+    name: null,
+    address: null,
+    phone: null,
   });
 
   const onClick = useCallback(
@@ -132,7 +132,7 @@ export default memo(function RegisterPage({ loading }) {
         <Steps type="navigation" size="small" current={currentStep}>
           <Step
             title="Bước 1"
-            status={!(state.fbUID && state.gg_email) ? 'finish' : 'process'}
+            status={!(state.fbUID || state.gg_email) ? 'finish' : 'process'}
             description="Liên kết tài khoản."
           />
           <Step
@@ -214,7 +214,7 @@ export default memo(function RegisterPage({ loading }) {
               disabled={
                 !(currentStep
                   ? state.name && state.address && state.phone
-                  : state.fbUID && state.gg_email)
+                  : state.fbUID || state.gg_email)
               }
               onClick={onClick}
             >

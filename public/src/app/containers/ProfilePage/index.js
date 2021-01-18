@@ -76,6 +76,7 @@ export default memo(function Profile({ loading }) {
 
   useEffect(() => {
     getPersonalInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onButtonClick = useCallback(

@@ -146,8 +146,49 @@ const endGame = async (params) => {
 const getWallet = async (params) => {
     const {user_id} = params;
     return await bankAccount.getUserWallets(user_id);
-}
+
+const getMembers = async (query) => {
+  let { page = 1, limit = 10, search } = query;
+  page = page - 1;
+  const { Op } = user;
+  const result = await user.mUser.findAll({
+    attributes: ['id', 'name', 'address', 'phone'],
+    where: {
+      [Op.or]: [
+        {
+          name: {
+            [Op.like]: `%${search}%`,
+          },
+        },
+        {
+          address: {
+            [Op.like]: `%${search}%`,
+          },
+        },
+        {
+          phone: {
+            [Op.like]: `%${search}%`,
+          },
+        },
+      ],
+    },
+    offset: +(limit * page),
+    limit: +limit,
+  });
+  return result;
+};
 
 module.exports = {
-  signUp, signIn, deposit, blockUser, createOption, getMatchesHistory, getTransfersHistory, getChoiceToNumbberMap, getBankAccount, endGame, getWallet
+  signUp,
+  signIn,
+  deposit,
+  blockUser,
+  createOption,
+  getMatchesHistory,
+  getTransfersHistory,
+  getChoiceToNumbberMap,
+  getBankAccount,
+  endGame,
+  getWallet,
+  getMembers,
 };

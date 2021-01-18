@@ -49,4 +49,4 @@ module.exports = class User extends Main {
     }
     return result[0];
   }
-}
+};

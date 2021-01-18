@@ -20,6 +20,7 @@ module.exports = class AllModel {
             updated_at:{type: Sequelize.DATE},
             status:{type: Sequelize.INTEGER},
             password:{type: Sequelize.STRING},
+            phone: {type: Sequelize.NUMBER}
         },
         { sequelize, modelName: 'users',
             tableName: 'users',
@@ -100,8 +101,8 @@ module.exports = class AllModel {
                 },
                 field: 'user_id'
             },
-            win: Sequelize.STRING,
-            lose: Sequelize.STRING,
+            win: Sequelize.INTEGER,
+            lose: Sequelize.INTEGER,
             type_bet: {
                 type: Sequelize.INTEGER,
                 validate: {
@@ -124,8 +125,8 @@ module.exports = class AllModel {
             },
         },
         {
-        sequelize, modelName: 'transfershistories',
-        tableName: 'transfershistories',
+        sequelize, modelName: 'matcheshistories',
+        tableName: 'matcheshistories',
         timestamps: false
         });
         return modelMatchesHistory;
@@ -167,48 +168,68 @@ module.exports = class AllModel {
         return modelBankAccount;
     }
 
-    mainBankAccount() {
-        class bankaccounts extends Sequelize.Model {
-            /**
-             * Helper method for defining associations.
-             * This method is not a part of Sequelize lifecycle.
-             * The `models/index` file will call this method automatically.
-             */
-            static associate(models) {
-                // will be user.users()
-                users.belongsTo(models.users, {foreignKey: 'user_id', as: 'users'})
-            }
-        };
-        bankaccounts.init({
-            userId: {
-                type: DataTypes.INTEGER,
-                validate: {
-                    notEmpty: true
-                },
-                field: 'user_id'
+    mainCharacter(){
+        class modelCharacter extends Sequelize.Model {}
+        modelCharacter.init({
+            game_type: {
+                type: Sequelize.INTEGER,
+                field: 'game_type'
             },
-            amount: DataTypes.INTEGER,
-            isBlock: {
-                type: DataTypes.INTEGER,
-                validate: {
-                    notEmpty: true
-                },
-                field: 'is_block'
+            character_1: {
+                type: Sequelize.STRING,
+                field: 'character_1'
             },
-            status: DataTypes.INTEGER,
-            createdAt: {
-                type: DataTypes.DATE,
+            character_2: {
+                type: Sequelize.STRING,
+                field: 'character_2'
+            },
+            character_3: {
+                type: Sequelize.STRING,
+                field: 'character_3'
+            },
+            character_4: {
+                type: Sequelize.STRING,
+                field: 'character_4'
+            },
+            character_5: {
+                type: Sequelize.STRING,
+                field: 'character_5'
+            },
+            character_6: {
+                type: Sequelize.STRING,
+                field: 'character_6'
+            },
+            character_7: {
+                type: Sequelize.STRING,
+                field: 'character_7'
+            },
+            character_8: {
+                type: Sequelize.STRING,
+                field: 'character_8'
+            },
+            character_9: {
+                type: Sequelize.STRING,
+                field: 'character_9'
+            },
+            character_10: {
+                type: Sequelize.STRING,
+                field: 'character_10'
+            },
+            created_at: {
+                type: Sequelize.DATE,
                 field: 'created_at'
             },
-            updatedAt: {
-                type: DataTypes.DATE,
+            updated_at: {
+                type: Sequelize.DATE,
                 field: 'updated_at'
             },
-        }, {
-            sequelize,
-            modelName: 'bankaccounts',
+        },
+        { sequelize, modelName: 'characters',
+            tableName: 'characters',
+            timestamps: false
         });
-        return bankaccounts;
+
+        return modelCharacter;
     }
 }
 

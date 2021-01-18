@@ -20,6 +20,7 @@ router.get('/account', getBankAccount);
 router.post('/end-game', endGame);
 router.post('/blockUser', blockUser);
 router.post('/wallet', getWallet);
+router.get('/get-members', getMembers);
 
 module.exports = router; 
 
@@ -181,6 +182,19 @@ async function getWallet(req, res, next) {
     return res.status(200).json({
       success: true,
       result: wallets,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+async function getMembers(req, res, next) {
+  try {
+    const members = await service.getMembers(req.query);
+    return res.status(200).json({
+      result: members,
+      success: true,
       message: ''
     });
   } catch (e) {

@@ -10,7 +10,8 @@ module.exports = class MatchesHistory extends Main {
   }
 
   async getMatchesHistory(data) {
-    return await this.mMatchesHistory.findAll({
+    
+    var result = await this.mMatchesHistory.findAll({
       where: {
         user_id: data.user_id,
       },
@@ -19,6 +20,8 @@ module.exports = class MatchesHistory extends Main {
       ],
       limit: 10
     });
+    console.log(result);
+    return result;
   }
 
   async createMatchesHistory(data){

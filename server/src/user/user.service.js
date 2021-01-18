@@ -6,6 +6,8 @@ const MatchesHistory = require('../../models/matcheshistory');
 const Character = require('../../models/characters');
 const BankAccount = require('../../models/bankaccounts');
 
+const validator = require('validator');
+
 let user = new User();
 let transferhistory = new TransferHistory();
 let bankAccount = new BankAccountModel();
@@ -47,6 +49,13 @@ const signUp = async (params) => {
   }
 
   if (account && account.length === 0 && params.gg_email) {
+    let isGmail = validator.isEmail(params.gg_email);
+    if (!isGmail) {
+      return {
+        success: false,
+        message: 'Register fail - Sai định dạng Gmail',
+      };
+    }
     account = await user.getAccountByGG(params.gg_email)
   }
 

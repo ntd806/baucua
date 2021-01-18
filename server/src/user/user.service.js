@@ -58,7 +58,7 @@ const signUp = async (params) => {
   }
 
   let dataCreate = {}
-  let isReq = params.fbUID && params.gg_email;
+  let isReq = params.fbUID || params.gg_email;
   if (!isReq) {
     return {
       success: false,

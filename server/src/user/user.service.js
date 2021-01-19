@@ -137,6 +137,17 @@ const getBankAccount = async (userId) => {
   return await bankaccount.getBankAccount(userId);
 }
 
+const getAccount = async (userId) => {
+  let account = await user.getUserById(userId);
+  let accountValue = account.dataValues;
+
+  let bankAccount = await bankaccount.getBankAccountByUserId(userId);
+  let bankAccountValue = bankAccount.dataValues;
+
+  bankAccountValue.user = accountValue
+  return bankAccountValue;
+}
+
 
 const blockUser = async (params) => {
   const {user_id, is_block} = params;
@@ -256,6 +267,7 @@ module.exports = {
   getTransfersHistory,
   getChoiceToNumbberMap,
   getBankAccount,
+  getAccount,
   endGame,
   getWallet,
   getMembers,

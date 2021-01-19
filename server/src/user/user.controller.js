@@ -17,6 +17,7 @@ router.get('/matches-history', matchesHistory);
 router.get('/transfers-history', getTransfersHistory);
 router.get('/choice-to-number-map', getChoiceToNumbberMap);
 router.get('/account', getBankAccount);
+router.get('/get_account', getAccount);
 router.post('/end-game', endGame);
 router.post('/blockUser', blockUser);
 router.post('/wallet', getWallet);
@@ -133,6 +134,25 @@ async function getBankAccount(req, res, next){
     });
   } catch (e) {
     res.status(400).json({ Error: e.message })
+  }
+}
+
+async function getAccount(req, res, next) {
+  try {
+      let params = req.query;
+
+      let userId = Number(params.user_id);
+      if (userId || userId === 0) {
+          let result = await service.getAccount(userId);
+          return res.status(200).json({
+              success: true,
+              result: result,
+              message: ''
+          });
+      }
+
+  } catch (e) {
+      return res.status(400).json({ Error: e.message })
   }
 }
 

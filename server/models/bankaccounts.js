@@ -13,6 +13,14 @@ module.exports = class BankAccount extends Main {
     });
   }
 
+    async getBankAccountByUserId(userId){
+        return await this.mBankAccount.findOne({
+            where: {
+                user_id: userId,
+            }
+        });
+    }
+
     createBankAccount(data){
         return new Promise((resolve, reject) => {
             try {

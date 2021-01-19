@@ -15,7 +15,15 @@ module.exports = class User extends Main {
   }
 
   createUser(data){
-    return this.mUser.create(data);
+    return new Promise((resolve, reject) => {
+       try {
+         let user = this.mUser.create(data);
+         resolve(user);
+       } catch (e) {
+         reject(e)
+       }
+    })
+    // return this.mUser.create(data);
   }
 
   async getAccountByFB(fbUID){

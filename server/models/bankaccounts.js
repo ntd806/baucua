@@ -13,6 +13,17 @@ module.exports = class BankAccount extends Main {
     });
   }
 
+    createBankAccount(data){
+        return new Promise((resolve, reject) => {
+            try {
+                let bankAccount = this.mBankAccount.create(data);
+                resolve(bankAccount)
+            } catch (e) {
+                reject(e)
+            }
+        })
+    }
+
   async getAmount(user_id){
     let result = await this.mBankAccount.findAll({
       where: {

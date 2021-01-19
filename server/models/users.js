@@ -26,11 +26,19 @@ module.exports = class User extends Main {
     // return this.mUser.create(data);
   }
   async getUserById(id) {
-    return await this.mUser.findOne({
+    let user = await this.mUser.findOne({
       where:{
         id: id
       }
     });
+
+    if (user) {
+      let result = user.dataValues;
+      delete result.password;
+      return result;
+    } else {
+      return  null;
+    }
   }
 
   async getAccountByFB(fbUID){

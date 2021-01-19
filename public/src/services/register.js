@@ -1,8 +1,9 @@
 import axios from 'axios';
+import getUrl from 'Constants/url';
 
-export function register(params) {
+export function register(data) {
   return axios
-    .post('https://5ffdb3f7d9ddad0017f6867b.mockapi.io/login', params)
+    .post(getUrl('register'), data)
     .then((res) => res.data)
     .catch(() => {});
 }

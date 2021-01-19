@@ -1,12 +1,13 @@
 import React, { memo, useEffect, useState, useMemo, useCallback } from 'react';
-import { Avatar, Button, Space, Table } from 'antd';
+import { Avatar, Button, Space } from 'antd';
 // import moment from 'moment';
 import _ from 'lodash';
 
 import AvatarImage from 'Src/images/avatar.png';
-import { Container, MenuContainer, StyledCard, ItemContainer, Title, Text } from './styled';
+import { Container, MenuContainer, StyledCard, Title, Text } from './styled';
 import { getCurrentBreakpoint } from 'Src/styles/media';
 import { getProfile, getTransactionH, getGameH } from 'Src/services/profile';
+import Table from 'Src/app/components/Table';
 
 const MENU = [
   { name: 'Personal Info', title: 'Personal Info', key: 'PersonalInfo' },
@@ -75,7 +76,7 @@ export default memo(function Profile({ loading }) {
 
   useEffect(() => {
     getPersonalInfo();
-  }, [getPersonalInfo]);
+  }, []);
 
   const onButtonClick = useCallback(
     ({ currentTarget: { title } }) => {
@@ -100,7 +101,12 @@ export default memo(function Profile({ loading }) {
   }, [onButtonClick]);
 
   return (
-    <Container prefixCls={`profile-container`} size={'large'} direction={'vertical'} align={'center'}>
+    <Container
+      prefixCls={`profile-container`}
+      size={'large'}
+      direction={'vertical'}
+      align={'center'}
+    >
       <MenuContainer
         size={'large'}
         direction={
@@ -118,96 +124,94 @@ export default memo(function Profile({ loading }) {
           </Space>
         </StyledCard>
       </MenuContainer>
-      <ItemContainer>
-        {select === 'Personal Info' && (
-          <>
-            <Title>{'Personal Info'}</Title>
-            <Space size={'small'}>
-              <div>
-                <Text>{'Name:'}</Text>
-                <Text>{'Phone:'}</Text>
-                <Text>{'Address:'}</Text>
-                {/* <Text>{'Account linking'}</Text> */}
-              </div>
-              <div>
-                <Text>{profile.name}</Text>
-                <Text>{profile.phone}</Text>
-                <Text>{profile.address}</Text>
-                {/* <Text>{'Account linking'}</Text> */}
-              </div>
-            </Space>
-          </>
-        )}
-        {select === 'Transaction History' && (
-          <Table
-            bordered
-            scroll={{ x: 700 }}
-            columns={[
-              {
-                title: 'Name',
-                dataIndex: 'name',
-                key: 'name',
-              },
-              {
-                title: 'Transaction Amount',
-                dataIndex: 'amount',
-                key: 'amount',
-              },
-              {
-                title: 'Status',
-                dataIndex: 'status',
-                key: 'status',
-              },
-              {
-                title: 'Time',
-                dataIndex: 'time',
-                key: 'time',
-              },
-              {
-                title: 'Type',
-                dataIndex: 'type',
-                key: 'type',
-              },
-            ]}
-            dataSource={transactionHistory}
-            rowKey={'name'}
-          />
-        )}
-        {select === 'Game History' && (
-          <Table
-            bordered
-            columns={[
-              {
-                title: 'Type',
-                dataIndex: 'type',
-                key: 'type',
-              },
-              {
-                title: 'Place',
-                dataIndex: 'place',
-                key: 'place',
-              },
-              {
-                title: 'Stake',
-                dataIndex: 'stake',
-                key: 'stake',
-              },
-              {
-                title: 'Time',
-                dataIndex: 'time',
-                key: 'time',
-              },
-              {
-                title: 'Status',
-                dataIndex: 'status',
-                key: 'status',
-              },
-            ]}
-            dataSource={gameHistory}
-            rowKey={'name'}
-          />
-        )}
-      </ItemContainer>
+      {/* <ItemContainer> */}
+      {select === 'Personal Info' && (
+        <>
+          <Title>{'Personal Info'}</Title>
+          <Space size={'small'}>
+            <div>
+              <Text>{'Name:'}</Text>
+              <Text>{'Phone:'}</Text>
+              <Text>{'Address:'}</Text>
+              {/* <Text>{'Account linking'}</Text> */}
+            </div>
+            <div>
+              <Text>{profile.name}</Text>
+              <Text>{profile.phone}</Text>
+              <Text>{profile.address}</Text>
+              {/* <Text>{'Account linking'}</Text> */}
+            </div>
+          </Space>
+        </>
+      )}
+      {select === 'Transaction History' && (
+        <Table
+          bordered
+          columns={[
+            {
+              title: 'Name',
+              dataIndex: 'name',
+              key: 'name',
+            },
+            {
+              title: 'Transaction Amount',
+              dataIndex: 'amount',
+              key: 'amount',
+            },
+            {
+              title: 'Status',
+              dataIndex: 'status',
+              key: 'status',
+            },
+            {
+              title: 'Time',
+              dataIndex: 'time',
+              key: 'time',
+            },
+            {
+              title: 'Type',
+              dataIndex: 'type',
+              key: 'type',
+            },
+          ]}
+          dataSource={transactionHistory}
+        />
+      )}
+      {select === 'Game History' && (
+        <Table
+          bordered
+          columns={[
+            {
+              title: 'Type',
+              dataIndex: 'type',
+              key: 'type',
+            },
+            {
+              title: 'Place',
+              dataIndex: 'place',
+              key: 'place',
+            },
+            {
+              title: 'Stake',
+              dataIndex: 'stake',
+              key: 'stake',
+            },
+            {
+              title: 'Time',
+              dataIndex: 'time',
+              key: 'time',
+            },
+            {
+              title: 'Status',
+              dataIndex: 'status',
+              key: 'status',
+            },
+          ]}
+          dataSource={gameHistory}
+          rowKey={'name'}
+        />
+      )}
+      {/* </ItemContainer> */}
     </Container>
   );
 });

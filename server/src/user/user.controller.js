@@ -150,8 +150,13 @@ async function getAccount(req, res, next) {
               result: result,
               message: ''
           });
+      } else {
+        return res.status(200).json({
+          success: false,
+          result: [],
+          message: ''
+        });
       }
-
   } catch (e) {
       return res.status(400).json({ Error: e.message })
   }

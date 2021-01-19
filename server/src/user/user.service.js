@@ -42,6 +42,7 @@ const signUp = async (params) => {
   // };
 
   // Fix đăng ký
+  let error = null;
   let account = [];
 
   if(params.fbUID){
@@ -66,7 +67,7 @@ const signUp = async (params) => {
     }
   }
 
-  let dataCreate = {}
+  let userNewData = {}
   let isReq = params.fbUID || params.gg_email;
   if (!isReq) {
     return {
@@ -74,18 +75,35 @@ const signUp = async (params) => {
       message: 'Register fail - Thiếu trường bắt buộc',
     };
   } else {
-    dataCreate.fbUID = params.fbUID;
-    dataCreate.gg_email = params.gg_email;
-    dataCreate.name = params.name;
-    dataCreate.address = params.address;
-    dataCreate.phone = params.phone;
+    userNewData.fbUID = params.fbUID;
+    userNewData.gg_email = params.gg_email;
+    userNewData.name = params.name;
+    userNewData.address = params.address;
+    userNewData.phone = params.phone;
   }
 
-  user.createUser(dataCreate);
+  // tạo mới user
+  let userNew = await user.createUser(userNewData).catch(e => error = e);
+
+  if (error) {
+    return {
+      success: false,
+      message: error
+    };
+  }
+
+  // khởi tạo tài khoản cho userNew
+  let bankAccountNewData = {} ;
+  bankAccountNewData.user_id = userNew.id;
+  bankAccountNewData.amount = 0;
+  bankAccountNewData.is_block = 1; // mở
+  bankAccountNewData.status = 1; // default và không dùng đén
+
+  let bankAccountNew = await bankaccount.createBankAccount(bankAccountNewData).catch(e => error = e);
 
   return {
     success: true,
-    message: ''
+    message: "Register success"
   };
 };
 
@@ -115,8 +133,8 @@ const getChoiceToNumbberMap = async() =>{
   return await character.getChoiceToNumbberMap();
 }
 
-const getBankAccount = async(params) => {
-  return await bankaccount.getBankAccount(params);
+const getBankAccount = async (userId) => {
+  return await bankaccount.getBankAccount(userId);
 }
 
 

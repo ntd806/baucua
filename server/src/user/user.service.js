@@ -139,13 +139,16 @@ const getBankAccount = async (userId) => {
 
 const getAccount = async (userId) => {
   let account = await user.getUserById(userId);
-  let accountValue = account.dataValues;
+  let accountValue = account ? account.dataValues : null;
+  if (accountValue) {
+    let bankAccount = await bankaccount.getBankAccountByUserId(userId);
+    let bankAccountValue = bankAccount.dataValues;
 
-  let bankAccount = await bankaccount.getBankAccountByUserId(userId);
-  let bankAccountValue = bankAccount.dataValues;
-
-  bankAccountValue.user = accountValue
-  return bankAccountValue;
+    bankAccountValue.user = accountValue
+    return bankAccountValue;
+  } else {
+    return null;
+  }
 }
 
 

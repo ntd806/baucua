@@ -7,7 +7,9 @@ let time_setup = 0.0, time = 0.0, time_run = 0.0;
 
 let spin = 0;
 // check event
-let time_click = TIME_CLICK;
+let is_click = true;
+// player list of game
+var bet = [], player = {};
 // Keep track of our socket connection
 var socket;
 function setup() {
@@ -34,7 +36,8 @@ function draw() {
    if(millis() > START_WAITING_TIME){
      wellcome();
    }
-   check_time();
+
+   run_time();
 }
 
 /**
@@ -116,14 +119,31 @@ function wellcome(){
 function mousePressed() {
 }
 
+
+function BtnClicked(start) {
+  if(time_run >0){
+    if(start.classList.contains('bg-white-color')){
+      start.classList.remove('bg-white-color');
+      start.classList.add("bg-chartreuse-color");
+      var ordinal = start.getAttribute('att');
+      bet = remove_index(bet, ordinal);
+    } else {
+      start.classList.remove("bg-chartreuse-color");
+      start.classList.add("bg-white-color");
+      var ordinal = start.getAttribute('att');
+      bet.push(ordinal);
+    }
+  }
+}
+
 /**
  * Images spin
  */
 function spinBonus(time){
-    var a = select('#start_'+ (parseInt(time) % 8 + 1));
-    a.addClass("bg-spin-color");
-    var b= select('#start_'+ ((parseInt(time) % 8) == 0 ? 8 : (parseInt(time) % 8)) );
-    b.removeClass("bg-spin-color");  
+    var a = document.getElementById("start_"+ (parseInt(time) % 8 + 1));
+    a.classList.add("bg-spin-color");
+    var b= document.getElementById("start_"+ ((parseInt(time) % 8) == 0 ? 8 : (parseInt(time) % 8)) );
+    b.classList.remove("bg-spin-color");  
 }
 
 /**
@@ -131,50 +151,48 @@ function spinBonus(time){
  */
 function random(){
   var number = Math.floor(Math.random() * 8) + 1;
-  var start = select('#start_'+number);
+  var start = select('#start_'+ number);
   start.addClass('bg-spin-color');
 }
 
 /**
- */
-function check_time() {
+*/
+function run_time() {
    time_run = TIME_DICE;
    time_spin = TIME_SPIN;
    time_run -= millis()/1000;
    if (time_run <= 0) {
     var time_stamp = millis();
     start_9.html("TIME IS UP");
-    time_spin = TIME_SPIN + (millis()-time_stamp);
+    is_click = false;
+    time_spin = TIME_SPIN + millis()-time_stamp;
     time_spin -= millis()/1000;
-    if (time_spin <= 0) {
+    if (time_spin > 0) {
+     spinBonus(-time_run*SPEED);
     }
-    else{
-      spinBonus(-time_run*SPEED);
-    }
-   } else {start_9.html(time_run.toFixed(2)); }
+   } else {start_9.html(time_run.toFixed(2));}
+
+
 }
 
-/**
- */
-function BtnClicked(start) {
-  if (time_click > 0 && time_click <= 6) {
-    change_image (start);
-  }
-  console.log(time_click);
+function result() {
+  var number = Math.floor(Math.random() * 8) + 1;
+  if (find_index(bet, number)) return 1;
+  else return 0;
 }
 
-/**
- */
-function change_image (start) {
-  if(time_run > 0){
-    if(start.classList.contains('bg-white-color')){
-      start.classList.remove('bg-white-color');
-      start.classList.add("bg-chartreuse-color");
-      time_click++;
-    } else {
-      start.classList.remove("bg-chartreuse-color");
-      start.classList.add("bg-white-color");
-      time_click--;
-    }
+function remove_index(list, number) {
+  const index = list.indexOf(number);
+  if (index > -1) {
+    list.splice(index, 1);
   }
+
+  return list;
+}
+
+function find_index(list, index) {
+  const isNumber = (element) => element == index;
+  const is_check = list.findIndex(isNumber);
+
+  return is_check;
 }

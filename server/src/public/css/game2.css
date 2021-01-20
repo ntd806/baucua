@@ -424,7 +424,14 @@
 	}
 
 .bg-white-color {
-	background-color: #FFF !important;
+	opacity: 1.0;
+	background:
+        /* top, transparent black, faked with gradient */ 
+        linear-gradient(
+          rgba(0, 0, 0, 0.7), 
+          rgba(0, 0, 0, 0.7)
+        ),
+    }
 }
 .bg-chartreuse-color {
 	background-color: chartreuse !important;

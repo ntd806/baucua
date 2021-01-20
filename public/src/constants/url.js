@@ -5,7 +5,7 @@ export default function getUrl(type) {
   const urlDev = {
     login: `${BASE_URL}/user/login`,
     register: `${BASE_URL}/user/register`,
-    profile: `https://5ffdb3f7d9ddad0017f6867b.mockapi.io/profile`, //${BASE_URL}/user/profile`,
+    profile: `${BASE_URL}/user/get_account`,
     transactionHistory: `${BASE_URL}/user/transfers-history`,
     gameHistory: `${BASE_URL}/user/matches-history`,
     members: `${BASE_URL}/user/get-members`,

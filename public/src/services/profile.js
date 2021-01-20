@@ -1,9 +1,9 @@
 import axios from 'axios';
 import getUrl from 'Constants/url';
 
-export function getProfile() {
+export function getProfile(params) {
   return axios
-    .get(getUrl('profile'))
+    .get(getUrl('profile'), { params })
     .then((res) => res.data)
     .catch(() => {});
 }

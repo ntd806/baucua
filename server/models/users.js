@@ -17,21 +17,36 @@ module.exports = class User extends Main {
   createUser(data){
     return this.mUser.create(data);
   }
+
+  async getAccountByFB(fbUID){
+    return await this.mUser.findAll({
+      where:{
+        fbUID: fbUID
+      }
+    });
+  }
+  async getAccountByGG(gg_email){
+    return await this.mUser.findAll({
+      where:{
+        gg_email: gg_email
+      }
+    });
+  }
   async login(data){
+    var result;
     if(data.fbUID){
-      const result = await this.mUser.findAll({
+      result = await this.mUser.findAll({
         where:{
           fbUID: data.fbUID
         }
       });
     } else {
-      const result = await this.mUser.findAll({
+      result = await this.mUser.findAll({
         where:{
           gg_email: data.gg_email
         }
       });
     }
-    
     return result[0];
   }
-}
+};

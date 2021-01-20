@@ -22,17 +22,22 @@ export default memo(function AdminPage({ loading }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [select, setSelect] = useState('Statistic');
   const [members, setMembers] = useState([]);
+  const [memberParams, setMemberParams] = useState({
+    search: '',
+    limit: 10,
+    page: 1,
+  });
 
   const getMembers = useCallback(() => {
     loading.current.add('getMembers');
-    serviceGetMembers()
+    serviceGetMembers(memberParams)
       .then((res) => {
         if (_.get(res, 'result')) {
           setMembers(res.result);
         }
       })
       .finally(() => loading.current.remove('getMembers'));
-  }, [loading, setMembers]);
+  }, [loading, setMembers, memberParams]);
 
   const onButtonClick = useCallback(
     ({ currentTarget: { title } }) => {
@@ -54,6 +59,16 @@ export default memo(function AdminPage({ loading }) {
   const handleOk = useCallback(() => {
     setIsModalVisible(false);
   }, [setIsModalVisible]);
+
+  const onSearchChange = useCallback(
+    ({ currentTarget: { value } }) => {
+      setMemberParams((e) => ({
+        ...e,
+        search: value,
+      }));
+    },
+    [setMemberParams],
+  );
 
   return (
     <LayoutContainer>
@@ -107,7 +122,14 @@ export default memo(function AdminPage({ loading }) {
                 ) : (
                   <SearchContainer>
                     {'Danh sách thành viên'}
-                    <Search style={{ maxWidth: 200 }} placeholder="input search text" enterButton />
+                    <Search
+                      value={memberParams.search}
+                      onChange={onSearchChange}
+                      style={{ maxWidth: 200 }}
+                      placeholder="input search text"
+                      enterButton
+                      onSearch={getMembers}
+                    />
                   </SearchContainer>
                 )
               }

@@ -116,30 +116,38 @@ const endGame = async (params) => {
     }
   }
   let amount = await bankaccount.getAmount(params.user_id);
-  var data = {
-    user_id: params.user_id,
-    win: params.winer == 1 ? 1 : 0,
-    lose: params.winer ==2 ? 1 : 0,
-    type_bet: params.type_bet,
-    place_bet: params.place_bet,
-    stake: params.stake
+
+  if(amount < params.stake*params.bet.length){
+      return {
+        success: false,
+        message: 'The amount placed is greater than the amount in the account'
+      }
   }
-  if((parseInt(amount) + parseInt(params.stake)) > 0 ){
-    bankaccount.addAmount(params.user_id, parseInt(amount) + parseInt(params.stake));
+  var result  = Math.floor(Math.random() * 8) + 1;
+  for (const element of params.bet) {
+    var data = {
+      user_id: params.user_id,
+      win: element == result ? 1 : 0,
+      lose: element == result ? 0: 1,
+      type_bet: params.type_bet,
+      place_bet: params.element,
+      stake: params.stake
+    }
+    if(result == element){
+      await bankaccount.addAmount(params.user_id, parseInt(amount) + parseInt(params.stake)*8);
+    }else{
+      await bankaccount.addAmount(params.user_id, parseInt(amount) - parseInt(params.stake));
+    }
     data.status = 1;
-    matcheshistory.createMatchesHistory(data);
-    return {
-      success: true,
-      message: ''
-    };
-  } else {
-    data.status = 0;
-    matcheshistory.createMatchesHistory(data);
-    return {
-      success: false,
-      message: 'Stake greater Amount'
-    };
+    await matcheshistory.createMatchesHistory(data);
+    
+  };
+  return {
+    success: true,
+    result,
+    message: ''
   }
+  
   
 }
 

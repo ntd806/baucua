@@ -1,17 +1,18 @@
-// Config canvas
 let startBtn, canvas, div_holder, scale, bg2;
 // Config start
 let start_1, start_2, start_3, start_4, start_5, start_6, start_7, start_8, start_9;
 // Time setup
-let time_setup = 0.0, time = 0.0, time_run = 0.0;
+let time_setup = 0.0, time = 0.0, time_run = 0.0, count =0;
 
 let spin = 0;
 // check event
 let is_click = true;
 // player list of game
 var bet = [], player = {};
+var result = 0;
 // Keep track of our socket connection
 var socket;
+var time_spin = 0.0;
 function setup() {
    newGame();
   // Start a socket connection to the server
@@ -157,22 +158,58 @@ function random(){
 
 /**
 */
-function run_time() {
+async function run_time() {
    time_run = TIME_DICE;
-   time_spin = TIME_SPIN;
+  //  time_spin = time_spin;
    time_run -= millis()/1000;
    if (time_run <= 0) {
-    var time_stamp = millis();
+    count+=1;
+    await getResult(count);
     start_9.html("TIME IS UP");
     is_click = false;
-    time_spin = TIME_SPIN + millis()-time_stamp;
-    time_spin -= millis()/1000;
-    if (time_spin > 0) {
+    var time_stamp = millis();
+    time_spin -= (millis()-time_stamp);
+    if (time_spin > 0 || (time_spin <= 0 && document.getElementById("start_"+result).classList.contains('bg-spin-color'))) {
      spinBonus(-time_run*SPEED);
+
     }
-   } else {start_9.html(time_run.toFixed(2));}
+  } else {start_9.html(time_run.toFixed(2));}
 
 
+}
+
+async function getResult(count){
+  if(count == 1){
+    time_spin =2;
+    await $.ajax({
+      url: "http://127.0.0.1:3001/user/end-game",
+      method: "POST",
+      dataType: "JSON",
+      data: {
+          user_id: 1,
+          bet,
+          type_bet: 1,
+          stake: 10
+      },
+      success: function(res) {
+        if(res.success){
+           result = res.result;
+        }else{
+          swal.fire("", res.message, "error");
+        }
+      },
+      error: function(res) {
+          if (res.responseJSON != undefined) {
+              var mess_error = '';
+              $.map(res.responseJSON.errors, function(a) {
+                  mess_error = mess_error.concat(a + '<br/>');
+              });
+              swal.fire("", mess_error, "error");
+          }
+      }
+  });
+
+  }
 }
 
 function result() {

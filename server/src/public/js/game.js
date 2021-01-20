@@ -8,6 +8,8 @@ let time_setup = 0.0, time = 0.0, time_run = 0.0;
 let spin = 0;
 // check event
 let is_click = true;
+// player list of game
+var bet = [], player = {};
 // Keep track of our socket connection
 var socket;
 function setup() {
@@ -34,20 +36,8 @@ function draw() {
    if(millis() > START_WAITING_TIME){
      wellcome();
    }
-   time_run = TIME_DICE;
-   time_spin = TIME_SPIN;
-   time_run -= millis()/1000;
-   if (time_run <= 0) {
-    var time_stamp = millis();
-    start_9.html("TIME IS UP");
-    is_click = false;
-    time_spin = TIME_SPIN + millis()-time_stamp;
-    time_spin -= millis()/1000;
-    console.log(time_spin);
-    if (time_spin > 0) {
-     spinBonus(-time_run*SPEED);
-    }
-   } else {start_9.html(time_run.toFixed(2)); }
+
+   run_time();
 }
 
 /**
@@ -131,13 +121,24 @@ function mousePressed() {
 
 
 function BtnClicked(start) {
-  if(time_run >0){
+  var para = document.createElement("span");
+  if(time_run > 0){
     if(start.classList.contains('bg-white-color')){
       start.classList.remove('bg-white-color');
       start.classList.add("bg-chartreuse-color");
+      start.classList.remove('ring');
+      while (start.firstChild) {
+        start.removeChild(start.firstChild);
+      }
+      var ordinal = start.getAttribute('att');
+      bet = remove_index(bet, ordinal);
     } else {
       start.classList.remove("bg-chartreuse-color");
       start.classList.add("bg-white-color");
+      start.classList.add("ring");
+      start.appendChild(para);
+      var ordinal = start.getAttribute('att');
+      bet.push(ordinal);
     }
   }
 }
@@ -157,6 +158,48 @@ function spinBonus(time){
  */
 function random(){
   var number = Math.floor(Math.random() * 8) + 1;
-  var start = select('#start_'+number);
+  var start = select('#start_'+ number);
   start.addClass('bg-spin-color');
+}
+
+/**
+*/
+function run_time() {
+   time_run = TIME_DICE;
+   time_spin = TIME_SPIN;
+   time_run -= millis()/1000;
+   if (time_run <= 0) {
+    var time_stamp = millis();
+    start_9.html("TIME IS UP");
+    is_click = false;
+    time_spin = TIME_SPIN + millis()-time_stamp;
+    time_spin -= millis()/1000;
+    if (time_spin > 0) {
+     spinBonus(-time_run*SPEED);
+    }
+   } else {start_9.html(time_run.toFixed(2));}
+
+
+}
+
+function result() {
+  var number = Math.floor(Math.random() * 8) + 1;
+  if (find_index(bet, number)) return 1;
+  else return 0;
+}
+
+function remove_index(list, number) {
+  const index = list.indexOf(number);
+  if (index > -1) {
+    list.splice(index, 1);
+  }
+
+  return list;
+}
+
+function find_index(list, index) {
+  const isNumber = (element) => element == index;
+  const is_check = list.findIndex(isNumber);
+
+  return is_check;
 }

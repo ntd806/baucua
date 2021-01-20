@@ -96,6 +96,13 @@ const blockUser = async (params) => {
 };
 
 const endGame = async (params) => {
+  // var param =JSON.parse(params);
+
+  //ko json vẫn đc
+  // no bị đổi tên biến chứ ko liên quan đến nó
+  // biến beta bị thành beta
+  var bet = params.bet.split(', ');
+  console.log(bet.length);
   if(!params.user_id){
     return {
       success: false,
@@ -115,8 +122,8 @@ const endGame = async (params) => {
       message: 'Not have bank account'
     }
   }
+  
   let amount = await bankaccount.getAmount(params.user_id);
-
   if(amount < params.stake*params.bet.length){
       return {
         success: false,
@@ -124,24 +131,26 @@ const endGame = async (params) => {
       }
   }
   var result  = Math.floor(Math.random() * 8) + 1;
-  for (const element of params.bet) {
+  for (const element of bet) {
     var data = {
       user_id: params.user_id,
       win: element == result ? 1 : 0,
       lose: element == result ? 0: 1,
       type_bet: params.type_bet,
-      place_bet: params.element,
+      place_bet: element,
       stake: params.stake
     }
+    var getAmount = await bankaccount.getAmount(params.user_id);
     if(result == element){
-      await bankaccount.addAmount(params.user_id, parseInt(amount) + parseInt(params.stake)*8);
+      await bankaccount.addAmount(params.user_id, parseInt(getAmount) + parseInt(params.stake)*8);
     }else{
-      await bankaccount.addAmount(params.user_id, parseInt(amount) - parseInt(params.stake));
+      await bankaccount.addAmount(params.user_id, parseInt(getAmount) - parseInt(params.stake));
     }
     data.status = 1;
     await matcheshistory.createMatchesHistory(data);
     
   };
+  
   return {
     success: true,
     result,

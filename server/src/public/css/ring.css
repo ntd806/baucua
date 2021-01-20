@@ -9,7 +9,7 @@
     text-align: center;
     line-height: 150px;
     font-family: sans-serif;
-    font-size; 1.25em;
+    font-size: 1.25em;
     color: #fff000;
     Letter-spacing: 4px;
     text-transform: uppercase;
@@ -47,9 +47,10 @@ span:before {
     height: 16px;
     border-radius: 50%;
     background: #fff000;
-    top: -1px;
-    right: -1px;
+    top: -5px;
+    right: -5px;
     box-shadow: 0 0 20px #fff000;
+    z-index: 1000;
 }
 @keyframes animateCircle {
     0%
@@ -70,5 +71,4 @@ span:before {
     {
         transform: rotate(405deg);
     }
-}
 }

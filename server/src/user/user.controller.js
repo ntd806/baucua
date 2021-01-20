@@ -17,6 +17,7 @@ router.get('/matches-history', matchesHistory);
 router.get('/transfers-history', getTransfersHistory);
 router.get('/choice-to-number-map', getChoiceToNumbberMap);
 router.get('/account', getBankAccount);
+router.get('/get_account', getAccount);
 router.post('/end-game', endGame);
 router.post('/blockUser', blockUser);
 router.post('/wallet', getWallet);
@@ -26,7 +27,7 @@ module.exports = router;
 
 async function signUp(req, res, next) {
   try {
-    var result =  await service.signUp(req.body);
+    let result =  await service.signUp(req.body);
     return res.status(200).json(result);
   } catch (e) {
     res.status(400).json({ Error: e.message });
@@ -35,11 +36,12 @@ async function signUp(req, res, next) {
 
 async function signIn(req, res, next) {
   try {
-    var user = await service.signIn(req.body);
+    let user = await service.signIn(req.body);
 
     if(user && user.status){
       return res.status(200).json({
         result:{
+          id: user.id,
           avatar: user.image,
           name: user.name
         },
@@ -133,6 +135,30 @@ async function getBankAccount(req, res, next){
     });
   } catch (e) {
     res.status(400).json({ Error: e.message })
+  }
+}
+
+async function getAccount(req, res, next) {
+  try {
+      let params = req.query;
+
+      let userId = Number(params.user_id);
+      if (userId || userId === 0) {
+          let result = await service.getAccount(userId);
+          return res.status(200).json({
+              success: true,
+              result: result,
+              message: ''
+          });
+      } else {
+        return res.status(200).json({
+          success: false,
+          result: [],
+          message: ''
+        });
+      }
+  } catch (e) {
+      return res.status(400).json({ Error: e.message })
   }
 }
 

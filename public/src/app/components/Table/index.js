@@ -28,7 +28,7 @@ export default memo(function Table({ columns, dataSource = [], actions = [], onA
                         <Component
                           style={{ margin: '5px' }}
                           key={key}
-                          onClick={() => onActionClick(key)}
+                          onClick={() => onActionClick(e)}
                         />
                       ))}
                     </div>

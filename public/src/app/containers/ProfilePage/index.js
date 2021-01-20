@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useState, useMemo, useCallback } from 'react';
 import { Avatar, Button, Space } from 'antd';
 // import moment from 'moment';
+import Cookies from 'js-cookie';
 import _ from 'lodash';
 
 import AvatarImage from 'Src/images/avatar.png';
@@ -8,6 +9,7 @@ import { Container, MenuContainer, StyledCard, Title, Text } from './styled';
 import { getCurrentBreakpoint } from 'Src/styles/media';
 import { getProfile, getTransactionH, getGameH } from 'Src/services/profile';
 import Table from 'Src/app/components/Table';
+import { handleError } from 'Src/utils/handleError';
 
 const MENU = [
   { name: 'Personal Info', title: 'Personal Info', key: 'PersonalInfo' },
@@ -28,10 +30,18 @@ export default memo(function Profile({ loading }) {
 
   const getPersonalInfo = useCallback(() => {
     loading.current.add('getPersonalInfo');
-    getProfile()
+    const user_id = Cookies.get('userId');
+    getProfile({ user_id })
       .then((res) => {
-        if (_.get(res, 'result')) {
-          setProfile(res.result[0]);
+        if (_.get(res, 'success')) {
+          const result = _.get(res, 'result', {});
+          const {
+            id,
+            user: { address, name, phone },
+          } = result;
+          setProfile({ id, name, address, phone });
+        } else {
+          handleError(_.get(res, 'message'));
         }
       })
       .finally(() => loading.current.remove('getPersonalInfo'));

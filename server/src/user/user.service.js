@@ -6,6 +6,8 @@ const MatchesHistory = require('../../models/matcheshistory');
 const Character = require('../../models/characters');
 const BankAccount = require('../../models/bankaccounts');
 
+const validator = require('validator');
+
 let user = new User();
 let transferhistory = new TransferHistory();
 let bankAccount = new BankAccountModel();
@@ -16,27 +18,92 @@ let bankaccount = new BankAccount();
 
 
 const signUp = async (params) => {
-  var account;
+  // var account;
+  // if(params.fbUID){
+  //   account = await user.getAccountByFB(params.fbUID);
+  // } else if (params.gg_mail) {
+  //   account = await user.getAccountByGG(params.gg_mail)
+  // } else {
+  //   return {
+  //     success: false,
+  //     message: 'Register fail',
+  //   };
+  // }
+  // if(account){
+  //   return {
+  //     success: false,
+  //     message: 'Account is exist',
+  //   }
+  // }
+  // user.createUser(params);
+  // return {
+  //   success: true,
+  //   message: ''
+  // };
+
+  // Fix đăng ký
+  let error = null;
+  let account = [];
+
   if(params.fbUID){
     account = await user.getAccountByFB(params.fbUID);
-  } else if (params.gg_mail) {
-    account = await user.getAccountByGG(params.gg_mail)
-  } else {
+  }
+
+  if (account && account.length === 0 && params.gg_email) {
+    let isGmail = validator.isEmail(params.gg_email);
+    if (!isGmail) {
+      return {
+        success: false,
+        message: 'Register fail - Sai định dạng Gmail',
+      };
+    }
+    account = await user.getAccountByGG(params.gg_email)
+  }
+
+  if(account && account.length > 0){
     return {
       success: false,
-      message: 'Register fail',
-    };
-  }
-  if(account){
-    return {
-      success: false, 
       message: 'Account is exist',
     }
   }
-  user.createUser(params);
+
+  let userNewData = {}
+  let isReq = params.fbUID || params.gg_email;
+  if (!isReq) {
+    return {
+      success: false,
+      message: 'Register fail - Thiếu trường bắt buộc',
+    };
+  } else {
+    userNewData.fbUID = params.fbUID;
+    userNewData.gg_email = params.gg_email;
+    userNewData.name = params.name;
+    userNewData.address = params.address;
+    userNewData.phone = params.phone;
+  }
+
+  // tạo mới user
+  let userNew = await user.createUser(userNewData).catch(e => error = e);
+
+  if (error) {
+    return {
+      success: false,
+      message: error
+    };
+  }
+
+  // khởi tạo tài khoản cho userNew
+  let bankAccountNewData = {} ;
+  bankAccountNewData.user_id = userNew.id;
+  bankAccountNewData.amount = 0;
+  bankAccountNewData.is_block = 1; // mở
+  bankAccountNewData.status = 1; // default và không dùng đén
+
+  let bankAccountNew = await bankaccount.createBankAccount(bankAccountNewData).catch(e => error = e);
+
   return {
-    success: true, 
-    message: ''
+    success: true,
+    message: "Register success"
   };
 };
 
@@ -66,8 +133,19 @@ const getChoiceToNumbberMap = async() =>{
   return await character.getChoiceToNumbberMap();
 }
 
-const getBankAccount = async(params) => {
-  return await bankaccount.getBankAccount(params);
+const getBankAccount = async (userId) => {
+  return await bankaccount.getBankAccount(userId);
+}
+
+const getAccount = async (userId) => {
+  let account = await user.getUserById(userId);
+  if (account) {
+    let bankAccount = await bankaccount.getBankAccountByUserId(userId);
+    bankAccount.user = account
+    return bankAccount;
+  } else {
+    return null;
+  }
 }
 
 
@@ -189,6 +267,7 @@ module.exports = {
   getTransfersHistory,
   getChoiceToNumbberMap,
   getBankAccount,
+  getAccount,
   endGame,
   getWallet,
   getMembers,

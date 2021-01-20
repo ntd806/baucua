@@ -61,6 +61,9 @@ function App() {
           <PrivateRoute path="/admin" isLogin={isLogin}>
             <AdminPage loading={loading} />
           </PrivateRoute>
+          <PrivateRoute path="/profile" isLogin={isLogin}>
+            <ProfilePage loading={loading} />
+          </PrivateRoute>
           <Route
             exact
             path="/login"
@@ -73,7 +76,6 @@ function App() {
               isLogin ? <Redirect to="/admin" /> : <RegisterPage loading={loading} />
             }
           />
-          <Route exact path="/profile" component={() => <ProfilePage loading={loading} />} />
         </Switch>
       </BrowserRouter>
     </Container>

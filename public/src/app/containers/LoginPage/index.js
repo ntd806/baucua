@@ -19,6 +19,7 @@ import {
   Title,
 } from './styled';
 import { login } from 'Src/services/login';
+import { handleError } from 'Src/utils/handleError';
 
 export default memo(function LoginPage({ loading }) {
   const [state, setState] = useState({
@@ -76,11 +77,12 @@ export default memo(function LoginPage({ loading }) {
       loading.current.add('login');
       login(params)
         .then((res) => {
-          console.log('res', res);
-          console.log('type res', typeof res);
           if (_.get(res, 'success')) {
             Cookies.set('isLogin', true);
+            Cookies.set('userId', res.result.id);
             window.location.href = '/';
+          } else {
+            handleError(_.get(res, 'message'));
           }
         })
         .finally(() => loading.current.remove('login'));

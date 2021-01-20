@@ -1,21 +1,14 @@
-import { Button, Layout, Card, Space, Modal, Select, Input } from 'antd';
+import { Button, Layout, Card, Space, Modal, Input } from 'antd';
 import React, { memo, useCallback, useState } from 'react';
-import { EditOutlined, CreditCardOutlined, DeleteOutlined } from '@ant-design/icons';
 import _ from 'lodash';
 
-import {
-  LayoutContainer,
-  StyledContent,
-  Header,
-  GroupButton,
-  StyledSpace,
-  StyledSelect,
-  SearchContainer,
-} from './styled';
-import Table from 'Src/app/components/Table';
+import { LayoutContainer, StyledContent, Header, GroupButton, SearchContainer } from './styled';
 import { getMembers as serviceGetMembers } from 'Src/services/admin';
+import Members from './components/Members';
+import Statistic from './components/Statistic';
+import Options from './components/Options';
+import TopUp from './components/TopUp';
 
-const { Option } = Select;
 const { Search } = Input;
 
 export default memo(function AdminPage({ loading }) {
@@ -27,6 +20,7 @@ export default memo(function AdminPage({ loading }) {
     limit: 10,
     page: 1,
   });
+  const [topUpState, setTopUpState] = useState({ userId: undefined, amount: '', name: '' });
 
   const getMembers = useCallback(() => {
     loading.current.add('getMembers');
@@ -70,6 +64,19 @@ export default memo(function AdminPage({ loading }) {
     [setMemberParams],
   );
 
+  const onTopUpClick = useCallback(
+    ({ id: userId, name }) => {
+      setTopUpState({ userId, name });
+    },
+    [setTopUpState],
+  );
+
+  const onTopUpCancelClick = useCallback(() => {
+    setTopUpState({ userId: undefined, amount: '' });
+  }, []);
+
+  const onTopUp = useCallback(() => {}, []);
+
   return (
     <LayoutContainer>
       <Header>{'Dashboard'}</Header>
@@ -79,33 +86,6 @@ export default memo(function AdminPage({ loading }) {
             <Card title="Menu" bordered={false}>
               <GroupButton>
                 <Button onClick={showModal}>{'Tùy chọn'}</Button>
-                <Modal
-                  title="Tùy chọn"
-                  visible={isModalVisible}
-                  onOk={handleOk}
-                  onCancel={handleOk}
-                  okText={'Cài đặt'}
-                  cancelText={'Hủy'}
-                >
-                  <StyledSpace size={'small'}>
-                    <Card title={'Loại game'}>
-                      <StyledSelect defaultValue="lucy">
-                        <Option value="jack">Jack</Option>
-                        <Option value="lucy">Lucy</Option>
-                        <Option value="disabled">Disabled</Option>
-                        <Option value="Yiminghe">yiminghe</Option>
-                      </StyledSelect>
-                    </Card>
-                    <Card title={'Tỉ lệ thắng'}>
-                      <StyledSelect defaultValue="lucy">
-                        <Option value="jack">Jack</Option>
-                        <Option value="lucy">Lucy</Option>
-                        <Option value="disabled">Disabled</Option>
-                        <Option value="Yiminghe">yiminghe</Option>
-                      </StyledSelect>
-                    </Card>
-                  </StyledSpace>
-                </Modal>
                 <Button title={'Statistic'} onClick={onButtonClick}>
                   {'Thống kê'}
                 </Button>
@@ -135,84 +115,32 @@ export default memo(function AdminPage({ loading }) {
               }
               bordered={false}
             >
-              {select === 'Statistic' && (
-                <Table
-                  bordered
-                  columns={[
-                    {
-                      title: 'STT',
-                      dataIndex: 'id',
-                      key: 'id',
-                    },
-                    {
-                      title: 'Tổng con Nai',
-                      dataIndex: 'nai',
-                      key: 'nai',
-                    },
-                    {
-                      title: 'Tổng con Bầu',
-                      dataIndex: 'bau',
-                      key: 'bau',
-                    },
-                    {
-                      title: 'Tổng con Gà',
-                      dataIndex: 'ga',
-                      key: 'ga',
-                    },
-                    {
-                      title: 'Tổng con Tôm',
-                      dataIndex: 'tom',
-                      key: 'tom',
-                    },
-                    {
-                      title: 'Tổng con Cua',
-                      dataIndex: 'cua',
-                      key: 'cua',
-                    },
-                    {
-                      title: 'Tổng con Cá',
-                      dataIndex: 'ca',
-                      key: 'ca',
-                    },
-                  ]}
-                  rowKey={'name'}
-                  dataSource={[]}
-                />
-              )}
-              {select === 'Members' && (
-                <Table
-                  columns={[
-                    {
-                      title: 'Họ Tên',
-                      dataIndex: 'name',
-                      key: 'name',
-                    },
-                    {
-                      title: 'Địa chỉ',
-                      dataIndex: 'address',
-                      key: 'address',
-                    },
-                    {
-                      title: 'Số điện thoại',
-                      dataIndex: 'phone',
-                      key: 'phone',
-                    },
-                  ]}
-                  actions={[
-                    { Component: EditOutlined, key: 'edit' },
-                    { Component: CreditCardOutlined, key: 'topUp' },
-                    { Component: DeleteOutlined, key: 'delete' },
-                  ]}
-                  onActionClick={(key) => {
-                    console.log(key);
-                  }}
-                  dataSource={members}
-                />
-              )}
+              {select === 'Statistic' && <Statistic />}
+              {select === 'Members' && <Members data={members} onTopUpClick={onTopUpClick} />}
             </Card>
           </Space>
         </StyledContent>
       </Layout>
+      <Modal
+        title="Tùy chọn"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleOk}
+        okText={'Cài đặt'}
+        cancelText={'Hủy'}
+      >
+        <Options />
+      </Modal>
+      <Modal
+        title={`Nạp tiền tài khoản ${topUpState.name}`}
+        visible={Boolean(topUpState.userId)}
+        onOk={onTopUp}
+        onCancel={onTopUpCancelClick}
+        okText={'Nạp tiền'}
+        cancelText={'Hủy'}
+      >
+        <TopUp />
+      </Modal>
     </LayoutContainer>
   );
 });

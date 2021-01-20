@@ -148,7 +148,6 @@ const getAccount = async (userId) => {
   }
 }
 
-
 const blockUser = async (params) => {
   const {user_id, is_block} = params;
 
@@ -257,6 +256,18 @@ const getMembers = async (query) => {
   return result;
 };
 
+const updateUser = async (dataEdit) => {
+  let userDB = await user.getUserById(dataEdit.user_id);
+
+  if (userDB) {
+    let userUpdate = await user.updateUser(userDB.id, dataEdit);
+    userUpdate = await user.getUserById(dataEdit.user_id);
+    return userUpdate;
+  } else {
+    return null;
+  }
+}
+
 module.exports = {
   signUp,
   signIn,
@@ -271,4 +282,5 @@ module.exports = {
   endGame,
   getWallet,
   getMembers,
+  updateUser
 };

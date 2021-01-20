@@ -1,5 +1,6 @@
 const express = require('express');
 const service = require('./user.service');
+const common = require('../core/common.service');
 const bodyParser = require('body-parser');
 var multer = require('multer');
 var upload = multer();
@@ -17,11 +18,14 @@ router.get('/matches-history', matchesHistory);
 router.get('/transfers-history', getTransfersHistory);
 router.get('/choice-to-number-map', getChoiceToNumbberMap);
 router.get('/account', getBankAccount);
-router.get('/get_account', getAccount);
+
 router.post('/end-game', endGame);
 router.post('/blockUser', blockUser);
 router.post('/wallet', getWallet);
 router.get('/get-members', getMembers);
+
+router.get('/get_account', getAccount);
+router.post('/post_edit_profile', postEditProfile);
 
 module.exports = router; 
 
@@ -146,11 +150,11 @@ async function getAccount(req, res, next) {
       if (userId || userId === 0) {
           let result = await service.getAccount(userId);
           if ('fbUID' in result.user) {
-            delete result.user.fbUID;
+              delete result.user.fbUID;
           }
 
           if ('gg_email' in result.user) {
-            delete result.user.gg_email;
+              delete result.user.gg_email;
           }
 
           return res.status(200).json({
@@ -167,6 +171,50 @@ async function getAccount(req, res, next) {
       }
   } catch (e) {
       return res.status(400).json({ Error: e.message })
+  }
+}
+
+async function postEditProfile(req, res, next) {
+  try {
+    let params = req.body;
+    let dataEdit = {
+      user_id: params.user_id,
+      name: params.name,
+      phone: params.phone,
+      address: params.address,
+    }
+
+    if (dataEdit.user_id || dataEdit.user_id === 0) {
+      if (dataEdit.name === null || dataEdit.name === "") {
+        return common.responseError(res, 200, "Tên không sữa trống");
+      }
+
+      if (dataEdit.phone === null || dataEdit.phone === "") {
+        return common.responseError(res, 200, "Số điện thoại không sữa trống");
+      }
+
+      if (dataEdit.address === null || dataEdit.address === "") {
+        return common.responseError(res, 200, "Địa chỉ không được sữa trống");
+      }
+
+      let userAfterEdit = await service.updateUser(dataEdit);
+      if (userAfterEdit) {
+        if ('fbUID' in userAfterEdit) {
+          delete userAfterEdit.fbUID;
+        }
+
+        if ('gg_email' in userAfterEdit) {
+          delete userAfterEdit.gg_email;
+        }
+        return common.responseSuccess(res, "", userAfterEdit);
+      } else {
+        return common.responseError(res, 200, "User không tồn tại");
+      }
+    } else {
+      return common.responseError(res, 200, "Không xác định được đang chỉnh sữa user nha");
+    }
+  } catch (e) {
+    return common.responseErrorCatch(res, e);
   }
 }
 

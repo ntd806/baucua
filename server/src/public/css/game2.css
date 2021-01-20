@@ -431,7 +431,6 @@
           rgba(0, 0, 0, 0.7), 
           rgba(0, 0, 0, 0.7)
         ),
-    }
 }
 .bg-chartreuse-color {
 	background-color: chartreuse !important;
@@ -440,3 +439,17 @@
 .bg-spin-color {
 	background-color: blueviolet !important;
 }
+.blink-one {
+	opacity: 1;
+	background:
+	linear-gradient(
+		rgba(0, 0, 0, 0.7), 
+		rgba(0, 0, 0, 0.7)
+	);
+	animation: blinker-one 0.5s linear infinite;
+  }
+  @keyframes blinker-one {
+	0% {
+	  opacity: 0;
+	}
+  }

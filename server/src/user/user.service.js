@@ -16,32 +16,12 @@ let matcheshistory = new MatchesHistory();
 let character = new Character();
 let bankaccount = new BankAccount();
 
+// common -------------
+const getUserById = async (id) => {
+  return await user.getUserById(id);;
+}
 
 const signUp = async (params) => {
-  // var account;
-  // if(params.fbUID){
-  //   account = await user.getAccountByFB(params.fbUID);
-  // } else if (params.gg_mail) {
-  //   account = await user.getAccountByGG(params.gg_mail)
-  // } else {
-  //   return {
-  //     success: false,
-  //     message: 'Register fail',
-  //   };
-  // }
-  // if(account){
-  //   return {
-  //     success: false,
-  //     message: 'Account is exist',
-  //   }
-  // }
-  // user.createUser(params);
-  // return {
-  //   success: true,
-  //   message: ''
-  // };
-
-  // Fix đăng ký
   let error = null;
   let account = [];
 
@@ -116,6 +96,60 @@ const deposit = async(params) => {
   params.status = 1;
   const result = await transferhistory.createTransferHistory(params);
 }
+
+const transferHistoryService = {};
+transferHistoryService.getTransfersHistory = async (query) => {
+  let { page = 1, limit = 10, search } = query;
+  page = page - 1;
+
+  transferhistory.mTransferHistory.belongsTo(user.mUser, {foreignKey: 'destination_id', as: 'destination'})
+  transferhistory.mTransferHistory.belongsTo(user.mUser, {foreignKey: 'arrival_id',  as: 'arrival'})
+  const result = await transferhistory.mTransferHistory.findAll({
+    where: {
+      user_id: query.user_id
+    },
+    offset: +(limit * page),
+    limit: +limit,
+    include: [{model: user.mUser , as: 'destination' , attributes: ['name']},{model: user.mUser , as: 'arrival' , attributes: ['name']}]
+  },{raw: true});
+  return result;
+}
+
+transferHistoryService.validate = async (params) => {
+  let userArrival = null;
+  let arrival_id = Number(params.user_id);
+  if (arrival_id || arrival_id === 0) {
+    userArrival = await user.getUserById(arrival_id);
+  }
+
+  if (userArrival === null) {
+    return {
+      success: false,
+      message: 'người chuyển đi không tồn tại'
+    };
+  }
+
+  let destination_id = Number(params.destination_id);
+  let userDestination = null;
+  if (destination_id || destination_id === 0) {
+    userDestination = await user.getUserById(destination_id);
+  }
+
+  if (userDestination === null) {
+    return{
+      success: false,
+      message: 'người chuyển đến không tồn tại'
+    };
+  }
+
+  if (userDestination.id === userDestination.id) {
+    return {
+      success: false,
+      message: 'người chuyển đi và đến trùng nhau'
+    };
+  }
+}
+
 
 const createOption = async(params) => {
   const result = await option.createOption(params);
@@ -282,5 +316,7 @@ module.exports = {
   endGame,
   getWallet,
   getMembers,
-  updateUser
+  updateUser,
+  transferHistoryService,
+  getUserById
 };

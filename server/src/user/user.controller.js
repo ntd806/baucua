@@ -16,6 +16,7 @@ router.post('/deposit', deposit);
 router.post('/setting', setting);
 router.get('/matches-history', matchesHistory);
 router.get('/transfers-history', getTransfersHistory);
+router.get('/get_transfers_history', getTransfersHistory);
 router.get('/choice-to-number-map', getChoiceToNumbberMap);
 router.get('/account', getBankAccount);
 
@@ -105,7 +106,28 @@ async function matchesHistory(req, res, next){
 
 async function getTransfersHistory(req, res, next){
   try {
-    var result = await service.getTransfersHistory(req.query);
+    let params = req.query;
+
+    // if (!params.limit || (params.limit && params.limit === 0)) {
+    //     params.limit = 10;
+    // }
+    //
+    // if (!params.page || (params.page && params.page === 0)) {
+    //     params.page = 0;
+    // }
+
+    if (!params.user_id || (params.user_id && params.user_id === 0)) {
+        return common.responseError(res, 200, "User không tồn tại")
+    }
+
+    let user = await service.getUserById(params.user_id);
+    if (user) {
+        let result = await service.transferHistoryService.getTransfersHistory(params)
+      return common.responseSuccess(res, "", result)
+    } else {
+        return common.responseSuccess(res, "", null)
+    }
+
     return res.status(200).json({
       success: true,
       result: result,

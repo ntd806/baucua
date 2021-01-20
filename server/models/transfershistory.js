@@ -1,3 +1,4 @@
+export let mTransferHistory = undefined;
 'use strict';
 const Main = require('./AllModel');
 

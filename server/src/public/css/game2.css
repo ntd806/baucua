@@ -440,6 +440,7 @@
 	background-color: blueviolet !important;
 }
 .blink-one {
+	z-index: 100000;
 	opacity: 1;
 	background:
 	linear-gradient(

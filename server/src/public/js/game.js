@@ -122,28 +122,14 @@ function mousePressed() {
 
 function BtnClicked(start) {
   var lightning = document.getElementById('light');
-   lightning.classList.add("blink-one");
-   lightning.style.display = "block";
-   setTimeout(function(){ lightning.style.display = "none"; }, 2000);
   var para = document.createElement("span");
   if(time_run > 0){
-    if(start.classList.contains('bg-white-color')){
-      start.classList.remove('bg-white-color');
-      start.classList.add("bg-chartreuse-color");
-      start.classList.remove('ring');
-      while (start.firstChild) {
-        start.removeChild(start.firstChild);
-      }
-      var ordinal = start.getAttribute('att');
-      bet = remove_index(bet, ordinal);
-    } else {
-      start.classList.remove("bg-chartreuse-color");
-      start.classList.add("bg-white-color");
-      start.classList.add("ring");
-      start.appendChild(para);
-      var ordinal = start.getAttribute('att');
-      bet.push(ordinal);
-    }
+    lightning.classList.add("blink-one");
+   lightning.style.display = "block";
+   setTimeout(()=>{ 
+    lightning.style.display = "none"; 
+    add_image(start);
+   }, 2000);
   }
 }
 
@@ -206,4 +192,25 @@ function find_index(list, index) {
   const is_check = list.findIndex(isNumber);
 
   return is_check;
+}
+
+
+function add_image(start) {
+    if(start.classList.contains('bg-white-color')){
+    // start.classList.remove('bg-white-color');
+    // start.classList.add("bg-chartreuse-color");
+    // start.classList.remove('ring');
+    // while (start.firstChild) {
+    //   start.removeChild(start.firstChild);
+    // }
+    var ordinal = start.getAttribute('att');
+    bet = remove_index(bet, ordinal);
+  } else {
+    // start.classList.remove("bg-chartreuse-color");
+    // start.classList.add("bg-white-color");
+    //start.classList.add("ring");
+    //start.appendChild(para);
+    var ordinal = start.getAttribute('att');
+    bet.push(ordinal);
+  }
 }

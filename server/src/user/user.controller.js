@@ -145,11 +145,19 @@ async function getAccount(req, res, next) {
       let userId = Number(params.user_id);
       if (userId || userId === 0) {
           let result = await service.getAccount(userId);
+          if ('fbUID' in result.user) {
+            delete result.user.fbUID;
+          }
+
+          if ('gg_email' in result.user) {
+            delete result.user.gg_email;
+          }
+
           return res.status(200).json({
-              success: true,
-              result: result,
-              message: ''
-          });
+                success: true,
+                result: result,
+                message: ''
+            });
       } else {
         return res.status(200).json({
           success: false,

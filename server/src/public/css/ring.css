@@ -33,7 +33,7 @@ span {
     display: block;
     position: absolute;
     top: calc(50% - 2px);
-    left: 50%;
+    left: 45%;
     width: 50%;
     height: 4px;
     background: transparent;
@@ -47,8 +47,8 @@ span:before {
     height: 16px;
     border-radius: 50%;
     background: #fff000;
-    top: -6px;
-    right: -8px;
+    top: -1px;
+    right: -1px;
     box-shadow: 0 0 20px #fff000;
 }
 @keyframes animateCircle {
@@ -70,21 +70,5 @@ span:before {
     {
         transform: rotate(405deg);
     }
-}
-p {
-    margin: 5px;
-    padding: 5px;
-    color: #fff000;
-    border: 2px solid #fff000;
-    width: 80%;
-    position: relative;
-    top: 30px;
-    left: 30px;
-    font-family: sans-serif;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    text-shadow: 0 0 10px #fff000;
-    box-shadow: 0 0 20px rgba(0,0,0,.5);
-    
 }
 }

@@ -121,15 +121,22 @@ function mousePressed() {
 
 
 function BtnClicked(start) {
-  if(time_run >0){
+  var para = document.createElement("span");
+  if(time_run > 0){
     if(start.classList.contains('bg-white-color')){
       start.classList.remove('bg-white-color');
       start.classList.add("bg-chartreuse-color");
+      start.classList.remove('ring');
+      while (start.firstChild) {
+        start.removeChild(start.firstChild);
+      }
       var ordinal = start.getAttribute('att');
       bet = remove_index(bet, ordinal);
     } else {
       start.classList.remove("bg-chartreuse-color");
       start.classList.add("bg-white-color");
+      start.classList.add("ring");
+      start.appendChild(para);
       var ordinal = start.getAttribute('att');
       bet.push(ordinal);
     }

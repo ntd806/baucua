@@ -15,9 +15,9 @@ module.exports = class User extends Main {
   }
 
   createUser(data){
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
        try {
-         let user = this.mUser.create(data);
+         let user = await this.mUser.create(data);
          resolve(user);
        } catch (e) {
          reject(e)
@@ -25,6 +25,35 @@ module.exports = class User extends Main {
     })
     // return this.mUser.create(data);
   }
+
+  updateUser(id, dataEdit){
+    return new Promise(async (resolve, reject) => {
+      try {
+        let valueUpdate = {};
+
+        if (dataEdit.name) {
+          valueUpdate.name = dataEdit.name
+        }
+        if (dataEdit.phone) {
+          valueUpdate.phone = dataEdit.phone
+        }
+        if (dataEdit.address) {
+          valueUpdate.address = dataEdit.address
+        }
+
+        let userUpdate = await this.mUser.update(valueUpdate, {
+          where:{
+            id: id
+          }
+        });
+        console.log(userUpdate);
+        resolve(userUpdate);
+      } catch (e) {
+        reject(e)
+      }
+    })
+  }
+
   async getUserById(id) {
     let user = await this.mUser.findOne({
       where:{

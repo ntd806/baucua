@@ -1,3 +1,5 @@
+// sound effect
+let soundsBegin, soundsLightning;
 // Config canvas
 let startBtn, canvas, div_holder, scale, bg2;
 // Config start
@@ -46,6 +48,7 @@ function draw() {
 function preload() {
    // define sounds
    soundsBegin = loadSound("../audio/bgm.mp3");
+   soundsLightning   = loadSound("../audio/lightning.mp3");
  }
 
 /**
@@ -121,6 +124,7 @@ function mousePressed() {
 
 
 function BtnClicked(start) {
+  soundsLightning.play();
   var lightning = document.getElementById('light');
   var para = document.createElement("span");
   if(time_run > 0){

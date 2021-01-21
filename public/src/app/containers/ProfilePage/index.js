@@ -1,13 +1,21 @@
 import React, { memo, useEffect, useState, useMemo, useCallback } from 'react';
-import { Avatar, Button, Space } from 'antd';
+import { Avatar, Button, Space, Input } from 'antd';
 // import moment from 'moment';
 import Cookies from 'js-cookie';
 import _ from 'lodash';
 
 import AvatarImage from 'Src/images/avatar.png';
-import { Container, MenuContainer, StyledCard, Title, Text } from './styled';
+import {
+  Container,
+  MenuContainer,
+  StyledCard,
+  Title,
+  Text,
+  ProfileTitle,
+  ProfileSpace,
+} from './styled';
 import { getCurrentBreakpoint } from 'Src/styles/media';
-import { getProfile, getTransactionH, getGameH } from 'Src/services/profile';
+import { getProfile, getTransactionH, getGameH, editProfile } from 'Src/services/profile';
 import Table from 'Src/app/components/Table';
 import { handleError } from 'Src/utils/handleError';
 
@@ -27,6 +35,7 @@ export default memo(function Profile({ loading }) {
   const [profile, setProfile] = useState({ name: '', address: '', phone: '', avatar: '' });
   const [transactionHistory, setTransactionHistory] = useState([]);
   const [gameHistory, setGameHistory] = useState([]);
+  const [isEditProfile, setIsEditProfile] = useState(false);
 
   const getPersonalInfo = useCallback(() => {
     loading.current.add('getPersonalInfo');
@@ -91,7 +100,11 @@ export default memo(function Profile({ loading }) {
 
   const onButtonClick = useCallback(
     ({ currentTarget: { title } }) => {
-      if (['Edit Personal Info'].some((e) => e === title)) return;
+      if (['Edit Personal Info'].some((e) => e === title)) {
+        setIsEditProfile(true);
+        return;
+      }
+      if (isEditProfile) setIsEditProfile(false);
       const fn = {
         'Personal Info': getPersonalInfo,
         'Transaction History': getTransactionHistory,
@@ -100,7 +113,14 @@ export default memo(function Profile({ loading }) {
       setSelect(title);
       _.get(fn, `[${title}]`, () => {})();
     },
-    [setSelect, getPersonalInfo, getTransactionHistory, getGameHistory],
+    [
+      setSelect,
+      getPersonalInfo,
+      getTransactionHistory,
+      getGameHistory,
+      isEditProfile,
+      setIsEditProfile,
+    ],
   );
 
   const menu = useMemo(() => {
@@ -110,6 +130,28 @@ export default memo(function Profile({ loading }) {
       </Button>
     ));
   }, [onButtonClick]);
+
+  const onTextChange = useCallback(({ currentTarget: { title, value } }) => {
+    setProfile((e) => ({
+      ...e,
+      [title]: value,
+    }));
+  }, []);
+
+  const onEditProfile = useCallback(() => {
+    loading.current.add('editProfile');
+    const user_id = Cookies.get('userId');
+    const { phone, name, address } = profile;
+    editProfile({ user_id, phone, name, address })
+      .then((res) => {
+        if (_.get(res, 'success')) {
+          onButtonClick({ currentTarget: { title: 'Personal Info' } });
+        } else {
+          handleError(_.get(res, 'message'));
+        }
+      })
+      .finally(() => loading.current.remove('editProfile'));
+  }, [profile, onButtonClick, loading]);
 
   return (
     <Container
@@ -139,20 +181,31 @@ export default memo(function Profile({ loading }) {
       {select === 'Personal Info' && (
         <>
           <Title>{'Personal Info'}</Title>
-          <Space size={'small'}>
-            <div>
+          <ProfileSpace prefixCls={'profile-space'} size={'small'}>
+            <ProfileTitle>
               <Text>{'Name:'}</Text>
               <Text>{'Phone:'}</Text>
               <Text>{'Address:'}</Text>
               {/* <Text>{'Account linking'}</Text> */}
-            </div>
+            </ProfileTitle>
             <div>
-              <Text>{profile.name}</Text>
-              <Text>{profile.phone}</Text>
-              <Text>{profile.address}</Text>
+              {isEditProfile ? (
+                <>
+                  <Input onChange={onTextChange} title={'name'} value={profile.name} />
+                  <Input onChange={onTextChange} title={'phone'} value={profile.phone} />
+                  <Input onChange={onTextChange} title={'address'} value={profile.address} />
+                </>
+              ) : (
+                <>
+                  <Text>{profile.name}</Text>
+                  <Text>{profile.phone}</Text>
+                  <Text>{profile.address}</Text>
+                </>
+              )}
               {/* <Text>{'Account linking'}</Text> */}
             </div>
-          </Space>
+          </ProfileSpace>
+          {isEditProfile && <Button onClick={onEditProfile}>{'Submit'}</Button>}
         </>
       )}
       {select === 'Transaction History' && (

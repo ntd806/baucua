@@ -9,6 +9,7 @@ export default function getUrl(type) {
     transactionHistory: `${BASE_URL}/user/transfers-history`,
     gameHistory: `${BASE_URL}/user/matches-history`,
     members: `${BASE_URL}/user/get-members`,
+    editProfile: `${BASE_URL}/user/post_edit_profile`,
   };
   const urlProd = {
     login: 'https://600286dd4f17c800175580c3.mockapi.io/login',

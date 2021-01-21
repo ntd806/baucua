@@ -218,3 +218,52 @@ function add_image(start) {
     bet.push(ordinal);
   }
 }
+
+// data em truyền gọi api 
+//khi click nó truyền con đặt vào bet
+
+async function getResult(count){
+  // lưu rồi anh
+  // bên kia ko chuyển đc json sang kia thì soa vẫn để  
+  if(count == 1){
+    time_spin =2;
+    var data = {user_id: 1,
+      bet: bet,
+      type_bet: 1,
+      stake: 10
+    }
+
+    var data_json = JSON.stringify(data);
+
+     console.log(data_json);
+    await $.ajax({
+      url: "http://127.0.0.1:3001/user/end-game",
+      method: "POST",
+      dataType: "JSON",
+      data: {user_id: 1,
+      bet: bet.toString(),
+      type_bet: 1,
+      stake: 10
+    },
+      // dạ anh
+      // giờ em muốn truyền mảng bet vô và có thể gọi đc chứ nó truyền là bet[] gọi không được
+      success: function(res) {
+        if(res.success){
+           result = res.result;
+        }else{
+          swal.fire("", res.message, "error");
+        }
+      },
+      error: function(res) {
+          if (res.responseJSON != undefined) {
+              var mess_error = '';
+              $.map(res.responseJSON.errors, function(a) {
+                  mess_error = mess_error.concat(a + '<br/>');
+              });
+              swal.fire("", mess_error, "error");
+          }
+      }
+  });
+
+  }
+}

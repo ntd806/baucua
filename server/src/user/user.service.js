@@ -30,7 +30,7 @@ const signUp = async (params) => {
   if(account){
     return {
       success: false, 
-      message: 'Account is exist',
+      message: 'Account exist',
     }
   }
   user.createUser(params);

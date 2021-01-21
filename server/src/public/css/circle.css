@@ -39,10 +39,6 @@ p {
   }
   /*****************************************************************/
   /*****************************************************************/
-  #start_9{
-    height: 9%;
-    width: 19%;
-  }
   #oval {
      bottom: 15%;
      height: 7.5%;
@@ -71,6 +67,83 @@ p {
   }
   #start_8 {
     top: 7%; left: 25%;
+  }
+  #start_9{
+    height: 9%;
+    width: 19%;
+  }
+  #start_10{
+    height: 6%;
+    width: 6%;
+    bottom: 20%; left: 28%;
+    background-color: blueviolet
+  }
+  #start_11{
+    height: 6%;
+    width: 6%;
+    bottom: 20%; left: 40.5%;
+    background-color: blueviolet
+  }
+  #start_12{
+    height: 6%;
+    width: 6%;
+    bottom: 20%; left: 53.5%;
+    background-color: blueviolet
+  }
+  #start_13{
+    height: 6%;
+    width: 6%;
+    bottom: 20%; 
+    right: 27.5%;
+    background-color: blueviolet
+  }
+#start_14 {
+    height: 5%;
+    width: 5%;
+    bottom: 6%; left: 17.7%;
+    background-color: blueviolet
+  }
+  #start_15 {
+    height: 5%;
+    width: 5%;
+    bottom: 6%; left: 26.2%;
+    background-color: blueviolet
+  }
+  #start_16 {
+    height: 5%;
+    width: 5%;
+    bottom: 6%;  left: 34.55%;
+    background-color: blueviolet
+  }
+  #start_17 {
+   height: 5%;
+    width: 5%;
+    bottom: 6%;  left: 43%;
+    background-color: blueviolet
+  }
+  #start_18 {
+   height: 5%;
+    width: 5%;
+    bottom: 6%;  right: 43.6%;
+    background-color: blueviolet
+  }
+  #start_19 {
+   height: 5%;
+    width: 5%;
+    bottom: 6%;  right: 35.2%;
+    background-color: blueviolet
+  }
+  #start_20 {
+   height: 5%;
+    width: 5%;
+    bottom: 6%; right: 26.7%;
+    background-color: blueviolet
+  }
+  #start_21 {
+   height: 5%;
+    width: 5%;
+    bottom: 6%;  right: 18.3%;
+    background-color: blueviolet
   }
   #loadding {
     width: 100%; height: 100%; background-color: #fff; position: absolute; top: 0; left: 0; z-index: 10000;

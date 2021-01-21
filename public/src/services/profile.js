@@ -21,3 +21,10 @@ export function getGameH() {
     .then((res) => res.data)
     .catch(() => {});
 }
+
+export function editProfile(data) {
+  return axios
+    .post(getUrl('editProfile'), data)
+    .then((res) => res.data)
+    .catch(() => {});
+}

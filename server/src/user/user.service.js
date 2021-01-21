@@ -96,12 +96,20 @@ const blockUser = async (params) => {
 };
 
 const endGame = async (params) => {
+  var bet = [];
   // var param =JSON.parse(params);
 
   //ko json vẫn đc
   // no bị đổi tên biến chứ ko liên quan đến nó
   // biến beta bị thành beta
-  var bet = params.bet.split(', ');
+  // var bet = params.bet.split(', ');
+  var array = params.bet.split(",");
+ // var array = JSON.parse(params.bet);
+  console.log(typeof array);
+  console.log(array);
+  // array.forEach(element => console.log(typeof parseInt(element)));
+  array.forEach(element => bet.push(parseInt(element)));
+  console.log("bet");
   console.log(bet.length);
   if(!params.user_id){
     return {

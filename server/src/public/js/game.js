@@ -186,15 +186,15 @@ async function getResult(count){
   // bên kia ko chuyển đc json sang kia thì soa vẫn để  
   if(count == 1){
     time_spin =2;
-    // var data = {user_id: 1,
-    //   bet: bet,
-    //   type_bet: 1,
-    //   stake: 10
-    // }
+    var data = {user_id: 1,
+      bet: bet,
+      type_bet: 1,
+      stake: 10
+    }
     
-    // var data_json = JSON.stringify(data);
+    var data_json = JSON.stringify(data);
 
-    // console.log(data_json);
+     console.log(data_json);
     await $.ajax({
       url: "http://127.0.0.1:3001/user/end-game",
       method: "POST",

@@ -5,6 +5,7 @@ const Option = require('../../models/options');
 const MatchesHistory = require('../../models/matcheshistory');
 const Character = require('../../models/characters');
 const BankAccount = require('../../models/bankaccounts');
+const ConversionRate = require('../../models/conversion_rate');
 
 const validator = require('validator');
 
@@ -15,6 +16,7 @@ let option = new Option();
 let matcheshistory = new MatchesHistory();
 let character = new Character();
 let bankaccount = new BankAccount();
+let conversionRate = new ConversionRate();
 
 // common -------------
 const getUserById = async (id) => {
@@ -114,7 +116,6 @@ transferHistoryService.getTransfersHistory = async (query) => {
   },{raw: true});
   return result;
 }
-
 transferHistoryService.validate = async (params) => {
   let userArrival = null;
   let arrival_id = Number(params.user_id);
@@ -150,6 +151,10 @@ transferHistoryService.validate = async (params) => {
   }
 }
 
+const conversionRateService = {};
+conversionRateService.getAll = async () => {
+    return await conversionRate.getAll();
+}
 
 const createOption = async(params) => {
   const result = await option.createOption(params);
@@ -343,5 +348,6 @@ module.exports = {
   getMembers,
   updateUser,
   transferHistoryService,
+  conversionRateService,
   getUserById
 };

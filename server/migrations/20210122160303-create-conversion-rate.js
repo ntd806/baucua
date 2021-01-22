@@ -1,20 +1,18 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('ConversionRates', {
+    await queryInterface.createTable('conversion_rates', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      number: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
+      number_conversion: {
+        type: Sequelize.INTEGER
       },
       type: {
-        type: Sequelize.STRING,
-        defaultValue: 'VND'
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -27,6 +25,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('ConversionRates');
+    await queryInterface.dropTable('conversion_rates');
   }
 };

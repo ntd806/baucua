@@ -26,9 +26,11 @@ router.get('/get_account', getAccount);
 router.get('/get-members', getMembers);
 router.get('/account', getBankAccount);
 router.get('/get_transfers_history', getTransfersHistory);
+router.get('/get_all_conversion_rate', getAllConversionRate)
 router.post('/register', signUp);
 router.post('/login', signIn);
 router.post('/post_edit_profile', postEditProfile);
+
 
 module.exports = router; 
 
@@ -137,6 +139,20 @@ async function getTransfersHistory(req, res, next){
     });
   } catch (e) {
     res.status(400).json({ Error: e.message })
+  }
+}
+
+async function getAllConversionRate(req, res, next) {
+  try {
+    let lstConversionRate = await service.conversionRateService.getAll();
+    if (lstConversionRate && lstConversionRate.length > 0) {
+      return common.responseSuccess(res, '', lstConversionRate);
+    } else {
+      return common.responseError(res, 200, '');
+    }
+
+  } catch (e) {
+    return common.responseErrorCatch(res,e)
   }
 }
 

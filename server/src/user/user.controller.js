@@ -12,7 +12,7 @@ router.use(upload.array());
 
 
 
-router.post('/deposit', deposit);
+
 router.post('/setting', setting);
 router.get('/matches-history', matchesHistory);
 router.get('/transfers-history', getTransfersHistory);
@@ -27,6 +27,7 @@ router.get('/get-members', getMembers);
 router.get('/account', getBankAccount);
 router.get('/get_transfers_history', getTransfersHistory);
 router.get('/get_all_conversion_rate', getAllConversionRate)
+router.post('/post_deposit', deposit);
 router.post('/register', signUp);
 router.post('/login', signIn);
 router.post('/post_edit_profile', postEditProfile);
@@ -71,13 +72,46 @@ async function signIn(req, res, next) {
 
 async function deposit(req, res, next) {
   try {
-    var user = await service.deposit(req.body);
-    return res.status(200).json({
-      success: true,
-      message: ''
-    });
+    let params = req.body;
+
+    let user_id = params.user_id; // người chuyển | admin
+    let user = await service.getUserById(user_id);
+    if (user) { // kiểm trả tồn tại - chưa phân biết là admin
+      if ('fbUID' in user) {
+        delete user.fbUID;
+      }
+
+      if ('gg_email' in user) {
+        delete user.gg_email;
+      }
+      let destination_id = params.destination_id;
+      let destination = await service.getUserById(destination_id);
+
+      if (destination) {
+        if ('fbUID' in destination) {
+          delete destination.fbUID;
+        }
+
+        if ('gg_email' in destination) {
+          delete destination.gg_email;
+        }
+        let summand = Number(params.summand);
+        let message = '';
+        let transfer = await service.transferService.transfer(user, destination, summand);
+        if (transfer.isPush) {
+          message = 'Nạp tiền thành công'
+        } else {
+          message = 'Trừ tiền thành công'
+        }
+        return common.responseSuccess(res, message, transfer.result);
+      } else {
+        return common.responseError(res, 200,'Tài khoản nạp vào không tồn tại');
+      }
+    } else {
+      return common.responseError(res, 200,'Tài khoản chuyển đi không tồn tại');
+    }
   } catch (e) {
-    res.status(400).json({ Error: e.message })
+    return common.responseErrorCatch(res, e);
   }
 }
 

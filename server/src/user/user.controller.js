@@ -10,22 +10,24 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(express.json());
 router.use(upload.array()); 
 
-router.post('/register', signUp);
-router.post('/login', signIn);
+
+
 router.post('/deposit', deposit);
 router.post('/setting', setting);
 router.get('/matches-history', matchesHistory);
 router.get('/transfers-history', getTransfersHistory);
-router.get('/get_transfers_history', getTransfersHistory);
 router.get('/choice-to-number-map', getChoiceToNumbberMap);
-router.get('/account', getBankAccount);
 
 router.post('/end-game', endGame);
 router.post('/blockUser', blockUser);
 router.post('/wallet', getWallet);
-router.get('/get-members', getMembers);
 
 router.get('/get_account', getAccount);
+router.get('/get-members', getMembers);
+router.get('/account', getBankAccount);
+router.get('/get_transfers_history', getTransfersHistory);
+router.post('/register', signUp);
+router.post('/login', signIn);
 router.post('/post_edit_profile', postEditProfile);
 
 module.exports = router; 

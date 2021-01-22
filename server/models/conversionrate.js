@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   ConversionRate.init({
-    number: DataTypes.INTEGER,
-    type: DataTypes.STRING
+    number: DataTypes.INTEGER, // tỷ lệ chuyển đổi
+    type: DataTypes.STRING // VNĐ , USD
   }, {
     sequelize,
     modelName: 'ConversionRate',

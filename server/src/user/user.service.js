@@ -207,6 +207,21 @@ const blockUser = async (params) => {
 };
 
 const endGame = async (params) => {
+  var bet = [];
+  // var param =JSON.parse(params);
+
+  //ko json vẫn đc
+  // no bị đổi tên biến chứ ko liên quan đến nó
+  // biến beta bị thành beta
+  // var bet = params.bet.split(', ');
+  var array = params.bet.split(",");
+ // var array = JSON.parse(params.bet);
+  console.log(typeof array);
+  console.log(array);
+  // array.forEach(element => console.log(typeof parseInt(element)));
+  array.forEach(element => bet.push(parseInt(element)));
+  console.log("bet");
+  console.log(bet.length);
   if(!params.user_id){
     return {
       success: false,
@@ -226,31 +241,41 @@ const endGame = async (params) => {
       message: 'Not have bank account'
     }
   }
+  
   let amount = await bankaccount.getAmount(params.user_id);
-  var data = {
-    user_id: params.user_id,
-    win: params.winer == 1 ? 1 : 0,
-    lose: params.winer ==2 ? 1 : 0,
-    type_bet: params.type_bet,
-    place_bet: params.place_bet,
-    stake: params.stake
+  if(amount < params.stake*params.bet.length){
+      return {
+        success: false,
+        message: 'The amount placed is greater than the amount in the account'
+      }
   }
-  if((parseInt(amount) + parseInt(params.stake)) > 0 ){
-    bankaccount.addAmount(params.user_id, parseInt(amount) + parseInt(params.stake));
+  var result  = Math.floor(Math.random() * 8) + 1;
+  for (const element of bet) {
+    var data = {
+      user_id: params.user_id,
+      win: element == result ? 1 : 0,
+      lose: element == result ? 0: 1,
+      type_bet: params.type_bet,
+      place_bet: element,
+      stake: params.stake
+    }
+    var getAmount = await bankaccount.getAmount(params.user_id);
+    if(result == element){
+      await bankaccount.addAmount(params.user_id, parseInt(getAmount) + parseInt(params.stake)*8);
+    }else{
+      await bankaccount.addAmount(params.user_id, parseInt(getAmount) - parseInt(params.stake));
+    }
     data.status = 1;
-    matcheshistory.createMatchesHistory(data);
-    return {
-      success: true,
-      message: ''
-    };
-  } else {
-    data.status = 0;
-    matcheshistory.createMatchesHistory(data);
-    return {
-      success: false,
-      message: 'Stake greater Amount'
-    };
+    await matcheshistory.createMatchesHistory(data);
+    
+  };
+  
+  return {
+    success: true,
+    result,
+    message: ''
   }
+  
   
 }
 

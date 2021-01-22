@@ -124,7 +124,7 @@ function mousePressed() {
 
 
 function BtnClicked(start) {
-  soundsLightning.play();
+  // soundsLightning.play();
   var lightning = document.getElementById('light');
   var para = document.createElement("span");
   if(time_run > 0){
@@ -200,21 +200,91 @@ function find_index(list, index) {
 
 
 function add_image(start) {
-    if(start.classList.contains('bg-white-color')){
-    // start.classList.remove('bg-white-color');
-    // start.classList.add("bg-chartreuse-color");
-    // start.classList.remove('ring');
-    // while (start.firstChild) {
-    //   start.removeChild(start.firstChild);
-    // }
-    var ordinal = start.getAttribute('att');
-    bet = remove_index(bet, ordinal);
-  } else {
-    // start.classList.remove("bg-chartreuse-color");
-    // start.classList.add("bg-white-color");
-    //start.classList.add("ring");
-    //start.appendChild(para);
-    var ordinal = start.getAttribute('att');
-    bet.push(ordinal);
+  var ordinal = start.getAttribute('att');
+    if(bet.indexOf(ordinal)==-1){
+      bet.push(ordinal);
+      start.classList.add("ring");
+      //lấy hình của start
+
+
+
+
+      //lấy ô cuối chưa có hình
+      var a = document.getElementById("result_"+(bet.length));
+      //truyền hình vào a 
+      // tạm thời chưa có lên truyền class ring
+      a.classList.add("ring")
+    }else {
+      
+      start.classList.remove("ring");
+      //lấy vị trí đã đặt
+      var a = document.getElementById("result_"+bet.indexOf(ordinal));
+      //xóa image ( chưa có tạm thời xóa ring)
+      // a.classList.remove("ring");
+      // di chuyển các image sau dồn lên (tạm thời di chuyển class ring)
+      console.log(bet.indexOf(ordinal));
+      for(i= bet.indexOf(ordinal); i < bet.length;i++ ){
+        
+        //lấy image của i+1
+        //truyền image đó vào i
+        var b = document.getElementById("result_"+(i+1));
+        b.classList.add("ring");
+      }
+      //xóa hình ảnh ở cuối
+      var b = document.getElementById("result_"+bet.length);
+      b.classList.remove("ring");
+      // add image
+      bet = remove_index(bet, ordinal);
+    }
+    console.log(bet);
+  // }
+}
+
+// data em truyền gọi api 
+//khi click nó truyền con đặt vào bet
+
+async function getResult(count){
+  // lưu rồi anh
+  // bên kia ko chuyển đc json sang kia thì soa vẫn để  
+  if(count == 1){
+    time_spin =2;
+    var data = {user_id: 1,
+      bet: bet,
+      type_bet: 1,
+      stake: 10
+    }
+
+    var data_json = JSON.stringify(data);
+
+     console.log(data_json);
+    await $.ajax({
+      url: "http://127.0.0.1:3001/user/end-game",
+      method: "POST",
+      dataType: "JSON",
+      data: {user_id: 1,
+      bet: bet.toString(),
+      type_bet: 1,
+      stake: 10
+    },
+      // dạ anh
+      // giờ em muốn truyền mảng bet vô và có thể gọi đc chứ nó truyền là bet[] gọi không được
+      success: function(res) {
+        if(res.success){
+           result = res.result;
+        }else{
+          swal.fire("", res.message, "error");
+        }
+      },
+      error: function(res) {
+          if (res.responseJSON != undefined) {
+              var mess_error = '';
+              $.map(res.responseJSON.errors, function(a) {
+                  mess_error = mess_error.concat(a + '<br/>');
+              });
+              swal.fire("", mess_error, "error");
+          }
+      }
+  });
+
   }
 }

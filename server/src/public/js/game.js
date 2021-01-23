@@ -4,6 +4,7 @@ let soundsBegin, soundsLightning;
 let startBtn, canvas, div_holder, scale, bg2;
 // Config start
 let start_1, start_2, start_3, start_4, start_5, start_6, start_7, start_8, start_9;
+let imgCenter;
 // Time setup
 let time_setup = 0.0, time = 0.0, time_run = 0.0, time_spin=0.0;
 
@@ -113,6 +114,12 @@ function newGame() {
    let start_8_H = start_8.height*scale;
    start_8.style("width",  start_8_W + "px");
    start_8.style("height", start_8_H + "px");
+   imgCenter = select("#img-center");
+      console.log(imgCenter);
+  //  let center_W = imgCenter.width*scale;
+  //  let center_H = imgCenter.height*scale;
+  //  imgCenter.style("width",  center_W + "px");
+  //  imgCenter.style("height", center_H + "px");
    start_9 = select('#start_9');
    start_9.html(0);
    var loaddingScreen = select("#loadding");
@@ -129,7 +136,7 @@ function mousePressed() {
 function BtnClicked(start) {
   // soundsLightning.play();
   var lightning = document.getElementById('light');
-  var para = document.createElement("span");
+  // var para = document.createElement("span");
   if(time_run > 0){
     lightning.classList.add("blink-one");
    lightning.style.display = "block";
@@ -168,7 +175,7 @@ async function run_time() {
    if (time_run <= 0) {
     count+=1;
     await getResult(count);
-    start_9.html("TIME IS UP");
+    start_9.html("TIME'S UP");
     is_click = false;
     var time_stamp = millis();
     time_spin -= (millis()-time_stamp);

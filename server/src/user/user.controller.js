@@ -359,7 +359,8 @@ async function getMembers(req, res, next) {
  */
 async function getOption(req, res) {
   try {
-    const optionList = await service.getOption(req.body);
+    console.log(req.query);
+    const optionList = await service.getOption(req.query);
     return res.status(200).json({
       result: optionList,
       success: true,

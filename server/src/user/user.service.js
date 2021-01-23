@@ -377,7 +377,7 @@ const updateUser = async (dataEdit) => {
 const getOption = async (params) => {
   const {user_id, is_admin} = params;
   if (is_admin) {
-    return await Option.getOption();
+    return await option.getOption();
   }
   else{
     return null;

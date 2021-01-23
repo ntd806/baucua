@@ -1,13 +1,20 @@
-import { Button, Layout, Card, Space, Modal, Input } from 'antd';
-import React, { memo, useCallback, useState } from 'react';
+import { Button, Layout, Card, Space, Modal, Input, notification } from 'antd';
+import React, { memo, useCallback, useState, useEffect } from 'react';
 import _ from 'lodash';
+import Cookies from 'js-cookie';
 
 import { LayoutContainer, StyledContent, Header, GroupButton, SearchContainer } from './styled';
-import { getMembers as serviceGetMembers } from 'Src/services/admin';
+import {
+  getMembers as serviceGetMembers,
+  getConversionRate as serviceGetConversionRate,
+  topUp as serviceTopUp,
+  blockUser as serviceBlockUser,
+} from 'Src/services/admin';
 import Members from './components/Members';
 import Statistic from './components/Statistic';
 import Options from './components/Options';
 import TopUp from './components/TopUp';
+import { handleResponse } from 'Src/utils/handleError';
 
 const { Search } = Input;
 
@@ -20,18 +27,36 @@ export default memo(function AdminPage({ loading }) {
     limit: 10,
     page: 1,
   });
-  const [topUpState, setTopUpState] = useState({ userId: undefined, amount: '', name: '' });
+  const [topUpState, setTopUpState] = useState({
+    userId: undefined,
+    amount: '',
+    name: '',
+    output: '',
+    conversionRate: '',
+  });
+  const [conversionRate, setConversionRate] = useState([]);
 
   const getMembers = useCallback(() => {
     loading.current.add('getMembers');
     serviceGetMembers(memberParams)
       .then((res) => {
-        if (_.get(res, 'result')) {
-          setMembers(res.result);
-        }
+        handleResponse(res, (data) => {
+          setMembers(data);
+        });
       })
       .finally(() => loading.current.remove('getMembers'));
   }, [loading, setMembers, memberParams]);
+
+  const getConversionRate = useCallback(() => {
+    loading.current.add('getConversionRate');
+    serviceGetConversionRate()
+      .then((res) => {
+        handleResponse(res, (data) => {
+          setConversionRate(data);
+        });
+      })
+      .finally(() => loading.current.remove('getConversionRate'));
+  }, [setConversionRate, loading]);
 
   const onButtonClick = useCallback(
     ({ currentTarget: { title } }) => {
@@ -72,10 +97,64 @@ export default memo(function AdminPage({ loading }) {
   );
 
   const onTopUpCancelClick = useCallback(() => {
-    setTopUpState({ userId: undefined, amount: '' });
+    setTopUpState({ userId: undefined, amount: '', name: '', output: '', conversionRate: '' });
   }, []);
 
-  const onTopUp = useCallback(() => {}, []);
+  const onTopUp = useCallback(() => {
+    const user_id = Cookies.get('userId');
+    loading.current.add('serviceTopUp');
+    serviceTopUp({ user_id, summand: topUpState.output, destination_id: topUpState.userId })
+      .then((res) => {
+        handleResponse(res, () => {
+          onTopUpCancelClick();
+          notification.success({
+            message: _.get(res, 'message'),
+          });
+        });
+      })
+      .finally(() => loading.current.remove('serviceTopUp'));
+  }, [topUpState, loading]);
+
+  useEffect(() => {
+    getConversionRate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onTopUpChange = useCallback(
+    (stateName, value) => {
+      setTopUpState((state) => {
+        let newState = {
+          ...state,
+          [stateName]: value,
+        };
+        if (newState.conversionRateSelect && newState.amount) {
+          newState.output =
+            _.get(
+              _.find(conversionRate, { id: newState.conversionRateSelect }),
+              'number_conversion',
+            ) * newState.amount;
+        } else {
+          newState.output = 0;
+        }
+        return newState;
+      });
+    },
+    [setTopUpState, conversionRate],
+  );
+
+  const onDeleteClick = useCallback(({ id: user_id }) => {
+    loading.current.add('serviceBlockUser');
+    serviceBlockUser({ user_id, is_block: true })
+      .then((res) => {
+        handleResponse(res, () => {
+          onTopUpCancelClick();
+          notification.success({
+            message: _.get(res, 'message'),
+          });
+        });
+      })
+      .finally(() => loading.current.remove('serviceBlockUser'));
+  }, []);
 
   return (
     <LayoutContainer>
@@ -116,7 +195,9 @@ export default memo(function AdminPage({ loading }) {
               bordered={false}
             >
               {select === 'Statistic' && <Statistic />}
-              {select === 'Members' && <Members data={members} onTopUpClick={onTopUpClick} />}
+              {select === 'Members' && (
+                <Members data={members} onTopUpClick={onTopUpClick} onDeleteClick={onDeleteClick} />
+              )}
             </Card>
           </Space>
         </StyledContent>
@@ -139,7 +220,13 @@ export default memo(function AdminPage({ loading }) {
         okText={'Nạp tiền'}
         cancelText={'Hủy'}
       >
-        <TopUp />
+        <TopUp
+          conversionRate={conversionRate}
+          amount={topUpState.amount}
+          output={topUpState.output}
+          conversionRateSelect={topUpState.conversionRate}
+          onChangeValue={onTopUpChange}
+        />
       </Modal>
     </LayoutContainer>
   );

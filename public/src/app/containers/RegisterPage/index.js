@@ -19,7 +19,7 @@ import {
 } from './styled';
 import { register } from 'Src/services/register';
 import AvatarImage from 'Src/images/avatar.png';
-import { handleError } from 'Src/utils/handleError';
+import { handleResponse } from 'Src/utils/handleError';
 
 const { Step } = Steps;
 
@@ -47,11 +47,9 @@ export default memo(function RegisterPage({ loading }) {
           loading.current.add('register');
           register(state)
             .then((res) => {
-              if (_.get(res, 'success')) {
+              handleResponse(res, () => {
                 history.push('/login');
-              } else {
-                handleError(_.get(res, 'message'));
-              }
+              });
             })
             .finally(() => loading.current.remove('register'));
           break;

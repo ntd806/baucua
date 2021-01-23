@@ -8,16 +8,16 @@ export function getProfile(params) {
     .catch(() => {});
 }
 
-export function getTransactionH() {
+export function getTransactionH(params) {
   return axios
-    .get(getUrl('transactionHistory'))
+    .get(getUrl('transactionHistory'), { params })
     .then((res) => res.data)
     .catch(() => {});
 }
 
-export function getGameH() {
+export function getGameH(params) {
   return axios
-    .get(getUrl('gameHistory'))
+    .get(getUrl('gameHistory'), { params })
     .then((res) => res.data)
     .catch(() => {});
 }

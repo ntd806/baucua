@@ -17,7 +17,7 @@ import {
 import { getCurrentBreakpoint } from 'Src/styles/media';
 import { getProfile, getTransactionH, getGameH, editProfile } from 'Src/services/profile';
 import Table from 'Src/app/components/Table';
-import { handleError } from 'Src/utils/handleError';
+import { handleResponse } from 'Src/utils/handleError';
 
 const MENU = [
   { name: 'Personal Info', title: 'Personal Info', key: 'PersonalInfo' },
@@ -42,34 +42,43 @@ export default memo(function Profile({ loading }) {
     const user_id = Cookies.get('userId');
     getProfile({ user_id })
       .then((res) => {
-        if (_.get(res, 'success')) {
-          const result = _.get(res, 'result', {});
+        handleResponse(res, (data) => {
           const {
             id,
             user: { address, name, phone },
-          } = result;
+          } = data;
           setProfile({ id, name, address, phone });
-        } else {
-          handleError(_.get(res, 'message'));
-        }
+        });
       })
       .finally(() => loading.current.remove('getPersonalInfo'));
   }, [loading, setProfile]);
 
   const getTransactionHistory = useCallback(() => {
     loading.current.add('getTransactionHistory');
-    getTransactionH()
+    const user_id = Cookies.get('userId');
+    getTransactionH({ user_id })
       .then((res) => {
-        if (_.get(res, 'result')) {
-          setTransactionHistory(res.result);
-        }
+        handleResponse(res, (data) => {
+          const transactions = data.map(
+            ({ id, transfer_at: time, status, summand: amount, destination: { name } }) => ({
+              id,
+              name,
+              amount,
+              time,
+              status: Boolean(status) ? 'Success' : 'Failure',
+              type: amount > 0 ? 'Top Up' : 'WithDraw',
+            }),
+          );
+          setTransactionHistory(transactions);
+        });
       })
       .finally(() => loading.current.remove('getTransactionHistory'));
   }, [loading]);
 
   const getGameHistory = useCallback(() => {
     loading.current.add('getGameHistory');
-    getGameH()
+    const user_id = Cookies.get('userId');
+    getGameH({ user_id })
       .then((res) => {
         if (_.get(res, 'result')) {
           setGameHistory(res.result);
@@ -144,11 +153,9 @@ export default memo(function Profile({ loading }) {
     const { phone, name, address } = profile;
     editProfile({ user_id, phone, name, address })
       .then((res) => {
-        if (_.get(res, 'success')) {
+        handleResponse(res, () => {
           onButtonClick({ currentTarget: { title: 'Personal Info' } });
-        } else {
-          handleError(_.get(res, 'message'));
-        }
+        });
       })
       .finally(() => loading.current.remove('editProfile'));
   }, [profile, onButtonClick, loading]);
@@ -210,7 +217,9 @@ export default memo(function Profile({ loading }) {
       )}
       {select === 'Transaction History' && (
         <Table
-          bordered
+          style={{
+            width: ['xs', 'sm', 'md'].some((e) => e === currentBreakpoint) ? '100%' : '80%',
+          }}
           columns={[
             {
               title: 'Name',
@@ -243,7 +252,6 @@ export default memo(function Profile({ loading }) {
       )}
       {select === 'Game History' && (
         <Table
-          bordered
           columns={[
             {
               title: 'Type',

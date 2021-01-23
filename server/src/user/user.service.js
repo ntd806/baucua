@@ -145,7 +145,7 @@ transferHistoryService.getTransfersHistory = async (query) => {
 
   const result = await transferhistory.mTransferHistory.findAll({
     where: {
-      user_id: query.user_id
+      destination_id: query.user_id
     },
     offset: +(limit * page),
     limit: +limit,

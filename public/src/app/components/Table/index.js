@@ -1,10 +1,18 @@
 import React, { memo } from 'react';
+import { Pagination } from 'antd';
 
 import { Container, TableContainer, HeaderContainer, BodyContainer } from './styled';
 
-export default memo(function Table({ columns, dataSource = [], actions = [], onActionClick }) {
+export default memo(function Table({
+  columns,
+  dataSource = [],
+  actions = [],
+  onActionClick,
+  style = {},
+  pagination,
+}) {
   return (
-    <Container>
+    <Container style={style} size={'small'} direction={'vertical'}>
       <TableContainer>
         <HeaderContainer>
           <tr>
@@ -24,11 +32,12 @@ export default memo(function Table({ columns, dataSource = [], actions = [], onA
                 {actions.length > 0 && (
                   <td key={`actions-${idx}`}>
                     <div className={'actions'}>
-                      {actions.map(({ Component, key }) => (
+                      {actions.map(({ Component, key, color }) => (
                         <Component
                           style={{ margin: '5px' }}
                           key={key}
-                          onClick={() => onActionClick(e)}
+                          onClick={() => onActionClick(e, key)}
+                          twoToneColor={color}
                         />
                       ))}
                     </div>
@@ -39,6 +48,13 @@ export default memo(function Table({ columns, dataSource = [], actions = [], onA
           ))}
         </BodyContainer>
       </TableContainer>
+      {pagination && (
+        <Pagination
+          style={{ textAlign: 'center' }}
+          current={pagination.current}
+          total={pagination.total}
+        />
+      )}
     </Container>
   );
 });

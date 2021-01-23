@@ -1,8 +1,23 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import Table from 'Src/app/components/Table';
-import { EditOutlined, CreditCardOutlined, DeleteOutlined } from '@ant-design/icons';
+import { DollarCircleTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
-export default memo(function Members({ onTopUpClick, data }) {
+export default memo(function Members({ onTopUpClick, data, onDeleteClick }) {
+  const onActionClick = useCallback(
+    (value, key) => {
+      switch (key) {
+        case 'topUp':
+          onTopUpClick(value);
+          break;
+        case 'delete':
+          onDeleteClick(value);
+          break;
+        default:
+          break;
+      }
+    },
+    [onTopUpClick, onDeleteClick],
+  );
   return (
     <Table
       columns={[
@@ -23,12 +38,12 @@ export default memo(function Members({ onTopUpClick, data }) {
         },
       ]}
       actions={[
-        { Component: EditOutlined, key: 'edit' },
-        { Component: CreditCardOutlined, key: 'topUp' },
-        { Component: DeleteOutlined, key: 'delete' },
+        { Component: DollarCircleTwoTone, key: 'topUp' },
+        { Component: DeleteTwoTone, key: 'delete', color: '#eb2f96' },
       ]}
-      onActionClick={onTopUpClick}
+      onActionClick={onActionClick}
       dataSource={data}
+      pagination={{ total: 50, current: 1 }}
     />
   );
 });

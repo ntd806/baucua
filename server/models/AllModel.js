@@ -8,6 +8,25 @@ module.exports = class AllModel {
         this.Op = Sequelize.Op;
     }
 
+    /**
+     * MainAmin
+     * author: ntd806
+     * Time: 01/23/2021
+     */
+    mainAdmin(){
+        class modelAdmin extends Sequelize.Model {}
+        modelAdmin.init({
+            id: {type: Sequelize.INTEGER, autoIncrement: true, allowNull: false, primaryKey: true},
+            fbUID:{type: Sequelize.STRING},
+            gg_email:{type: Sequelize.STRING},
+        },
+        { sequelize, modelName: 'user_admins',
+            tableName: 'user_admins',
+            timestamps: false
+        });
+        return modelAdmin;
+    }
+
     mainUser(){
         class modelUser extends Sequelize.Model {}
         modelUser.init({
@@ -231,5 +250,33 @@ module.exports = class AllModel {
 
         return modelCharacter;
     }
+
+    mainConversionRate() {
+        class modelConversionRate extends Sequelize.Model {} modelConversionRate.init({
+            number_conversion: {
+                type:Sequelize.INTEGER,
+                field: 'number_conversion'
+            },
+            type: {
+                type:Sequelize.STRING,
+                field: 'type'
+            },
+            created_at: {
+                type: Sequelize.DATE,
+                field: 'createdAt'
+            },
+            updated_at: {
+                type: Sequelize.TIME,
+                field: 'updatedAt'
+            }
+        },
+        { sequelize, modelName: 'conversion_rates',
+            tableName: 'conversion_rates',
+            timestamps: false
+        });
+
+        return modelConversionRate;
+    }
+
 }
 

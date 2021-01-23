@@ -5,6 +5,7 @@ import AdminPage from 'Containers/AdminPage';
 import LoginPage from 'Containers/LoginPage';
 import RegisterPage from 'Containers/RegisterPage';
 import ProfilePage from 'Containers/ProfilePage';
+import GamePage from 'Containers/GamePage';
 import Loading from 'Components/Loading';
 import { validateLogin } from 'Src/utils/auth';
 import { setup as setupCoalesce, resize as resizeCoalesce } from 'Src/styles/background/coalesce';
@@ -36,7 +37,9 @@ function App() {
   const loading = useRef();
 
   useEffect(() => {
-    if (!['/login', '/register', '/admin', '/profile'].includes(window.location.pathname)) {
+    if (
+      !['/login', '/register', '/admin', '/profile', '/game'].includes(window.location.pathname)
+    ) {
       window.location.href = '/admin';
     }
     let setup = () => {};
@@ -63,6 +66,9 @@ function App() {
           </PrivateRoute>
           <PrivateRoute path="/profile" isLogin={isLogin}>
             <ProfilePage loading={loading} />
+          </PrivateRoute>
+          <PrivateRoute path="/game" isLogin={isLogin}>
+            <GamePage loading={loading} />
           </PrivateRoute>
           <Route
             exact

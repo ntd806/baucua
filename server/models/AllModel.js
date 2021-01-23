@@ -8,6 +8,25 @@ module.exports = class AllModel {
         this.Op = Sequelize.Op;
     }
 
+    /**
+     * MainAmin
+     * author: ntd806
+     * Time: 01/23/2021
+     */
+    mainAdmin(){
+        class modelAdmin extends Sequelize.Model {}
+        modelAdmin.init({
+            id: {type: Sequelize.INTEGER, autoIncrement: true, allowNull: false, primaryKey: true},
+            fbUID:{type: Sequelize.STRING},
+            gg_email:{type: Sequelize.STRING},
+        },
+        { sequelize, modelName: 'user_admins',
+            tableName: 'user_admins',
+            timestamps: false
+        });
+        return modelAdmin;
+    }
+
     mainUser(){
         class modelUser extends Sequelize.Model {}
         modelUser.init({

@@ -369,6 +369,21 @@ const updateUser = async (dataEdit) => {
   }
 }
 
+/**
+ * Get setting
+ * Author ntd806
+ * time 01/23/2021
+ */
+const getOption = async (params) => {
+  const {user_id, is_admin} = params;
+  if (is_admin) {
+    return await Option.getOption();
+  }
+  else{
+    return null;
+  }
+}
+
 module.exports = {
   signUp,
   signIn,
@@ -387,5 +402,6 @@ module.exports = {
   transferHistoryService,
   conversionRateService,
   transferService,
-  getUserById
+  getUserById,
+  getOption,
 };

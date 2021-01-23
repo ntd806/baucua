@@ -13,4 +13,12 @@ module.exports = class Option extends Main {
     return this.mOption.create(data);
   }
 
+  /**
+   * Get option
+   * Author: ntd806
+   * time: 01/23/2021
+   */
+  async getOption(){
+    return this.mOption.findAll();
+  }
 }

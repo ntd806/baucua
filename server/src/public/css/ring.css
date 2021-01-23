@@ -7,11 +7,11 @@
     border: 3px solid #3c3c3c;
     border-radius: 50%;
     text-align: center;
-    line-height: 150px;
+    /* line-height: 150px;
     font-family: sans-serif;
-    font-size: 1.25em;
+    font-size: 1.25em; */
     color: #fff000;
-    Letter-spacing: 4px;
+    /* Letter-spacing: 4px; */
     text-transform: uppercase;
     text-shadow: 0 0 10px #fff000;
     box-shadow: 0 0 20px rgba(0,0,0,.5);

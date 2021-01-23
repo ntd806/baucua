@@ -4,14 +4,18 @@ let soundsBegin, soundsLightning;
 let startBtn, canvas, div_holder, scale, bg2;
 // Config start
 let start_1, start_2, start_3, start_4, start_5, start_6, start_7, start_8, start_9;
+let imgCenter;
 // Time setup
-let time_setup = 0.0, time = 0.0, time_run = 0.0;
+let time_setup = 0.0, time = 0.0, time_run = 0.0, time_spin=0.0;
 
 let spin = 0;
 // check event
 let is_click = true;
 // player list of game
 var bet = [], player = {};
+var stake =5;
+var count = 0;
+var index=0;
 // Keep track of our socket connection
 var socket;
 function setup() {
@@ -110,6 +114,12 @@ function newGame() {
    let start_8_H = start_8.height*scale;
    start_8.style("width",  start_8_W + "px");
    start_8.style("height", start_8_H + "px");
+   imgCenter = select("#img-center");
+      console.log(imgCenter);
+  //  let center_W = imgCenter.width*scale;
+  //  let center_H = imgCenter.height*scale;
+  //  imgCenter.style("width",  center_W + "px");
+  //  imgCenter.style("height", center_H + "px");
    start_9 = select('#start_9');
    start_9.html(0);
    var loaddingScreen = select("#loadding");
@@ -126,7 +136,7 @@ function mousePressed() {
 function BtnClicked(start) {
   // soundsLightning.play();
   var lightning = document.getElementById('light');
-  var para = document.createElement("span");
+  // var para = document.createElement("span");
   if(time_run > 0){
     lightning.classList.add("blink-one");
    lightning.style.display = "block";
@@ -142,9 +152,9 @@ function BtnClicked(start) {
  */
 function spinBonus(time){
     var a = document.getElementById("start_"+ (parseInt(time) % 8 + 1));
-    a.classList.add("bg-spin-color");
+    a.classList.add("bg-spin");
     var b= document.getElementById("start_"+ ((parseInt(time) % 8) == 0 ? 8 : (parseInt(time) % 8)) );
-    b.classList.remove("bg-spin-color");  
+    b.classList.remove("bg-spin");  
 }
 
 /**
@@ -158,20 +168,34 @@ function random(){
 
 /**
 */
-function run_time() {
+async function run_time() {
    time_run = TIME_DICE;
-   time_spin = TIME_SPIN;
    time_run -= millis()/1000;
+  //  spinBonus(time_run*SPEED);
    if (time_run <= 0) {
-    var time_stamp = millis();
-    start_9.html("TIME IS UP");
+    count+=1;
+    await getResult(count);
+    start_9.html("TIME'S UP");
     is_click = false;
-    time_spin = TIME_SPIN + millis()-time_stamp;
-    time_spin -= millis()/1000;
-    if (time_spin > 0) {
+    var time_stamp = millis();
+    time_spin -= (millis()-time_stamp);
+    console.log(time_spin);
+    if (time_spin > 0 || (time_spin <= 0 && document.getElementById("start_"+result).classList.contains('bg-spin-color'))) {
      spinBonus(-time_run*SPEED);
     }
-   } else {start_9.html(time_run.toFixed(2));}
+    else{
+      index++;
+      if(index = 1){
+        var a = document.getElementById("oval_2");
+        if(bet.indexOf(result)==-1){
+          a.innerHTML= `You lose`;
+        }else{
+          a.innerHTML = `You win`;
+        }
+      }   
+    }
+
+  } else {start_9.html(time_run.toFixed(2));}
 
 
 }
@@ -203,41 +227,51 @@ function add_image(start) {
   var ordinal = start.getAttribute('att');
     if(bet.indexOf(ordinal)==-1){
       bet.push(ordinal);
-      start.classList.add("ring");
+      // start.classList.add("ring");
       //lấy hình của start
-
-
-
-
+      var image = start.getElementsByTagName('img')[0].src;
       //lấy ô cuối chưa có hình
       var a = document.getElementById("result_"+(bet.length));
+      a.innerHTML= `<img src="`+image+`" class="result-image">`;
       //truyền hình vào a 
       // tạm thời chưa có lên truyền class ring
-      a.classList.add("ring")
+      // a.classList.add("ring")
     }else {
       
-      start.classList.remove("ring");
+      // start.classList.remove("ring");
       //lấy vị trí đã đặt
-      var a = document.getElementById("result_"+bet.indexOf(ordinal));
+      var a = document.getElementById("result_"+(bet.indexOf(ordinal)+1));
       //xóa image ( chưa có tạm thời xóa ring)
+      a.innerHTML= ``;
       // a.classList.remove("ring");
       // di chuyển các image sau dồn lên (tạm thời di chuyển class ring)
-      console.log(bet.indexOf(ordinal));
-      for(i= bet.indexOf(ordinal); i < bet.length;i++ ){
+      for(i= bet.indexOf(ordinal); i < bet.length -1;i++ ){
         
         //lấy image của i+1
+        var img = document.getElementById("result_"+(i+2)).getElementsByTagName('img')[0].src;
         //truyền image đó vào i
         var b = document.getElementById("result_"+(i+1));
-        b.classList.add("ring");
+        b.innerHTML = `<img src="`+img+`" class="result-image">`;
+        // b.classList.add("ring");
       }
       //xóa hình ảnh ở cuối
-      var b = document.getElementById("result_"+bet.length);
-      b.classList.remove("ring");
-      // add image
+      var b = document.getElementById("result_"+(bet.length));
+      b.innerHTML='';
+      // b.classList.remove("ring");
       bet = remove_index(bet, ordinal);
     }
-    console.log(bet);
-  // }
+}
+
+  
+function StakeClicked(start){
+  if(time_run > 0){
+    for(i=1;i<=4;i++){
+      var a = document.getElementById("stake_"+i);
+      a.classList.remove("ring");
+    }
+    start.classList.add("ring");
+    stake = start.getAttribute('att');
+  }
 }
 
 // data em truyền gọi api 
@@ -247,24 +281,15 @@ async function getResult(count){
   // lưu rồi anh
   // bên kia ko chuyển đc json sang kia thì soa vẫn để  
   if(count == 1){
-    time_spin =2;
-    var data = {user_id: 1,
-      bet: bet,
-      type_bet: 1,
-      stake: 10
-    }
-
-    var data_json = JSON.stringify(data);
-
-     console.log(data_json);
+    time_spin =1;
     await $.ajax({
-      url: "http://127.0.0.1:3001/user/end-game",
+      url: "http://127.0.0.1:3002/user/end-game",
       method: "POST",
       dataType: "JSON",
       data: {user_id: 1,
       bet: bet.toString(),
       type_bet: 1,
-      stake: 10
+      stake
     },
       // dạ anh
       // giờ em muốn truyền mảng bet vô và có thể gọi đc chứ nó truyền là bet[] gọi không được

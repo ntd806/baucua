@@ -259,7 +259,14 @@ const endGame = async (params) => {
   console.log(typeof array);
   console.log(array);
   // array.forEach(element => console.log(typeof parseInt(element)));
-  array.forEach(element => bet.push(parseInt(element)));
+  array.forEach(element =>{
+    if(element[0] == '['){
+      bet.push(parseInt(element[1]));
+    }
+    else {
+      bet.push(parseInt(element));
+    }
+  } );
   console.log("bet");
   console.log(bet.length);
   if(!params.user_id){

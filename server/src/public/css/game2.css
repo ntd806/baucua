@@ -422,3 +422,35 @@
 	}
 		
 	}
+
+	.img-center {
+		margin-left: 16px !important;
+		margin-top: 8px !important;
+		height: 82px !important;
+		width: 70px !important;
+	}
+	
+	.result-image {
+		height: 23px;
+		width: 23px;
+		margin-top: 5px;
+		margin-left: 5px;
+	}
+	
+	.img-american {
+		height: 30px;
+		width: 30px;
+		margin-left: 2px;
+	}
+	
+	.text-center{
+		text-align: center;
+	}
+	.mt-2 {
+		margin-top: 5px;
+		margin-left: 5px;
+	}
+
+	.bg-spin {
+		background-color: white !important;
+	}

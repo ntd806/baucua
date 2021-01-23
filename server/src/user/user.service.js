@@ -143,13 +143,13 @@ transferHistoryService.getTransfersHistory = async (query) => {
 
   }
 
-  const result = await transferhistory.mTransferHistory.findAll({
+  const result = await transferhistory.mTransferHistory.findAndCountAll({
     where: {
       destination_id: query.user_id
     },
     offset: +(limit * page),
     limit: +limit,
-    include: [{model: user.mUser , as: 'destination' , attributes: ['name']},{model: user.mUser , as: 'arrival' , attributes: ['name']}]
+    include: [{model: user.mUser , as: 'destination' , attributes: ['name']},{model: user.mUser , as: 'arrival' , attributes: ['name']} ]
   },{raw: true});
   return result;
 }
@@ -197,8 +197,13 @@ const createOption = async(params) => {
   const result = await option.createOption(params);
 }
 
-const getMatchesHistory = async(params) => {
-  return await matcheshistory.getMatchesHistory(params);
+const getMatchesHistory = async(query) => {
+  let { page = 1, limit = 10 } = query;
+  page = page - 1;
+
+  let pageA = +(limit * page);
+  let limitA = +limit;
+  return await matcheshistory.getMatchesHistoryPagination(query,pageA, limitA);
 }
 
 const getTransfersHistory = async(params) => {

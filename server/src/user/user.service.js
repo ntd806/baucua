@@ -227,9 +227,7 @@ const getAccount = async (userId) => {
 const blockUser = async (params) => {
   const {user_id, is_block} = params;
 
-  const userInstance = user.getInstance();
-
-  const oUser = await userInstance.findByPk(user_id);
+  const oUser = await user.getUserById(user_id);
 
   if (oUser === null) {
     return false; 
@@ -237,12 +235,12 @@ const blockUser = async (params) => {
 
   //When want to block user and status of user is actived
   if (is_block && oUser.status) {
-    await oUser.update({status: 0});
+    await user.updateUser(user_id, {status: 0});
   }
 
   //When want to unblock user and status of user is blocked
   if (!is_block && !oUser.status) {
-    await oUser.update({status: 1});
+    await user.updateUser(user_id, {status: 1});
   }
 
   return true;
@@ -331,7 +329,7 @@ const getMembers = async (query) => {
   page = page - 1;
   const { Op } = user;
   const result = await user.mUser.findAll({
-    attributes: ['id', 'name', 'address', 'phone'],
+    attributes: ['id', 'name', 'address', 'phone', 'status'],
     where: {
       [Op.or]: [
         {

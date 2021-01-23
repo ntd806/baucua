@@ -1,7 +1,9 @@
+import { Space } from 'antd';
 import styled from 'styled-components/macro';
 
-export const Container = styled.div`
+export const Container = styled(Space)`
   overflow: auto;
+  width: 100%;
 `;
 
 export const TableContainer = styled.table`

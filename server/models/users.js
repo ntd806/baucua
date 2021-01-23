@@ -40,6 +40,9 @@ module.exports = class User extends Main {
         if (dataEdit.address) {
           valueUpdate.address = dataEdit.address
         }
+        if (typeof dataEdit.status === 'number') {
+          valueUpdate.status = dataEdit.status;
+        }
 
         let userUpdate = await this.mUser.update(valueUpdate, {
           where:{

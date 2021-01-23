@@ -33,7 +33,7 @@ module.exports = class MatchesHistory extends Main {
         ['created_at', 'DESC']
       ],
       limit: limit,
-      // offset: offset
+      offset: offset
     });
     return result;
   }

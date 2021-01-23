@@ -165,12 +165,6 @@ async function getTransfersHistory(req, res, next){
     } else {
         return common.responseSuccess(res, "", null)
     }
-
-    return res.status(200).json({
-      success: true,
-      result: result,
-      message: ''
-    });
   } catch (e) {
     res.status(400).json({ Error: e.message })
   }

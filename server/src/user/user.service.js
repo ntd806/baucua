@@ -135,9 +135,13 @@ const transferHistoryService = {};
 transferHistoryService.getTransfersHistory = async (query) => {
   let { page = 1, limit = 10, search } = query;
   page = page - 1;
+  try {
+    transferhistory.mTransferHistory.belongsTo(user.mUser, {foreignKey: 'destination_id', as: 'destination'})
+    transferhistory.mTransferHistory.belongsTo(user.mUser, {foreignKey: 'arrival_id',  as: 'arrival'})
+  } catch (e) {
 
-  transferhistory.mTransferHistory.belongsTo(user.mUser, {foreignKey: 'destination_id', as: 'destination'})
-  transferhistory.mTransferHistory.belongsTo(user.mUser, {foreignKey: 'arrival_id',  as: 'arrival'})
+  }
+
   const result = await transferhistory.mTransferHistory.findAll({
     where: {
       user_id: query.user_id

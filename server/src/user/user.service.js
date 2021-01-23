@@ -24,6 +24,7 @@ const getUserById = async (id) => {
 const signUp = async (params) => {
   let error = null;
   let account = [];
+  const AMOUNT = 100;
 
   if(params.fbUID){
     account = await user.getAccountByFB(params.fbUID);
@@ -75,7 +76,7 @@ const signUp = async (params) => {
   // khởi tạo tài khoản cho userNew
   let bankAccountNewData = {} ;
   bankAccountNewData.user_id = userNew.id;
-  bankAccountNewData.amount = 0;
+  bankAccountNewData.amount = AMOUNT;
   bankAccountNewData.is_block = 1; // mở
   bankAccountNewData.status = 1; // default và không dùng đén
 

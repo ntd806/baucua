@@ -15,7 +15,59 @@ module.exports = class User extends Main {
   }
 
   createUser(data){
-    return this.mUser.create(data);
+    return new Promise(async (resolve, reject) => {
+       try {
+         let user = await this.mUser.create(data);
+         resolve(user);
+       } catch (e) {
+         reject(e)
+       }
+    })
+    // return this.mUser.create(data);
+  }
+
+  updateUser(id, dataEdit){
+    return new Promise(async (resolve, reject) => {
+      try {
+        let valueUpdate = {};
+
+        if (dataEdit.name) {
+          valueUpdate.name = dataEdit.name
+        }
+        if (dataEdit.phone) {
+          valueUpdate.phone = dataEdit.phone
+        }
+        if (dataEdit.address) {
+          valueUpdate.address = dataEdit.address
+        }
+
+        let userUpdate = await this.mUser.update(valueUpdate, {
+          where:{
+            id: id
+          }
+        });
+        console.log(userUpdate);
+        resolve(userUpdate);
+      } catch (e) {
+        reject(e)
+      }
+    })
+  }
+
+  async getUserById(id) {
+    let user = await this.mUser.findOne({
+      where:{
+        id: id
+      }
+    });
+
+    if (user) {
+      let result = user.dataValues;
+      delete result.password;
+      return result;
+    } else {
+      return  null;
+    }
   }
 
   async getAccountByFB(fbUID){
@@ -49,4 +101,4 @@ module.exports = class User extends Main {
     }
     return result[0];
   }
-}
+};

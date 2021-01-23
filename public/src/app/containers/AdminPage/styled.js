@@ -39,3 +39,9 @@ export const StyledSpace = styled(Space)`
 export const StyledSelect = styled(Select)`
   width: 100%;
 `;
+
+export const SearchContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;

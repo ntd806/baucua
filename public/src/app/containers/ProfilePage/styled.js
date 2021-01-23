@@ -39,3 +39,14 @@ export const Title = styled.h1`
 export const Text = styled.div`
   /* font-size: 1.5rem */
 `;
+
+export const ProfileTitle = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+`;
+
+export const ProfileSpace = styled(Space)`
+  display: flex;
+`;

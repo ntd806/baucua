@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom';
 
-import HomePage from 'Containers/HomePage';
+import AdminPage from 'Containers/AdminPage';
 import LoginPage from 'Containers/LoginPage';
 import RegisterPage from 'Containers/RegisterPage';
 import ProfilePage from 'Containers/ProfilePage';
@@ -36,8 +36,8 @@ function App() {
   const loading = useRef();
 
   useEffect(() => {
-    if (!['/login', '/register', '/home', '/profile'].includes(window.location.pathname)) {
-      window.location.href = '/home';
+    if (!['/login', '/register', '/admin', '/profile'].includes(window.location.pathname)) {
+      window.location.href = '/admin';
     }
     let setup = () => {};
     let resize = () => {};
@@ -58,22 +58,24 @@ function App() {
       <Loading ref={loading} />
       <BrowserRouter>
         <Switch>
-          <PrivateRoute path="/home" isLogin={isLogin}>
-            <HomePage />
+          <PrivateRoute path="/admin" isLogin={isLogin}>
+            <AdminPage loading={loading} />
+          </PrivateRoute>
+          <PrivateRoute path="/profile" isLogin={isLogin}>
+            <ProfilePage loading={loading} />
           </PrivateRoute>
           <Route
             exact
             path="/login"
-            component={() => (isLogin ? <Redirect to="/home" /> : <LoginPage loading={loading} />)}
+            component={() => (isLogin ? <Redirect to="/admin" /> : <LoginPage loading={loading} />)}
           />
           <Route
             exact
             path="/register"
             component={() =>
-              isLogin ? <Redirect to="/home" /> : <RegisterPage loading={loading} />
+              isLogin ? <Redirect to="/admin" /> : <RegisterPage loading={loading} />
             }
           />
-          <Route exact path="/profile" component={() => <ProfilePage loading={loading} />} />
         </Switch>
       </BrowserRouter>
     </Container>

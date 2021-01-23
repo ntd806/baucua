@@ -203,7 +203,7 @@ const getMatchesHistory = async(query) => {
 
   let pageA = +(limit * page);
   let limitA = +limit;
-  return await matcheshistory.getMatchesHistoryPagination(query,pageA, limitA);
+  return await matcheshistory.getMatchesHistoryPagination(query,limitA , pageA);
 }
 
 const getTransfersHistory = async(params) => {

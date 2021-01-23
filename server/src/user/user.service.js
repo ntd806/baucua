@@ -200,7 +200,10 @@ const createOption = async(params) => {
 const getMatchesHistory = async(query) => {
   let { page = 1, limit = 10 } = query;
   page = page - 1;
-  return await matcheshistory.getMatchesHistoryPagination(query, +(limit * page), +limit);
+
+  let pageA = +(limit * page);
+  let limitA = +limit;
+  return await matcheshistory.getMatchesHistoryPagination(query,pageA, limitA);
 }
 
 const getTransfersHistory = async(params) => {

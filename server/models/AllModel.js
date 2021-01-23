@@ -231,5 +231,33 @@ module.exports = class AllModel {
 
         return modelCharacter;
     }
+
+    mainConversionRate() {
+        class modelConversionRate extends Sequelize.Model {} modelConversionRate.init({
+            number_conversion: {
+                type:Sequelize.INTEGER,
+                field: 'number_conversion'
+            },
+            type: {
+                type:Sequelize.STRING,
+                field: 'type'
+            },
+            created_at: {
+                type: Sequelize.DATE,
+                field: 'createdAt'
+            },
+            updated_at: {
+                type: Sequelize.TIME,
+                field: 'updatedAt'
+            }
+        },
+        { sequelize, modelName: 'conversion_rates',
+            tableName: 'conversion_rates',
+            timestamps: false
+        });
+
+        return modelConversionRate;
+    }
+
 }
 

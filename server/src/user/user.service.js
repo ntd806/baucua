@@ -5,6 +5,7 @@ const Option = require('../../models/options');
 const MatchesHistory = require('../../models/matcheshistory');
 const Character = require('../../models/characters');
 const BankAccount = require('../../models/bankaccounts');
+const ConversionRate = require('../../models/conversion_rate');
 
 const validator = require('validator');
 
@@ -15,6 +16,7 @@ let option = new Option();
 let matcheshistory = new MatchesHistory();
 let character = new Character();
 let bankaccount = new BankAccount();
+let conversionRate = new ConversionRate();
 
 // common -------------
 const getUserById = async (id) => {
@@ -98,13 +100,49 @@ const deposit = async(params) => {
   const result = await transferhistory.createTransferHistory(params);
 }
 
+const transferService = {}
+transferService.transfer = async (userFrom, userTo, money) => {
+  let result = {};
+  let isPush = false;
+  let bankUserTo = await bankAccount.getBankAccountByUserId(userTo.id);
+  if (!bankUserTo) {
+    // khởi tạo tài khoản cho userNew
+    let bankAccountNewData = {} ;
+    bankAccountNewData.user_id = userTo.id;
+    bankAccountNewData.amount = 0;
+    bankAccountNewData.is_block = 1; // mở
+    bankAccountNewData.status = 1; // default và không dùng đén
+    bankUserTo = await bankaccount.createBankAccount(bankAccountNewData)
+  }
+  let transHis = await bankaccount.transfer(userFrom, userTo, bankUserTo, money);
+  bankUserTo.amount += money;
+  if (money >= 0) {
+    isPush = true;
+  } else {
+    isPush = false;
+  }
+
+  result.transferHistory = transHis;
+  result.bankDestination = bankUserTo;
+  result.destination = userTo;
+  result.arrival= userTo;
+  return {
+    isPush: isPush,
+    result: result
+  }
+}
+
 const transferHistoryService = {};
 transferHistoryService.getTransfersHistory = async (query) => {
   let { page = 1, limit = 10, search } = query;
   page = page - 1;
+  try {
+    transferhistory.mTransferHistory.belongsTo(user.mUser, {foreignKey: 'destination_id', as: 'destination'})
+    transferhistory.mTransferHistory.belongsTo(user.mUser, {foreignKey: 'arrival_id',  as: 'arrival'})
+  } catch (e) {
 
-  transferhistory.mTransferHistory.belongsTo(user.mUser, {foreignKey: 'destination_id', as: 'destination'})
-  transferhistory.mTransferHistory.belongsTo(user.mUser, {foreignKey: 'arrival_id',  as: 'arrival'})
+  }
+
   const result = await transferhistory.mTransferHistory.findAll({
     where: {
       user_id: query.user_id
@@ -115,7 +153,6 @@ transferHistoryService.getTransfersHistory = async (query) => {
   },{raw: true});
   return result;
 }
-
 transferHistoryService.validate = async (params) => {
   let userArrival = null;
   let arrival_id = Number(params.user_id);
@@ -151,6 +188,10 @@ transferHistoryService.validate = async (params) => {
   }
 }
 
+const conversionRateService = {};
+conversionRateService.getAll = async () => {
+    return await conversionRate.getAll();
+}
 
 const createOption = async(params) => {
   const result = await option.createOption(params);
@@ -344,5 +385,7 @@ module.exports = {
   getMembers,
   updateUser,
   transferHistoryService,
+  conversionRateService,
+  transferService,
   getUserById
 };

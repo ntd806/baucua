@@ -1,5 +1,7 @@
 'use strict';
 const Main = require('./AllModel');
+const TransferHistory = require('./transfershistory');
+let transferHistory = new TransferHistory();
 module.exports = class BankAccount extends Main {
     constructor() {
         super();
@@ -12,6 +14,26 @@ module.exports = class BankAccount extends Main {
       }
     });
   }
+
+    async getBankAccountByUserId(userId) {
+        let backAccount = await this.mBankAccount.findOne({
+            where: {
+                user_id: userId,
+            }
+        });
+        return backAccount ? backAccount.dataValues : null;
+    }
+
+    createBankAccount(data){
+        return new Promise((resolve, reject) => {
+            try {
+                let bankAccount = this.mBankAccount.create(data);
+                resolve(bankAccount)
+            } catch (e) {
+                reject(e)
+            }
+        })
+    }
 
   async getAmount(user_id){
     let result = await this.mBankAccount.findAll({
@@ -53,5 +75,21 @@ module.exports = class BankAccount extends Main {
             },
             attributes: [['id', 'bankaccount_id'], 'amount', 'status']
         })
+    }
+
+    async transfer(userFrom, userTo, bankUserTo, amountTransfer) {
+        await this.mBankAccount.update(
+            { amount: bankUserTo.amount + amountTransfer },
+            { where: { id: bankUserTo.id } }
+        )
+        let data = {};
+        data.user_id = userFrom.id;
+        data.bank_acc_id = bankUserTo.id;
+        data.summand = amountTransfer;
+        data.destination_id = userTo.id;
+        data.arrival_id = userFrom.id;
+        data.status = 1;
+        let transfer = await transferHistory.createTransferHistory(data)
+        return await transferHistory.getTransferHistoryById(transfer.id)
     }
 }

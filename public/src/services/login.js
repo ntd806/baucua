@@ -1,8 +1,9 @@
 import axios from 'axios';
+import getUrl from 'Constants/url';
 
-export function login(params) {
+export function login(data) {
   return axios
-    .post('https://5ffdb3f7d9ddad0017f6867b.mockapi.io/login', params)
+    .post(getUrl('login'), data)
     .then((res) => res.data)
     .catch(() => {});
 }

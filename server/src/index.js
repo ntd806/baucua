@@ -4,6 +4,7 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const express = require('express');
 const path = require('path');
+require('dotenv').config();
 
 const app = express();
 app.use(function(req, res, next) {
@@ -25,7 +26,7 @@ const io = require('socket.io')(server);
 const HookProcessor = require('./hookProcessor');
 const LoadTester = require('./loadTester');
 
-const process = new HookProcessor('116529085375415_566172007077785', io);
+const hookProcessor = new HookProcessor('116529085375415_566172007077785', io);
 const loadTester = new LoadTester(io);
 
 app.get('/', (req, res) => {
@@ -54,7 +55,7 @@ app.get('/webhook', function(req, res) {
 app.post('/webhook', async(req, res) => {
     const hookObject = req.body;
     console.log(JSON.stringify(hookObject, null, 2));
-    await process.processHook(hookObject);
+    await hookProcessor.processHook(hookObject);
 
     res.status(200).send("OK");
 });
@@ -64,5 +65,8 @@ const ip = "127.0.0.1"; // process.env.IP || "127.0.0.1";
 const port = 3002; // process.env.PORT || 3002;
 
 server.listen(port, ip, function() {
-    console.log("Express server listening at %s:%d ", ip, port);
+    console.log("Express server listening at %s:%d ", ip, port, process.env.PORT);
 });
+
+
+// console.log(doten.env.PORT);

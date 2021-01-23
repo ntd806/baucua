@@ -25,10 +25,10 @@ p {
     width: 100px;
     height: 100px;
     position: absolute;
-    background-color: chartreuse;
+    /* background-color: chartreuse; */
   }
   .start_9 {
-    top: 30%; position: absolute;
+    top: 34.1%; position: absolute;
     margin-left: auto;
     margin-right: auto;
     left: 0;
@@ -39,39 +39,165 @@ p {
   }
   /*****************************************************************/
   /*****************************************************************/
-  #start_9{
-    height: 9%;
-    width: 19%;
-  }
   #oval {
      bottom: 15%;
      height: 7.5%;
      width: 52%;
   }
   #start_1 {
-    top: 0%; left: 43%;
+    top: 0%; left: 42.5%;
+    background-color: blueviolet
   }
   #start_2 {
-    top: 7%; right: 23%;
+    top: 7%; right: 23.6%;
+    background-color: blueviolet
   }
   #start_3 {
-    top: 22%; right: 15.6%;
+    top: 25%; right: 16%;
+    background-color: blueviolet
   }
   #start_4 {
-    bottom: 46%; right: 23%;
+    bottom: 41%; right: 23.5%;
+    background-color: blueviolet
   }
   #start_5 {
-    bottom: 39%; left: 43%;
+    bottom: 33.3%; left: 42.5%;
+    background-color: blueviolet
   }
   #start_6 {
-    bottom: 46%; left: 24%;
+    bottom: 41%; left: 24%;
+    background-color: blueviolet
   }
   #start_7 {
-    top: 22%; left: 17%
+    top: 25%; left: 17%;
+    background-color: blueviolet
   }
   #start_8 {
-    top: 7%; left: 25%;
+    top: 7%; left: 24.5%;
+    background-color: blueviolet
+  }
+  #start_9{
+    height: 6%;
+    width: 15%;
+    background-color: blueviolet
+  }
+  #start_10{
+    height: 6%;
+    width: 6%;
+    bottom: 20%; left: 27.9%;
+    background-color: blueviolet
+  }
+  #start_11{
+    height: 6%;
+    width: 6%;
+    bottom: 20%; left: 40.7%;
+    background-color: blueviolet
+  }
+  #start_12{
+    height: 6%;
+    width: 6%;
+    bottom: 20%; left: 53.6%;
+    background-color: blueviolet
+  }
+  #start_13{
+    height: 6%;
+    width: 6%;
+    bottom: 20%; 
+    right: 27.5%;
+    background-color: blueviolet
+  }
+#result_1 {
+    height: 5%;
+    width: 5%;
+    bottom: 6%; left: 17.7%;
+    background-color: blueviolet
+  }
+  #result_2 {
+    height: 5%;
+    width: 5%;
+    bottom: 6%; left: 26.2%;
+    background-color: blueviolet
+  }
+  #result_3 {
+    height: 5%;
+    width: 5%;
+    bottom: 6%;  left: 34.55%;
+    background-color: blueviolet
+  }
+  #result_4 {
+   height: 5%;
+    width: 5%;
+    bottom: 6%;  left: 43%;
+    background-color: blueviolet
+  }
+  #result_5 {
+   height: 5%;
+    width: 5%;
+    bottom: 6%;  right: 43.6%;
+    background-color: blueviolet
+  }
+  #result_6 {
+   height: 5%;
+    width: 5%;
+    bottom: 6%;  right: 35.2%;
+    background-color: blueviolet
+  }
+  #result_7 {
+   height: 5%;
+    width: 5%;
+    bottom: 6%; right: 26.7%;
+    background-color: blueviolet
+  }
+  #result_8 {
+   height: 5%;
+    width: 5%;
+    bottom: 6%;  right: 18.3%;
+    background-color: blueviolet
+  }
+  #start_22 {
+   height: 5%;
+    width: 5%;
+    bottom: 30%; left: 26%;
+    background-color: blueviolet
+  }
+  #start_23 {
+   height: 5%;
+    width: 5%;
+    bottom: 30%;  right: 25.4%;
+    background-color: blueviolet
   }
   #loadding {
     width: 100%; height: 100%; background-color: #fff; position: absolute; top: 0; left: 0; z-index: 10000;
   }
+  /***********************************************************************************/
+  .bg-white-color {
+    opacity: 1.0;
+    background:
+          /* top, transparent black, faked with gradient */ 
+          linear-gradient(
+            rgba(0, 0, 0, 0.7), 
+            rgba(0, 0, 0, 0.7)
+          ),
+  }
+  .bg-chartreuse-color {
+    background-color: chartreuse !important;
+  }
+  
+  .bg-spin-color {
+    background-color: blueviolet !important;
+  }
+  .blink-one {
+    z-index: 100000;
+    opacity: 1;
+    background:
+    linear-gradient(
+      rgba(0, 0, 0, 0.7), 
+      rgba(0, 0, 0, 0.7)
+    );
+    animation: blinker-one 0.5s linear infinite;
+    }
+    @keyframes blinker-one {
+    0% {
+      opacity: 0;
+    }
+    }

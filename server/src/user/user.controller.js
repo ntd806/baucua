@@ -54,7 +54,8 @@ async function signIn(req, res, next) {
         result:{
           id: user.id,
           avatar: user.image,
-          name: user.name
+          name: user.name,
+          amount: user.bankaccount['amount']
         },
         success: true,
         message: ""

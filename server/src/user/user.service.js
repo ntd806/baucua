@@ -92,6 +92,7 @@ const signUp = async (params) => {
 
 const signIn = async (params) => {
   const result = await user.login(params);
+  console.log(result.bankaccount['amount']);
   return result;
 }
 

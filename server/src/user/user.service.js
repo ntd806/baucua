@@ -143,13 +143,13 @@ transferHistoryService.getTransfersHistory = async (query) => {
 
   }
 
-  const result = await transferhistory.mTransferHistory.findAll({
+  const result = await transferhistory.mTransferHistory.findAndCountAll({
     where: {
       destination_id: query.user_id
     },
     offset: +(limit * page),
     limit: +limit,
-    include: [{model: user.mUser , as: 'destination' , attributes: ['name']},{model: user.mUser , as: 'arrival' , attributes: ['name']}]
+    include: [{model: user.mUser , as: 'destination' , attributes: ['name']},{model: user.mUser , as: 'arrival' , attributes: ['name']} ]
   },{raw: true});
   return result;
 }

@@ -15,6 +15,7 @@ router.use(upload.array());
 
 router.post('/setting', setting);
 router.get('/setting', getOption);
+router.post('/update-setting', updateOption);
 router.get('/matches-history', matchesHistory);
 router.get('/transfers-history', getTransfersHistory);
 router.get('/choice-to-number-map', getChoiceToNumbberMap);
@@ -363,6 +364,23 @@ async function getOption(req, res) {
     const optionList = await service.getOption(req.query);
     return res.status(200).json({
       result: optionList,
+      success: true,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+/***
+ * Update option
+ * Author: ntd806
+ * time: 01/24/2021
+ */
+async function updateOption(req, res) {
+  try {
+    const optionList = await service.updateOption(req.body);
+    return res.status(200).json({
       success: true,
       message: ''
     });

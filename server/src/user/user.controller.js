@@ -33,6 +33,7 @@ router.post('/post_deposit', deposit);
 router.post('/register', signUp);
 router.post('/login', signIn);
 router.post('/post_edit_profile', postEditProfile);
+router.get('/get-user-history', getUsersHistory);
 
 
 module.exports = router; 
@@ -381,6 +382,24 @@ async function updateOption(req, res) {
   try {
     const optionList = await service.updateOption(req.body);
     return res.status(200).json({
+      success: true,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+/***
+ * Update option
+ * Author: ntd806
+ * time: 01/24/2021
+ */
+async function getUsersHistory(req, res) {
+  try {
+    const usersHistoryList = await service.getUsersHistory(req.query);
+    return res.status(200).json({
+      result : usersHistoryList,
       success: true,
       message: ''
     });

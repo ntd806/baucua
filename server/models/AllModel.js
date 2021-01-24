@@ -17,8 +17,11 @@ module.exports = class AllModel {
         class modelAdmin extends Sequelize.Model {}
         modelAdmin.init({
             id: {type: Sequelize.INTEGER, autoIncrement: true, allowNull: false, primaryKey: true},
-            fbUID:{type: Sequelize.STRING},
-            gg_email:{type: Sequelize.STRING},
+            user_name:{type: Sequelize.STRING},
+            password:{type: Sequelize.STRING},
+            login_at:{type: Sequelize.STRING},
+            status:{type: Sequelize.DATE},
+            token:{type: Sequelize.STRING},
         },
         { sequelize, modelName: 'user_admins',
             tableName: 'user_admins',
@@ -275,6 +278,25 @@ module.exports = class AllModel {
         });
 
         return modelConversionRate;
+    }
+
+    /**
+     * MainUserLogin
+     * author: ntd806
+     * Time: 01/24/2021
+     */
+    mainUserLogin(){
+        class modelUserLogin extends Sequelize.Model {}
+        modelUserLogin.init({
+            id: {type: Sequelize.INTEGER, autoIncrement: true, allowNull: false, primaryKey: true},
+            user_id:{type: Sequelize.STRING},
+            login_at:{type: Sequelize.DATE},
+        },
+        { sequelize, modelName: 'login_users',
+            tableName: 'login_users',
+            timestamps: true
+        });
+        return modelUserLogin;
     }
 
 }

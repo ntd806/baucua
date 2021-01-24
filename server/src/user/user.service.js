@@ -92,6 +92,7 @@ const signUp = async (params) => {
 
 const signIn = async (params) => {
   const result = await user.login(params);
+  console.log(result.bankaccount['amount']);
   return result;
 }
 
@@ -143,13 +144,13 @@ transferHistoryService.getTransfersHistory = async (query) => {
 
   }
 
-  const result = await transferhistory.mTransferHistory.findAll({
+  const result = await transferhistory.mTransferHistory.findAndCountAll({
     where: {
-      user_id: query.user_id
+      destination_id: query.user_id
     },
     offset: +(limit * page),
     limit: +limit,
-    include: [{model: user.mUser , as: 'destination' , attributes: ['name']},{model: user.mUser , as: 'arrival' , attributes: ['name']}]
+    include: [{model: user.mUser , as: 'destination' , attributes: ['name']},{model: user.mUser , as: 'arrival' , attributes: ['name']} ]
   },{raw: true});
   return result;
 }
@@ -197,8 +198,13 @@ const createOption = async(params) => {
   const result = await option.createOption(params);
 }
 
-const getMatchesHistory = async(params) => {
-  return await matcheshistory.getMatchesHistory(params);
+const getMatchesHistory = async(query) => {
+  let { page = 1, limit = 10 } = query;
+  page = page - 1;
+
+  let pageA = +(limit * page);
+  let limitA = +limit;
+  return await matcheshistory.getMatchesHistoryPagination(query,limitA , pageA);
 }
 
 const getTransfersHistory = async(params) => {
@@ -335,7 +341,7 @@ const getMembers = async (query) => {
   let { page = 1, limit = 10, search } = query;
   page = page - 1;
   const { Op } = user;
-  const result = await user.mUser.findAll({
+  const result = await user.mUser.findAndCountAll({
     attributes: ['id', 'name', 'address', 'phone', 'status'],
     where: {
       [Op.or]: [
@@ -359,6 +365,7 @@ const getMembers = async (query) => {
     offset: +(limit * page),
     limit: +limit,
   });
+  console.log(result);
   return result;
 };
 
@@ -382,7 +389,7 @@ const updateUser = async (dataEdit) => {
 const getOption = async (params) => {
   const {user_id, is_admin} = params;
   if (is_admin) {
-    return await Option.getOption();
+    return await option.getOption();
   }
   else{
     return null;

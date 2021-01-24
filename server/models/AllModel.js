@@ -38,7 +38,6 @@ module.exports = class AllModel {
             created_at:{type: Sequelize.DATE},
             updated_at:{type: Sequelize.DATE},
             status:{type: Sequelize.INTEGER},
-            password:{type: Sequelize.STRING},
             phone: {type: Sequelize.NUMBER}
         },
         { sequelize, modelName: 'users',

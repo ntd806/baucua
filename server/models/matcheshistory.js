@@ -24,6 +24,20 @@ module.exports = class MatchesHistory extends Main {
     return result;
   }
 
+  async getMatchesHistoryPagination(data, limit, offset) {
+    let result = await this.mMatchesHistory.findAndCountAll({
+      where: {
+        user_id: data.user_id,
+      },
+      order: [
+        ['created_at', 'DESC']
+      ],
+      limit: limit,
+      offset: offset
+    });
+    return result;
+  }
+
   async createMatchesHistory(data){
     await this.mMatchesHistory.create(data);
   }

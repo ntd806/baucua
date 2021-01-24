@@ -54,7 +54,8 @@ async function signIn(req, res, next) {
         result:{
           id: user.id,
           avatar: user.image,
-          name: user.name
+          name: user.name,
+          amount: user.bankaccount['amount']
         },
         success: true,
         message: ""
@@ -132,7 +133,7 @@ async function setting(req, res, next) {
 
 async function matchesHistory(req, res, next){
   try {
-    var result = await service.getMatchesHistory(req.query);
+    let result = await service.getMatchesHistory(req.query);
     return res.status(200).json({
       success: true,
       result: result,
@@ -358,7 +359,8 @@ async function getMembers(req, res, next) {
  */
 async function getOption(req, res) {
   try {
-    const optionList = await service.getOption(req.body);
+    console.log(req.query);
+    const optionList = await service.getOption(req.query);
     return res.status(200).json({
       result: optionList,
       success: true,

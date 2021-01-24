@@ -92,6 +92,7 @@ const signUp = async (params) => {
 
 const signIn = async (params) => {
   const result = await user.login(params);
+  console.log(result.bankaccount['amount']);
   return result;
 }
 
@@ -340,7 +341,7 @@ const getMembers = async (query) => {
   let { page = 1, limit = 10, search } = query;
   page = page - 1;
   const { Op } = user;
-  const result = await user.mUser.findAll({
+  const result = await user.mUser.findAndCountAll({
     attributes: ['id', 'name', 'address', 'phone', 'status'],
     where: {
       [Op.or]: [
@@ -364,6 +365,7 @@ const getMembers = async (query) => {
     offset: +(limit * page),
     limit: +limit,
   });
+  console.log(result);
   return result;
 };
 

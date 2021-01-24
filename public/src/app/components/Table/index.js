@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import { Pagination } from 'antd';
+import _ from 'lodash';
 
 import { Container, TableContainer, HeaderContainer, BodyContainer } from './styled';
 
@@ -10,6 +11,8 @@ export default memo(function Table({
   onActionClick,
   style = {},
   pagination,
+  actionCondition,
+  onPageChange,
 }) {
   return (
     <Container style={style} size={'small'} direction={'vertical'}>
@@ -19,7 +22,7 @@ export default memo(function Table({
             {columns.map(({ title, key }, idx) => (
               <th key={`${key}-${idx}`}>{title}</th>
             ))}
-            {actions.length > 0 && <th>{'Actions'}</th>}
+            {!_.isEmpty(actions) && <th>{'Actions'}</th>}
           </tr>
         </HeaderContainer>
         <BodyContainer>
@@ -29,20 +32,36 @@ export default memo(function Table({
                 {columns.map(({ dataIndex }, id) => (
                   <td key={`${dataIndex}-${id}`}>{e[dataIndex]}</td>
                 ))}
-                {actions.length > 0 && (
-                  <td key={`actions-${idx}`}>
-                    <div className={'actions'}>
-                      {actions.map(({ Component, key, color }) => (
-                        <Component
-                          style={{ margin: '5px' }}
-                          key={key}
-                          onClick={() => onActionClick(e, key)}
-                          twoToneColor={color}
-                        />
-                      ))}
-                    </div>
-                  </td>
-                )}
+                {!_.isEmpty(actions) &&
+                  (actionCondition ? (
+                    <td style={{ width: '100px' }} key={`actions-${idx}`}>
+                      <div className={'actions'}>
+                        {actions[`${Boolean(e[actionCondition])}`].map(
+                          ({ Component, key, color }) => (
+                            <Component
+                              style={{ margin: '5px' }}
+                              key={key}
+                              onClick={() => onActionClick(e, key)}
+                              twoToneColor={color}
+                            />
+                          ),
+                        )}
+                      </div>
+                    </td>
+                  ) : (
+                    <td style={{ width: '100px' }} key={`actions-${idx}`}>
+                      <div className={'actions'}>
+                        {actions.map(({ Component, key, color }) => (
+                          <Component
+                            style={{ margin: '5px' }}
+                            key={key}
+                            onClick={() => onActionClick(e, key)}
+                            twoToneColor={color}
+                          />
+                        ))}
+                      </div>
+                    </td>
+                  ))}
               </>
             </tr>
           ))}
@@ -53,6 +72,7 @@ export default memo(function Table({
           style={{ textAlign: 'center' }}
           current={pagination.current}
           total={pagination.total}
+          onChange={onPageChange}
         />
       )}
     </Container>

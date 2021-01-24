@@ -1,22 +1,28 @@
 import React, { memo, useCallback } from 'react';
 import Table from 'Src/app/components/Table';
-import { DollarCircleTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { DollarCircleTwoTone, LockTwoTone, UnlockTwoTone } from '@ant-design/icons';
 
-export default memo(function Members({ onTopUpClick, data, onDeleteClick }) {
+export default memo(function Members({
+  onTopUpClick,
+  data,
+  onLockAction,
+  paging: { total, page },
+  onPageChange,
+}) {
   const onActionClick = useCallback(
     (value, key) => {
       switch (key) {
         case 'topUp':
           onTopUpClick(value);
           break;
-        case 'delete':
-          onDeleteClick(value);
+        case 'lock':
+          onLockAction(value);
           break;
         default:
           break;
       }
     },
-    [onTopUpClick, onDeleteClick],
+    [onTopUpClick, onLockAction],
   );
   return (
     <Table
@@ -37,13 +43,18 @@ export default memo(function Members({ onTopUpClick, data, onDeleteClick }) {
           key: 'phone',
         },
       ]}
-      actions={[
-        { Component: DollarCircleTwoTone, key: 'topUp' },
-        { Component: DeleteTwoTone, key: 'delete', color: '#eb2f96' },
-      ]}
+      actions={{
+        true: [
+          { Component: DollarCircleTwoTone, key: 'topUp' },
+          { Component: LockTwoTone, key: 'lock', color: '#eb2f96' },
+        ],
+        false: [{ Component: UnlockTwoTone, key: 'lock', color: '#52c41a' }],
+      }}
+      actionCondition={'status'}
       onActionClick={onActionClick}
       dataSource={data}
-      pagination={{ total: 50, current: 1 }}
+      pagination={{ total, current: page }}
+      onPageChange={onPageChange}
     />
   );
 });

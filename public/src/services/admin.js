@@ -22,9 +22,23 @@ export function topUp(data) {
     .catch(() => {});
 }
 
-export function blockUser(data) {
+export function lockUser(data) {
   return axios
-    .post(getUrl('blockUser'), data)
+    .post(getUrl('lockUser'), data)
+    .then((res) => res.data)
+    .catch(() => {});
+}
+
+export function getSetting(params) {
+  return axios
+    .get(getUrl('settings'), { params })
+    .then((res) => res.data)
+    .catch(() => {});
+}
+
+export function updateSetting(body) {
+  return axios
+    .post(getUrl('updateSetting'), body)
     .then((res) => res.data)
     .catch(() => {});
 }

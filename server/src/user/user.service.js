@@ -266,7 +266,7 @@ const endGame = async (params) => {
     else {
       bet.push(parseInt(element));
     }
-  } );
+  });
   console.log("bet");
   console.log(bet.length);
   if(!params.user_id){

@@ -6,6 +6,7 @@ const MatchesHistory = require('../../models/matcheshistory');
 const Character = require('../../models/characters');
 const BankAccount = require('../../models/bankaccounts');
 const ConversionRate = require('../../models/conversion_rate');
+const UserLogin = require('../../models/userlogin');
 
 const validator = require('validator');
 
@@ -17,7 +18,7 @@ let matcheshistory = new MatchesHistory();
 let character = new Character();
 let bankaccount = new BankAccount();
 let conversionRate = new ConversionRate();
-
+let userLogin = new UserLogin();
 // common -------------
 const getUserById = async (id) => {
   return await user.getUserById(id);;
@@ -411,6 +412,21 @@ const updateOption = async (params) => {
   }
 }
 
+/**
+ * getUsersHistory
+ * Author ntd806
+ * time 01/24/2021
+ */
+const getUsersHistory = async (params) => {
+  const {user_id, is_admin} = params;
+  if (is_admin) {
+    return await userLogin.getUsersHistory(params);
+  }
+  else{
+    return null;
+  }
+}
+
 module.exports = {
   signUp,
   signIn,
@@ -432,4 +448,5 @@ module.exports = {
   getUserById,
   getOption,
   updateOption,
+  getUsersHistory,
 };

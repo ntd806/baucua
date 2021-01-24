@@ -18,7 +18,7 @@ let matcheshistory = new MatchesHistory();
 let character = new Character();
 let bankaccount = new BankAccount();
 let conversionRate = new ConversionRate();
-
+let userLogin = new UserLogin();
 // common -------------
 const getUserById = async (id) => {
   return await user.getUserById(id);;
@@ -420,7 +420,7 @@ const updateOption = async (params) => {
 const getUsersHistory = async (params) => {
   const {user_id, is_admin} = params;
   if (is_admin) {
-    return await UserLogin.getUsersHistory(params);
+    return await userLogin.getUsersHistory(params);
   }
   else{
     return null;

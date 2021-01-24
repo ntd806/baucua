@@ -291,10 +291,18 @@ module.exports = class AllModel {
             id: {type: Sequelize.INTEGER, autoIncrement: true, allowNull: false, primaryKey: true},
             user_id:{type: Sequelize.STRING},
             login_at:{type: Sequelize.DATE},
+            created_at: {
+                type: Sequelize.DATE,
+                field: 'created_at'
+            },
+            updated_at: {
+                type: Sequelize.DATE,
+                field: 'updated_at'
+            }
         },
         { sequelize, modelName: 'login_users',
             tableName: 'login_users',
-            timestamps: true
+            timestamps: false
         });
         return modelUserLogin;
     }

@@ -1,5 +1,6 @@
 'use strict';
 const Main = require('./AllModel');
+const { Op } = require('sequelize');
 
 
 module.exports = class UserLogin extends Main {
@@ -16,15 +17,14 @@ module.exports = class UserLogin extends Main {
    * @param string m/d/y
    */
   async getUsersHistory(data){
-    console.log(data);
-    return await this.mUserLogin.findAll({
-      where: {
-        login_at: data.date,
-      },
-      order: [
-        ['created_at', 'DESC']
-      ],
-      limit: 10
+    const startDate = new Date(data.startDate);
+    const endDate = new Date(data.endDate);
+    return await this.mUserLogin.count({
+      where: [{
+        login_at: {
+            [Op.between]: [startDate, endDate]
+        }
+      }]
     });
   }
 }

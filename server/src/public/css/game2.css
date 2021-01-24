@@ -454,3 +454,52 @@
 	.bg-spin {
 		background-color: white !important;
 	}
+
+	.user-info{
+		height: 58px;
+		margin-bottom: 10px;
+		display: block;
+		margin-top: 5px;
+		margin-left: 5px;
+		padding: 0;
+		border: 0;
+		font-size: 100%;
+		position: absolute;
+	}
+
+	.avatar{
+		float: left;
+    width: 45px;
+    height: 45px;
+    border-radius: 50% !important;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 7px;
+	overflow: hidden;
+	margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+	}
+
+	.amount {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		font: inherit;
+		vertical-align: baseline;
+		/* float: left; */
+		width: 100%;
+		color: #666;
+		font-size: 13px;
+		/* display: inline; */
+	}
+
+	.info {
+		padding: 0;
+		border: 0;
+		display: inline;
+		font: inherit;
+		vertical-align: baseline;
+		font-size: 15px;
+	}

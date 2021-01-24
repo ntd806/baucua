@@ -302,7 +302,7 @@ async function blockUser(req,res,next) {
 
     return res.status(200).json({
       success: true,
-      message: 'Block người dùng thành công!'
+      message: `${req.body.is_block ? 'Lock' : 'Unlock'} người dùng thành công!`,
     });
   } catch (e) {
     res.status(400).json({ Error: e.message })

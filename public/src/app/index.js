@@ -5,7 +5,7 @@ import AdminPage from 'Containers/AdminPage';
 import LoginPage from 'Containers/LoginPage';
 import RegisterPage from 'Containers/RegisterPage';
 import ProfilePage from 'Containers/ProfilePage';
-import GamePage from 'Containers/GamePage';
+import HomePage from 'Containers/HomePage';
 import Loading from 'Components/Loading';
 import { validateLogin } from 'Src/utils/auth';
 import { setup as setupCoalesce, resize as resizeCoalesce } from 'Src/styles/background/coalesce';
@@ -38,9 +38,9 @@ function App() {
 
   useEffect(() => {
     if (
-      !['/login', '/register', '/admin', '/profile', '/game'].includes(window.location.pathname)
+      !['/login', '/register', '/admin', '/profile', '/home'].includes(window.location.pathname)
     ) {
-      window.location.href = '/admin';
+      window.location.href = '/profile';
     }
     let setup = () => {};
     let resize = () => {};
@@ -60,15 +60,15 @@ function App() {
     <Container className={'content--canvas'}>
       <Loading ref={loading} />
       <BrowserRouter>
+        <Route path="/home">
+          <HomePage loading={loading} />
+        </Route>
         <Switch>
           <PrivateRoute path="/admin" isLogin={isLogin}>
             <AdminPage loading={loading} />
           </PrivateRoute>
           <PrivateRoute path="/profile" isLogin={isLogin}>
             <ProfilePage loading={loading} />
-          </PrivateRoute>
-          <PrivateRoute path="/game" isLogin={isLogin}>
-            <GamePage loading={loading} />
           </PrivateRoute>
           <Route
             exact

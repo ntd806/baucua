@@ -12,7 +12,9 @@ export default function getUrl(type) {
     editProfile: `${BASE_URL}/user/post_edit_profile`,
     getConversionRate: `${BASE_URL}/user/get_all_conversion_rate`,
     topUp: `${BASE_URL}/user/post_deposit`,
-    blockUser: `${BASE_URL}/user/blockUser`,
+    lockUser: `${BASE_URL}/user/blockUser`,
+    settings: `${BASE_URL}/user/setting`,
+    updateSetting: `${BASE_URL}/user/update-setting`,
   };
   const urlProd = {
     login: 'https://600286dd4f17c800175580c3.mockapi.io/login',

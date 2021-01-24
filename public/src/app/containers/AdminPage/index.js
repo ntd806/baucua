@@ -8,7 +8,9 @@ import {
   getMembers as serviceGetMembers,
   getConversionRate as serviceGetConversionRate,
   topUp as serviceTopUp,
-  blockUser as serviceBlockUser,
+  lockUser as serviceLockUser,
+  getSetting as serviceGetSetting,
+  updateSetting as serviceUpdateSetting,
 } from 'Src/services/admin';
 import Members from './components/Members';
 import Statistic from './components/Statistic';
@@ -26,6 +28,7 @@ export default memo(function AdminPage({ loading }) {
     search: '',
     limit: 10,
     page: 1,
+    total: 0,
   });
   const [topUpState, setTopUpState] = useState({
     userId: undefined,
@@ -35,17 +38,38 @@ export default memo(function AdminPage({ loading }) {
     conversionRate: '',
   });
   const [conversionRate, setConversionRate] = useState([]);
+  const [settings, setSettings] = useState([]);
+  const [settingState, setSettingState] = useState({
+    isEdit: false,
+    percent: '',
+    gameTypeSelected: '',
+  });
 
   const getMembers = useCallback(() => {
     loading.current.add('getMembers');
     serviceGetMembers(memberParams)
       .then((res) => {
-        handleResponse(res, (data) => {
-          setMembers(data);
+        handleResponse(res, ({ rows, count }) => {
+          setMembers(rows);
+          setMemberParams((e) => ({
+            ...e,
+            total: count,
+          }));
         });
       })
       .finally(() => loading.current.remove('getMembers'));
-  }, [loading, setMembers, memberParams]);
+  }, [loading, setMembers, memberParams, setMemberParams]);
+
+  const getSetting = useCallback(() => {
+    loading.current.add('getSetting');
+    serviceGetSetting({ is_admin: true })
+      .then((res) => {
+        handleResponse(res, (data) => {
+          setSettings(data);
+        });
+      })
+      .finally(() => loading.current.remove('getSetting'));
+  }, [setSettings, loading]);
 
   const getConversionRate = useCallback(() => {
     loading.current.add('getConversionRate');
@@ -75,15 +99,17 @@ export default memo(function AdminPage({ loading }) {
     setIsModalVisible(true);
   }, [setIsModalVisible]);
 
-  const handleOk = useCallback(() => {
+  const handleCancel = useCallback(() => {
     setIsModalVisible(false);
-  }, [setIsModalVisible]);
+    setSettingState({ isEdit: false, percent: '', gameTypeSelected: '' });
+  }, [setIsModalVisible, setSettingState]);
 
   const onSearchChange = useCallback(
     ({ currentTarget: { value } }) => {
       setMemberParams((e) => ({
         ...e,
         search: value,
+        page: 1,
       }));
     },
     [setMemberParams],
@@ -91,13 +117,19 @@ export default memo(function AdminPage({ loading }) {
 
   const onTopUpClick = useCallback(
     ({ id: userId, name }) => {
-      setTopUpState({ userId, name });
+      setTopUpState((e) => ({ ...e, userId, name }));
     },
     [setTopUpState],
   );
 
   const onTopUpCancelClick = useCallback(() => {
-    setTopUpState({ userId: undefined, amount: '', name: '', output: '', conversionRate: '' });
+    setTopUpState({
+      userId: undefined,
+      amount: '',
+      name: '',
+      output: '',
+      conversionRate: '',
+    });
   }, []);
 
   const onTopUp = useCallback(() => {
@@ -113,10 +145,11 @@ export default memo(function AdminPage({ loading }) {
         });
       })
       .finally(() => loading.current.remove('serviceTopUp'));
-  }, [topUpState, loading]);
+  }, [topUpState, loading, onTopUpCancelClick]);
 
   useEffect(() => {
     getConversionRate();
+    getSetting();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -142,19 +175,101 @@ export default memo(function AdminPage({ loading }) {
     [setTopUpState, conversionRate],
   );
 
-  const onDeleteClick = useCallback(({ id: user_id }) => {
-    loading.current.add('serviceBlockUser');
-    serviceBlockUser({ user_id, is_block: true })
+  const onLockAction = useCallback(
+    ({ id: user_id, status }) => {
+      loading.current.add('serviceLockUser');
+      serviceLockUser({ user_id, is_block: Boolean(status) })
+        .then((res) => {
+          handleResponse(res, () => {
+            getMembers();
+            notification.success({
+              message: _.get(res, 'message'),
+            });
+          });
+        })
+        .finally(() => loading.current.remove('serviceLockUser'));
+    },
+    [getMembers, loading],
+  );
+
+  const onMemberPageChange = useCallback(
+    (page) => {
+      setMemberParams((e) => ({ ...e, page }));
+    },
+    [setMemberParams],
+  );
+
+  useEffect(() => {
+    getMembers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [memberParams.page]);
+
+  const onSettingSelectChange = useCallback(
+    (id) => {
+      const percent = _.get(_.find(settings, { id }), 'proportionality');
+      setSettingState((e) => ({ ...e, gameTypeSelected: id, percent }));
+    },
+    [settings, setSettingState],
+  );
+
+  const onUpdateSetting = useCallback(() => {
+    loading.current.add('onUpdateSetting');
+    serviceUpdateSetting({
+      id_options: settingState.gameTypeSelected,
+      proportionality: `${settingState.percent}`,
+      is_admin: true,
+    })
       .then((res) => {
         handleResponse(res, () => {
-          onTopUpCancelClick();
-          notification.success({
-            message: _.get(res, 'message'),
-          });
+          getSetting();
+          setSettingState((e) => ({ ...e, isEdit: false }));
         });
       })
-      .finally(() => loading.current.remove('serviceBlockUser'));
-  }, []);
+      .finally(() => loading.current.remove('onUpdateSetting'));
+  }, [settingState, loading, getSetting]);
+
+  const onSettingActionClick = useCallback(
+    ({ currentTarget: { title } }) => {
+      switch (title) {
+        case 'Edit':
+          setSettingState((e) => ({ ...e, isEdit: true }));
+          break;
+        case 'Cancel':
+          setSettingState((e) => ({ ...e, isEdit: false }));
+          onSettingSelectChange(settingState.gameTypeSelected);
+          break;
+        case 'Submit':
+          onUpdateSetting();
+          break;
+        default:
+          break;
+      }
+    },
+    [setSettingState, onSettingSelectChange, settingState, onUpdateSetting],
+  );
+
+  const onPercentChange = useCallback(
+    ({ currentTarget: { value } }) => {
+      setSettingState((e) => ({ ...e, percent: value }));
+    },
+    [setSettingState],
+  );
+
+  const handelOk = useCallback(() => {
+    loading.current.add('handelOk');
+    serviceUpdateSetting({
+      id_options: settingState.gameTypeSelected,
+      is_play: `${1}`,
+      is_admin: true,
+    })
+      .then((res) => {
+        handleResponse(res, () => {
+          getSetting();
+          handleCancel();
+        });
+      })
+      .finally(() => loading.current.remove('handelOk'));
+  }, [getSetting, handleCancel, settingState, loading]);
 
   return (
     <LayoutContainer>
@@ -196,7 +311,13 @@ export default memo(function AdminPage({ loading }) {
             >
               {select === 'Statistic' && <Statistic />}
               {select === 'Members' && (
-                <Members data={members} onTopUpClick={onTopUpClick} onDeleteClick={onDeleteClick} />
+                <Members
+                  data={members}
+                  onTopUpClick={onTopUpClick}
+                  onLockAction={onLockAction}
+                  paging={memberParams}
+                  onPageChange={onMemberPageChange}
+                />
               )}
             </Card>
           </Space>
@@ -205,12 +326,18 @@ export default memo(function AdminPage({ loading }) {
       <Modal
         title="Tùy chọn"
         visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleOk}
+        onOk={settingState.isEdit ? null : handelOk}
+        onCancel={handleCancel}
         okText={'Cài đặt'}
         cancelText={'Hủy'}
       >
-        <Options />
+        <Options
+          settings={settings}
+          state={settingState}
+          onAction={onSettingActionClick}
+          onSelectChange={onSettingSelectChange}
+          onPercentChange={onPercentChange}
+        />
       </Modal>
       <Modal
         title={`Nạp tiền tài khoản ${topUpState.name}`}
@@ -224,7 +351,7 @@ export default memo(function AdminPage({ loading }) {
           conversionRate={conversionRate}
           amount={topUpState.amount}
           output={topUpState.output}
-          conversionRateSelect={topUpState.conversionRate}
+          conversionRateSelect={topUpState.conversionRateSelect}
           onChangeValue={onTopUpChange}
         />
       </Modal>

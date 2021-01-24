@@ -396,6 +396,21 @@ const getOption = async (params) => {
   }
 }
 
+/**
+ * Update setting
+ * Author ntd806
+ * time 01/24/2021
+ */
+const updateOption = async (params) => {
+  const {user_id, is_admin} = params;
+  if (is_admin) {
+    return await option.updateOption(params);
+  }
+  else{
+    return null;
+  }
+}
+
 module.exports = {
   signUp,
   signIn,
@@ -416,4 +431,5 @@ module.exports = {
   transferService,
   getUserById,
   getOption,
+  updateOption,
 };

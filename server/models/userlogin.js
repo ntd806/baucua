@@ -23,7 +23,7 @@ module.exports = class UserLogin extends Main {
     let { page = 1, limit = 10} = data;
     const startDate = new Date(data.startDate);
     const endDate = new Date(data.endDate);
-    return await this.mUserLogin.findAll({
+    return await this.mUserLogin.findAndCountAll({
       include:[
         {
           model: this.mUser
@@ -36,6 +36,7 @@ module.exports = class UserLogin extends Main {
       }],
       limit: limit,
       offset: +(limit * (page-1)),
+      group: ['user_id'],
     });
   }
 }

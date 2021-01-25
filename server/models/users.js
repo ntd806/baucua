@@ -1,5 +1,6 @@
 'use strict';
 const Main = require('./AllModel');
+const Sequelize = require('sequelize');
 
 
 module.exports = class User extends Main {
@@ -7,6 +8,9 @@ module.exports = class User extends Main {
   constructor() {
     super();
     this.mUser = this.mainUser();
+    this.mBankAccount =this.mainBankAccount();
+    this.Op = Sequelize.Op;
+    this.mUser.hasOne(this.mBankAccount, {foreignKey: 'user_id', sourceKey:'id'});
       // users.hasMany(models.bankaccounts, {as: 'bankaccounts' })
       // users.hasMany(models.matcheshistory, {as: 'matcheshistory' })
       // users.hasMany(models.transfershistory, {as: 'transfershistory' })
@@ -39,6 +43,9 @@ module.exports = class User extends Main {
         }
         if (dataEdit.address) {
           valueUpdate.address = dataEdit.address
+        }
+        if (typeof dataEdit.status === 'number') {
+          valueUpdate.status = dataEdit.status;
         }
 
         let userUpdate = await this.mUser.update(valueUpdate, {
@@ -79,6 +86,7 @@ module.exports = class User extends Main {
   }
   async getAccountByGG(gg_email){
     return await this.mUser.findAll({
+      
       where:{
         gg_email: gg_email
       }
@@ -88,12 +96,26 @@ module.exports = class User extends Main {
     var result;
     if(data.fbUID){
       result = await this.mUser.findAll({
+        include:[
+          {
+            model: this.mBankAccount
+          }
+        ],
         where:{
           fbUID: data.fbUID
         }
       });
     } else {
       result = await this.mUser.findAll({
+        include:[
+          {
+            model: this.mBankAccount,
+            where: {
+              
+            }
+          },
+          
+        ],
         where:{
           gg_email: data.gg_email
         }

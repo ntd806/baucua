@@ -14,7 +14,8 @@
         "test": "jest --verbose",
         "db:create": "npx sequelize db:create",
         "db:migrate": "npx sequelize db:migrate",
-        "db:seed": "npx sequelize-cli db:seed:all"
+        "db:seed": "npx sequelize-cli db:seed:all",
+        "db:drop" : "npx sequelize-cli db:drop"
     },
     "dependencies": {
         "bcrypt": "^5.0.0",

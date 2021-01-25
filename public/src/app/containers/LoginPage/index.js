@@ -19,7 +19,7 @@ import {
   Title,
 } from './styled';
 import { login } from 'Src/services/login';
-import { handleError } from 'Src/utils/handleError';
+import { handleResponse } from 'Src/utils/handleError';
 
 export default memo(function LoginPage({ loading }) {
   const [state, setState] = useState({
@@ -77,18 +77,39 @@ export default memo(function LoginPage({ loading }) {
       loading.current.add('login');
       login(params)
         .then((res) => {
-          if (_.get(res, 'success')) {
-            Cookies.set('isLogin', true);
-            Cookies.set('userId', res.result.id);
+          handleResponse(res, ({ id }) => {
+            // Cookies.set('isLogin', true, {expires: expires});
+            // Cookies.set('userId', id);
+
+              createCookie('isLogin', true )
+              createCookie('userId', id )
             window.location.href = '/';
-          } else {
-            handleError(_.get(res, 'message'));
-          }
+          });
         })
         .finally(() => loading.current.remove('login'));
     },
     [state, loading],
   );
+
+    /**
+     * createCookie
+     *
+     * @description : tạo cookie và cookie này sẽ hết hạng ngày mai - đáp ứng nghiệp vụ thông kê
+     * @author thoidev
+     * @param name
+     * @param value
+     * @param path
+     */
+    function createCookie(name,value,path) {
+        var expires = "";
+        var date = new Date();
+        var tomorrow = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
+        expires = "; expires=" + tomorrow.toGMTString();
+        if (!path) {
+            path = "/";
+        }
+        document.cookie = name + "=" + value + expires + "; path=" + path;
+    }
 
   const onLoginFacebook = useCallback(() => {
     FB.login(

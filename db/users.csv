@@ -1,23 +1,12 @@
-id,permission_id,username,role,password,status,fb_mail,gg_mail,address,gender,name,birthday,created_at,updated_at
-1,0,ntd806,travel_admin,$2y$12$x9izv7/viAuQtY8WJExG..RVELXSEgLpkaJ1t/vbM2q.ohZJNLtNC,1,facebook1@gmail.com,google1@gmail.com,HCM,female,Ana ,1/7/1990 17:29,1/7/2021 17:29,1/7/2021 17:29
-2,1,ntd807,customer,$2y$12$x9izv7/viAuQtY8WJExG..RVELXSEgLpkaJ1t/vbM3q.ohZJNLtNC,1,facebook2@gmail.com,google2@gmail.com,HN,male,Tony,1/8/1990 17:29,1/7/2021 17:29,1/7/2021 17:29
-3,2,ntd808,customer,$2y$12$x9izv7/viAuQtY8WJExG..RVELXSEgLpkaJ1t/vbM4q.ohZJNLtNC,1,facebook3@gmail.com,google3@gmail.com,TB,female,Marc,1/9/1990 17:29,1/7/2021 17:29,1/7/2021 17:29
-4,3,ntd809,customer,$2y$12$x9izv7/viAuQtY8WJExG..RVELXSEgLpkaJ1t/vbM5q.ohZJNLtNC,1,facebook4@gmail.com,google4@gmail.com,DN,male,Trumb,1/10/1990 17:29,1/7/2021 17:29,1/7/2021 17:29
-5,4,ntd810,customer,$2y$12$x9izv7/viAuQtY8WJExG..RVELXSEgLpkaJ1t/vbM6q.ohZJNLtNC,1,facebook5@gmail.com,google5@gmail.com,DNA,female,Angle,1/11/1990 17:29,1/7/2021 17:29,1/7/2021 17:29
-6,5,ntd811,customer,$2y$12$x9izv7/viAuQtY8WJExG..RVELXSEgLpkaJ1t/vbM7q.ohZJNLtNC,1,facebook6@gmail.com,google6@gmail.com,ST,male,Kenny,1/12/1990 17:29,1/7/2021 17:29,1/7/2021 17:29
-7,6,ntd812,travel_admin,$2y$12$x9izv7/viAuQtY8WJExG..RVELXSEgLpkaJ1t/vbM8q.ohZJNLtNC,1,facebook7@gmail.com,google7@gmail.com,CT,female,Taylor,1/13/1990 17:29,1/7/2021 17:29,1/7/2021 17:29
-8,7,ntd813,travel_admin,$2y$12$x9izv7/viAuQtY8WJExG..RVELXSEgLpkaJ1t/vbM9q.ohZJNLtNC,1,facebook8@gmail.com,google8@gmail.com,BTVT,male,Katy,1/14/1990 17:29,1/7/2021 17:29,1/7/2021 17:29
-9,8,ntd814,supplier,$2y$12$x9izv7/viAuQtY8WJExG..RVELXSEgLpkaJ1t/vbM10q.ohZJNLtNC,1,facebook9@gmail.com,google9@gmail.com,BT,female,Enric,1/15/1990 17:29,1/7/2021 17:29,1/7/2021 17:29
-10,0,ntd815,super_admin,$2y$12$x9izv7/viAuQtY8WJExG..RVELXSEgLpkaJ1t/vbM11q.ohZJNLtNC,1,facebook10@gmail.com,google10@gmail.com,BP,male,Mono,1/16/1990 17:29,1/7/2021 17:29,1/7/2021 17:29
-11,1,ntd816,travel_admin,$2y$12$x9izv7/viAuQtY8WJExG..RVELXSEgLpkaJ1t/vbM12q.ohZJNLtNC,1,facebook11@gmail.com,google11@gmail.com,AG,female,Paya,1/17/1990 17:29,1/7/2021 17:29,1/7/2021 17:29
-12,2,ntd817,manager,$2y$12$x9izv7/viAuQtY8WJExG..RVELXSEgLpkaJ1t/vbM13q.ohZJNLtNC,1,facebook12@gmail.com,google12@gmail.com,TN,male,Cunn,1/18/1990 17:29,1/7/2021 17:29,1/7/2021 17:29
-13,3,ntd818,travel_admin,$2y$12$x9izv7/viAuQtY8WJExG..RVELXSEgLpkaJ1t/vbM14q.ohZJNLtNC,1,facebook13@gmail.com,google13@gmail.com,BD,female,Moon,1/19/1990 17:29,1/7/2021 17:29,1/7/2021 17:29
-,,,,,,,,,,,,,
-,,,,,,,,,,,,,
-,,,,,,,,,,,,,
-,,,,,,,,,,,,,
-,,,,,,,,,,,,,
-,,,,,,,,,,,,,
-,,,,,,,,,,,,,
-,,,,,,,,,,,,,
-,,,,,,0,,,,,,,
+10,121,ntd806@mail.com,name1,https://th.bing.com/th/id/OIP.7HS2qDtY5sY0Eh7q2OcwBQHaHa?pid=Api&rs=1,,1,HCM,25:45.0,25:45.0,0983455604
+11,122,ntd807@mail.com,name2,https://th.bing.com/th/id/OIP.7HS2qDtY5sY0Eh7q2OcwBQHaHa?pid=Api&rs=2,,1,HCM,25:45.0,25:45.0,0983455605
+12,123,ntd808@mail.com,name3,https://th.bing.com/th/id/OIP.7HS2qDtY5sY0Eh7q2OcwBQHaHa?pid=Api&rs=3,,1,HCM,25:45.0,25:45.0,0983455606
+13,124,ntd809@mail.com,name4,https://th.bing.com/th/id/OIP.7HS2qDtY5sY0Eh7q2OcwBQHaHa?pid=Api&rs=4,,1,HCM,25:45.0,25:45.0,0983455607
+14,125,ntd810@mail.com,name5,https://th.bing.com/th/id/OIP.7HS2qDtY5sY0Eh7q2OcwBQHaHa?pid=Api&rs=5,,1,HCM,25:45.0,25:45.0,0983455608
+15,126,ntd811@mail.com,name6,https://th.bing.com/th/id/OIP.7HS2qDtY5sY0Eh7q2OcwBQHaHa?pid=Api&rs=6,,1,HCM,25:45.0,25:45.0,0983455609
+16,127,ntd812@mail.com,name7,https://th.bing.com/th/id/OIP.7HS2qDtY5sY0Eh7q2OcwBQHaHa?pid=Api&rs=7,,1,HCM,25:45.0,25:45.0,0983455610
+17,128,ntd813@mail.com,name8,https://th.bing.com/th/id/OIP.7HS2qDtY5sY0Eh7q2OcwBQHaHa?pid=Api&rs=8,,1,HCM,25:45.0,25:45.0,0983455611
+18,129,ntd814@mail.com,name9,https://th.bing.com/th/id/OIP.7HS2qDtY5sY0Eh7q2OcwBQHaHa?pid=Api&rs=9,,1,HCM,25:45.0,25:45.0,0983455612
+19,130,ntd815@mail.com,name10,https://th.bing.com/th/id/OIP.7HS2qDtY5sY0Eh7q2OcwBQHaHa?pid=Api&rs=10,,1,HCM,25:45.0,25:45.0,0983455613
+20,131,ntd816@mail.com,name11,https://th.bing.com/th/id/OIP.7HS2qDtY5sY0Eh7q2OcwBQHaHa?pid=Api&rs=11,,1,HCM,25:45.0,25:45.0,0983455614
+21,132,ntd817@mail.com,name12,https://th.bing.com/th/id/OIP.7HS2qDtY5sY0Eh7q2OcwBQHaHa?pid=Api&rs=12,,1,HCM,25:45.0,25:45.0,0983455615

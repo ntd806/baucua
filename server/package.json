@@ -15,7 +15,7 @@
         "db:create": "npx sequelize db:create",
         "db:migrate": "npx sequelize db:migrate",
         "db:seed": "npx sequelize-cli db:seed:all",
-        "db:drop" : "npx sequelize-cli db:drop"
+        "db:drop": "npx sequelize-cli db:drop"
     },
     "dependencies": {
         "bcrypt": "^5.0.0",
@@ -36,7 +36,9 @@
         "sequelize": "^6.3.5",
         "sequelize-cli": "^6.2.0",
         "socket.io": "^2.0.4",
-        "validator": "^13.5.2"
+        "validator": "^13.5.2",
+        "jsonwebtoken": "^8.5.1",
+        "rand-token": "^1.0.1"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",

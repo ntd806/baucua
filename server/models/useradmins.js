@@ -8,4 +8,12 @@ module.exports = class Option extends Main {
     super();
     this.mOption = this.mainAdmin();
   }
+
+  async getUserAdminByUsername(username) {
+    return await this.mOption.findOne({
+      where: {
+        user_name: username
+      }
+    });
+  }
 }

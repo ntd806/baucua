@@ -16,6 +16,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      token: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       login_at: {
         type: Sequelize.DATE(3),
         allowNull: true,

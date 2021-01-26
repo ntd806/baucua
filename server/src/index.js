@@ -9,7 +9,7 @@ require('dotenv').config();
 const app = express();
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");
-    res.header('Access-Control-Allow-Methods','GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
 });
@@ -36,6 +36,7 @@ app.get('/', (req, res) => {
 // ROUTES
 app.use('/game', require('./game/game.controller'));
 app.use('/user', require('./user/user.controller'));
+app.use('/admin', require('./admin/admin.controller'));
 
 // For load testing
 app.get('/load/:num', async(req, res) => {

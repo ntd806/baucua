@@ -291,6 +291,7 @@ module.exports = class AllModel {
             id: {type: Sequelize.INTEGER, autoIncrement: true, allowNull: false, primaryKey: true},
             user_id:{type: Sequelize.STRING},
             login_at:{type: Sequelize.DATE},
+            token:{type: Sequelize.STRING},
             created_at: {
                 type: Sequelize.DATE,
                 field: 'created_at'

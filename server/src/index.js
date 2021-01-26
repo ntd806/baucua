@@ -4,9 +4,27 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const express = require('express');
 const path = require('path');
+
+//Loads the handlebars module
+const handlebars = require('express-handlebars');
+
+
+
 require('dotenv').config();
 
 const app = express();
+
+//Sets our app to use the handlebars engine
+app.set('view engine', 'handlebars');
+//Sets handlebars configurations (we will go through them later on)
+app.engine('handlebars', handlebars({
+    layoutsDir: __dirname + 'views/layouts',
+}));
+app.get('/', (req, res) => {
+//Serves the body of the page aka "main.handlebars" to the container //aka "index.handlebars"
+    res.render('main');
+});
+
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");
     res.header('Access-Control-Allow-Methods','GET,PUT,POST,DELETE');
@@ -18,7 +36,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
 }));
-app.use(express.static(path.join(__dirname, '/public')));
+// app.use(express.static(path.join(__dirname, '/public')));
+
+app.use(express.static(path.join(__dirname + '../public')));
+
 
 const server = http.createServer(app);
 const io = require('socket.io')(server);

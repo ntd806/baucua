@@ -1,6 +1,7 @@
 'use strict';
 const Main = require('./AllModel');
 const { Op } = require('sequelize');
+const sequelize= require('sequelize');
 
 
 module.exports = class UserLogin extends Main {
@@ -24,9 +25,11 @@ module.exports = class UserLogin extends Main {
     const startDate = new Date(data.startDate);
     const endDate = new Date(data.endDate);
     return await this.mUserLogin.findAll({
+      attributes:['id','user_id', 'login_at', [sequelize.fn('sum', sequelize.col('time')), 'count_time']],
       include:[
         {
-          model: this.mUser
+          model: this.mUser,
+          attributes: ['name']
         }
       ],
       where: [{
@@ -34,8 +37,12 @@ module.exports = class UserLogin extends Main {
           [Op.between]: [startDate, endDate]
       },
       }],
+      group: ['user_id'],
       limit: limit,
       offset: +(limit * (page-1)),
+      order: [
+        ['login_at', 'ASC']
+      ],
     });
   }
 }

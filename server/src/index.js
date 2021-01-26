@@ -6,7 +6,8 @@ const express = require('express');
 const path = require('path');
 
 //Loads the handlebars module
-const handlebars = require('express-handlebars');
+var hbs = require('express-hbs');
+//var exphbs  = require('express-handlebars');
 
 
 
@@ -14,16 +15,25 @@ require('dotenv').config();
 
 const app = express();
 
-//Sets our app to use the handlebars engine
-app.set('view engine', 'handlebars');
-//Sets handlebars configurations (we will go through them later on)
-app.engine('handlebars', handlebars({
-    layoutsDir: __dirname + 'views/layouts',
+// Use `.hbs` for extensions and find partials in `views/partials`.
+app.engine('hbs', hbs.express4({
+    partialsDir: path.join(__dirname, '/views/partials'),
+    // OPTIONAL settings
+    defaultLayout: path.join(__dirname, '/views/layouts/layout.hbs'),
+    extname: ".hbs",
+    layoutsDir: path.join(__dirname, '/views/layouts'),
+    // override the default compile
+    onCompile: function(exhbs, source, filename) {
+      var options;
+      if (filename && filename.indexOf('partials') > -1) {
+        options = {preventIndent: true};
+      }
+      return exhbs.handlebars.compile(source, options);
+    }
 }));
-app.get('/', (req, res) => {
-//Serves the body of the page aka "main.handlebars" to the container //aka "index.handlebars"
-    res.render('main');
-});
+
+app.set('view engine', 'hbs');
+app.set('views', __dirname + '/views');
 
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");
@@ -36,9 +46,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
 }));
-// app.use(express.static(path.join(__dirname, '/public')));
 
-app.use(express.static(path.join(__dirname + '../public')));
+app.use(express.static(path.join(__dirname + '/public')));
 
 
 const server = http.createServer(app);

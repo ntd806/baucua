@@ -31,7 +31,8 @@ const { SALT_ROUNDS } = require('../../variables/auth');
 // };
 
 exports.login = async(username, password, res) => {
-    let user = await adminService.getUserByUsername(username);
+    // let user = await adminService.getUserByUsername(username);
+    let user = {'user_name':'tiendat'}
     if (!user) {
         return {
             success: false,
@@ -39,8 +40,8 @@ exports.login = async(username, password, res) => {
             message: 'Tên đăng nhập không tồn tại.'
         };
     }
-
-    const isPasswordValid = bcrypt.compareSync("1234", "$2y$10$ExycaGSmd66GQVY1X8ihvuwYoaUSQs99qft7Ye92tDMcrbotxb9em");
+    let hash = bcrypt.hashSync('myPassword', 10);
+    const isPasswordValid = bcrypt.compareSync('myPassword', hash);
     console.log(isPasswordValid)
     if (!isPasswordValid) {
         return {

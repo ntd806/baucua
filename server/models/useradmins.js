@@ -16,4 +16,11 @@ module.exports = class Option extends Main {
       }
     });
   }
+
+  async updateTokenById(id, token) {
+    await this.mOption.update(
+        { token: token },
+        { where: { id: id } }
+    )
+  }
 }

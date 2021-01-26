@@ -34,17 +34,10 @@ async function signIn(req, res, next) {
         let authAdmin = await auth.login(username, password, res);
 
         if (authAdmin.success) {
-
+            return common.responseSuccess(res, authAdmin.message, authAdmin.result);
         } else {
-            return common.responseError(res, authAdmin.status, authAdmin.message)
+            return common.responseError(res, authAdmin.status, authAdmin.message);
         }
-        // if (authAdmin) {
-        //     let message = 'Đăng nhập thành công';
-        //     return common.responseSuccess(res, message, authAdmin)
-        // } else {
-        //     let message = 'Tên đăng nhập không tồn tại.';
-        //
-        // }
     } catch (e) {
         return common.responseErrorCatch(res, e);
     }

@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 // const authService = require('./auth.service');
 const adminService = require('../../admin/admin.service');
-// const authMethod = require('./auth.methods');
+const authMethod = require('./auth.methods');
 
 const jwtVariable = require('../../variables/jwt');
 const { SALT_ROUNDS } = require('../../variables/auth');
@@ -31,8 +31,7 @@ const { SALT_ROUNDS } = require('../../variables/auth');
 // };
 
 exports.login = async(username, password, res) => {
-    // let user = await adminService.getUserByUsername(username);
-    let user = {'user_name':'tiendat'}
+    let user = await adminService.getUserByUsername(username);
     if (!user) {
         return {
             success: false,
@@ -40,9 +39,10 @@ exports.login = async(username, password, res) => {
             message: 'Tên đăng nhập không tồn tại.'
         };
     }
-    let hash = bcrypt.hashSync('myPassword', 10);
-    const isPasswordValid = bcrypt.compareSync('myPassword', hash);
-    console.log(isPasswordValid)
+    // let hash = bcrypt.hashSync(password, 10);
+    // console.log(hash);
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
+    // console.log(isPasswordValid)
     if (!isPasswordValid) {
         return {
             success: false,
@@ -55,36 +55,42 @@ exports.login = async(username, password, res) => {
         process.env.ACCESS_TOKEN_LIFE || jwtVariable.accessTokenLife;
     const accessTokenSecret =
         process.env.ACCESS_TOKEN_SECRET || jwtVariable.accessTokenSecret;
-    console.log(accessTokenLife);
+
     const dataForAccessToken = {
         username: user.username,
     };
-    // const accessToken = await authMethod.generateToken(
-    //     dataForAccessToken,
-    //     accessTokenSecret,
-    //     accessTokenLife,
-    // );
-    // if (!accessToken) {
-    //     return res
-    //         .status(401)
-    //         .send('Đăng nhập không thành công, vui lòng thử lại.');
-    // }
-    //
-    // let refreshToken = randToken.generate(jwtVariable.refreshTokenSize); // tạo 1 refresh token ngẫu nhiên
-    // if (!user.refreshToken) {
-    //     // Nếu user này chưa có refresh token thì lưu refresh token đó vào database
-    //     await userModel.updateRefreshToken(user.username, refreshToken);
-    // } else {
-    //     // Nếu user này đã có refresh token thì lấy refresh token đó từ database
-    //     refreshToken = user.refreshToken;
-    // }
-    //
-    // return res.json({
-    //     msg: 'Đăng nhập thành công.',
-    //     accessToken,
-    //     refreshToken,
-    //     user,
-    // });
+    const accessToken = await authMethod.generateToken(
+        dataForAccessToken,
+        accessTokenSecret,
+        accessTokenLife,
+    );
+    if (!accessToken) {
+        return {
+            success: false,
+            status: 401,
+            message: 'Đăng nhập không thành công, vui lòng thử lại.'
+        };
+    }
+
+    let refreshToken = randToken.generate(jwtVariable.refreshTokenSize); // tạo 1 refresh token ngẫu nhiên
+    if (!user.token) {
+        // Nếu user này chưa có refresh token thì lưu refresh token đó vào database
+        await adminService.updateToken(user.id, refreshToken);
+    } else {
+        // Nếu user này đã có refresh token thì lấy refresh token đó từ database
+        refreshToken = user.token;
+    }
+
+    delete user.password;
+    return {
+        success: true,
+        message: 'Đăng nhập thành công.',
+        result: {
+            accessToken: accessToken,
+            refreshToken : refreshToken,
+            user : user
+        }
+    };
 };
 
 exports.refreshToken = async(req, res) => {

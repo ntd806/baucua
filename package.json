@@ -3,31 +3,11 @@
     "version": "1.0.0",
     "main": "index.js",
     "keywords": [
-    "example",
-    "heroku"
+        "example",
+        "heroku"
     ],
     "author": "ntd806",
     "license": "MIT",
-    "dependencies": {
-    "express": "^4.9.8"
-    },
-      "engines": {
-         "node": "10.x"
-    },
-    "scripts": {
-        "dev": "nodemon src/index.js --exec babel-node",
-        "build": "babel src -d dist",
-        "prestart": "babel src -d dist",
-        "start": "node dist/index.js NODE_ENV=development",
-        "start-youtube": "node dist/youtube-index.js NODE_ENV=production",
-        "prod": "pm2 start index.js",
-        "stop-prod": "pm2 remove index",
-        "test": "jest --verbose",
-        "db:create": "npx sequelize db:create",
-        "db:migrate": "npx sequelize db:migrate",
-        "db:seed": "npx sequelize-cli db:seed:all",
-        "db:drop" : "npx sequelize-cli db:drop"
-    },
     "dependencies": {
         "bcrypt": "^5.0.0",
         "body-parser": "^1.19.0",
@@ -48,6 +28,24 @@
         "sequelize-cli": "^6.2.0",
         "socket.io": "^2.0.4",
         "validator": "^13.5.2"
+    },
+    "engines": {
+        "node": "15.6.0",
+        "npm": "7.4.0"
+    },
+    "scripts": {
+        "dev": "nodemon src/index.js --exec babel-node",
+        "build": "babel src -d dist",
+        "prestart": "babel src -d dist",
+        "start": "node dist/index.js NODE_ENV=development",
+        "start-youtube": "node dist/youtube-index.js NODE_ENV=production",
+        "prod": "pm2 start index.js",
+        "stop-prod": "pm2 remove index",
+        "test": "jest --verbose",
+        "db:create": "npx sequelize db:create",
+        "db:migrate": "npx sequelize db:migrate",
+        "db:seed": "npx sequelize-cli db:seed:all",
+        "db:drop": "npx sequelize-cli db:drop"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",

@@ -24,7 +24,7 @@ module.exports = class UserLogin extends Main {
     let { page = 1, limit = 10} = data;
     const startDate = new Date(data.startDate);
     const endDate = new Date(data.endDate);
-    return await this.mUserLogin.findAll({
+    return await this.mUserLogin.findAndCountAll({
       attributes:['id','user_id', 'login_at', [sequelize.fn('sum', sequelize.col('time')), 'count_time']],
       include:[
         {

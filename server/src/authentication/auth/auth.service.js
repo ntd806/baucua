@@ -93,6 +93,33 @@ exports.login = async(username, password, res) => {
     };
 };
 
+exports.generateAccessToken = async (user_id) => {
+    const accessTokenLife =
+        process.env.ACCESS_TOKEN_LIFE || jwtVariable.accessTokenLife;
+    const accessTokenSecret =
+        process.env.ACCESS_TOKEN_SECRET || jwtVariable.accessTokenSecret;
+
+    const dataForAccessToken = {
+        username: user_id,
+    };
+    const accessToken = await authMethod.generateToken(
+        dataForAccessToken,
+        accessTokenSecret,
+        accessTokenLife,
+    );
+    return accessToken ? accessToken : null;
+}
+
+exports.generateRefreshToken = async () => {
+    return randToken.generate(jwtVariable.refreshTokenSize);
+}
+
+exports.verifyToken = async (tokenFromClient) => {
+    const accessTokenSecret = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7fSwiaWF0IjoxNjExNzYxMjMxLCJleHAiOjE2MTE3NjE4MzF9.wI5LDnWqXUKAKflKqmYw5PNBENdK82dyq6gt0JiLIDo";//process.env.ACCESS_TOKEN_SECRET || jwtVariable.accessTokenSecret;
+    let verifyToken = await authMethod.verifyToken(tokenFromClient, accessTokenSecret);
+    return verifyToken ? true : false;
+}
+
 exports.refreshToken = async(req, res) => {
     // Lấy access token từ header
     const accessTokenFromHeader = req.headers.x_authorization;

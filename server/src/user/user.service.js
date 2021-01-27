@@ -10,6 +10,8 @@ const UserLogin = require('../../models/userlogin');
 
 const validator = require('validator');
 
+const authService = require('../authentication/auth/auth.service');
+
 let user = new User();
 let transferhistory = new TransferHistory();
 let bankAccount = new BankAccountModel();
@@ -93,7 +95,17 @@ const signUp = async (params) => {
 
 const signIn = async (params) => {
   const result = await user.login(params);
-  console.log(result.bankaccount['amount']);
+  let accessToken = null;
+  let refreshToken = null;
+  if (result) {
+    accessToken = await authService.generateAccessToken(result.user_id);
+    refreshToken = await authService.generateRefreshToken();
+    result.accessToken = accessToken;
+    result.refreshToken = refreshToken;
+  }
+
+  let as =await authService.verifyToken("scyxGZXXS72zKAWfJ0Yu6b0pK3271UWB0up0EVzixgXlOCPgwBVhVe7gno4lV9x6dsqrvCd1jwd5zYQ9wEyMVgej4Xa98WRCRws1")
+  console.log(as);
   return result;
 }
 

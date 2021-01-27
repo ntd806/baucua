@@ -50,14 +50,15 @@ async function signUp(req, res, next) {
 async function signIn(req, res, next) {
   try {
     let user = await service.signIn(req.body);
-
     if(user && user.status){
       return res.status(200).json({
         result:{
           id: user.id,
           avatar: user.image,
           name: user.name,
-          amount: user.bankaccount['amount']
+          amount: user.bankaccount['amount'],
+          accessToken: user.accessToken,
+          refreshToken: user.refreshToken
         },
         success: true,
         message: ""

@@ -399,7 +399,8 @@ async function getUsersHistory(req, res) {
   try {
     const usersHistoryList = await service.getUsersHistory(req.query);
     return res.status(200).json({
-      result : usersHistoryList,
+      result : usersHistoryList.rows,
+      total: usersHistoryList.count.length,
       success: true,
       message: ''
     });

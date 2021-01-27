@@ -1,7 +1,8 @@
-import { Button, Layout, Card, Space, Modal, Input, notification } from 'antd';
+import { Button, Layout, Card, Space, Modal, Input, notification, DatePicker } from 'antd';
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import _ from 'lodash';
 import Cookies from 'js-cookie';
+import moment from 'moment';
 
 import { LayoutContainer, StyledContent, Header, GroupButton, SearchContainer } from './styled';
 import {
@@ -11,6 +12,7 @@ import {
   lockUser as serviceLockUser,
   getSetting as serviceGetSetting,
   updateSetting as serviceUpdateSetting,
+  getUsersHistory as serviceGetUsersHistory,
 } from 'Src/services/admin';
 import Members from './components/Members';
 import Statistic from './components/Statistic';
@@ -19,6 +21,7 @@ import TopUp from './components/TopUp';
 import { handleResponse } from 'Src/utils/handleError';
 
 const { Search } = Input;
+const { RangePicker } = DatePicker;
 
 export default memo(function AdminPage({ loading }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -44,6 +47,11 @@ export default memo(function AdminPage({ loading }) {
     percent: '',
     gameTypeSelected: '',
   });
+  const [userHistory, setUserHistory] = useState([]);
+  const [userHistoryParams, setUserHistoryParams] = useState({
+    startDate: moment().subtract(7, 'd'),
+    endDate: moment(),
+  });
 
   const getMembers = useCallback(() => {
     loading.current.add('getMembers');
@@ -59,6 +67,23 @@ export default memo(function AdminPage({ loading }) {
       })
       .finally(() => loading.current.remove('getMembers'));
   }, [loading, setMembers, memberParams, setMemberParams]);
+
+  const getUsersHistory = useCallback(() => {
+    loading.current.add('getUsersHistory');
+    serviceGetUsersHistory({
+      is_admin: true,
+      startDate: moment(userHistoryParams.startDate).format(),
+      endDate: moment(userHistoryParams.endDate).format(),
+    })
+      .then((res) => {
+        handleResponse(res, (data) => {
+          setUserHistory(
+            data.map((e) => ({ ...e, login_at: moment(e.login_at).format('DD/MM/YYYY hh:mm:ss') })),
+          );
+        });
+      })
+      .finally(() => loading.current.remove('getUsersHistory'));
+  }, [loading, setUserHistory, userHistoryParams]);
 
   const getSetting = useCallback(() => {
     loading.current.add('getSetting');
@@ -87,12 +112,13 @@ export default memo(function AdminPage({ loading }) {
       if (['Statistic', 'Members'].some((e) => e === title)) {
         const fn = {
           Members: getMembers,
+          Statistic: getUsersHistory,
         };
         setSelect(title);
         _.get(fn, `[${title}]`, () => {})();
       }
     },
-    [setSelect, getMembers],
+    [setSelect, getMembers, getUsersHistory],
   );
 
   const showModal = useCallback(() => {
@@ -150,6 +176,7 @@ export default memo(function AdminPage({ loading }) {
   useEffect(() => {
     getConversionRate();
     getSetting();
+    getUsersHistory();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -271,6 +298,25 @@ export default memo(function AdminPage({ loading }) {
       .finally(() => loading.current.remove('handelOk'));
   }, [getSetting, handleCancel, settingState, loading]);
 
+  const onCalendarChange = useCallback((date) => {
+    setUserHistoryParams({
+      startDate: date[0],
+      endDate: date[1],
+    });
+  }, []);
+
+  const onOpenChange = useCallback(
+    (open) => {
+      if (!open) getUsersHistory();
+    },
+    [getUsersHistory],
+  );
+
+  const playGame = useCallback(() => {
+    const BASE_URL = process.env.BASE_URL;
+    window.open(`${BASE_URL}/bet/${Cookies.get('accessToken')}/${Cookies.get('userId')}`);
+  }, []);
+
   return (
     <LayoutContainer>
       <Header>{'Dashboard'}</Header>
@@ -283,7 +329,7 @@ export default memo(function AdminPage({ loading }) {
                 <Button title={'Statistic'} onClick={onButtonClick}>
                   {'Thống kê'}
                 </Button>
-                <Button> {'Bắt đầu game'}</Button>
+                <Button onClick={playGame}> {'Bắt đầu game'}</Button>
                 <Button title={'Members'} onClick={onButtonClick}>
                   {'Quản lý thành viên'}
                 </Button>
@@ -292,7 +338,16 @@ export default memo(function AdminPage({ loading }) {
             <Card
               title={
                 select === 'Statistic' ? (
-                  'Bảng thống kê có 6 con vật trong trò chơi'
+                  <SearchContainer>
+                    {'Bảng thống kê số lần online của người chơi'}
+                    <RangePicker
+                      format={['DD/MM/YYYY', 'DD/MM/YYYY']}
+                      onCalendarChange={onCalendarChange}
+                      value={[userHistoryParams.startDate, userHistoryParams.endDate]}
+                      clearIcon={false}
+                      onOpenChange={onOpenChange}
+                    />
+                  </SearchContainer>
                 ) : (
                   <SearchContainer>
                     {'Danh sách thành viên'}
@@ -309,7 +364,7 @@ export default memo(function AdminPage({ loading }) {
               }
               bordered={false}
             >
-              {select === 'Statistic' && <Statistic />}
+              {select === 'Statistic' && <Statistic data={userHistory} />}
               {select === 'Members' && (
                 <Members
                   data={members}

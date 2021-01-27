@@ -53,13 +53,6 @@ export default memo(function LoginPage({ loading }) {
     };
   }, []);
 
-  // const onRoleChange = useCallback(() => {
-  //   setState((e) => ({
-  //     ...e,
-  //     is_admin: !e.is_admin,
-  //   }));
-  // }, [setState]);
-
   const onInputChange = useCallback(({ currentTarget: { title }, target: { value } }) => {
     setState((e) => ({
       ...e,
@@ -77,12 +70,10 @@ export default memo(function LoginPage({ loading }) {
       loading.current.add('login');
       login(params)
         .then((res) => {
-          handleResponse(res, ({ id }) => {
-            // Cookies.set('isLogin', true, {expires: expires});
-            // Cookies.set('userId', id);
-
-              createCookie('isLogin', true )
-              createCookie('userId', id )
+          handleResponse(res, ({ id, accessToken }) => {
+            Cookies.set('isLogin', true);
+            Cookies.set('userId', id);
+            Cookies.set('accessToken', accessToken);
             window.location.href = '/';
           });
         })
@@ -90,26 +81,6 @@ export default memo(function LoginPage({ loading }) {
     },
     [state, loading],
   );
-
-    /**
-     * createCookie
-     *
-     * @description : tạo cookie và cookie này sẽ hết hạng ngày mai - đáp ứng nghiệp vụ thông kê
-     * @author thoidev
-     * @param name
-     * @param value
-     * @param path
-     */
-    function createCookie(name,value,path) {
-        var expires = "";
-        var date = new Date();
-        var tomorrow = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
-        expires = "; expires=" + tomorrow.toGMTString();
-        if (!path) {
-            path = "/";
-        }
-        document.cookie = name + "=" + value + expires + "; path=" + path;
-    }
 
   const onLoginFacebook = useCallback(() => {
     FB.login(

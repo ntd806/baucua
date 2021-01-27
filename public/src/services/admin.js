@@ -42,3 +42,17 @@ export function updateSetting(body) {
     .then((res) => res.data)
     .catch(() => {});
 }
+
+export function getUsersHistory(params) {
+  return axios
+    .get(getUrl('getUsersHistory'), { params })
+    .then((res) => res.data)
+    .catch(() => {});
+}
+
+export function login(data) {
+  return axios
+    .post(getUrl('adminLogin'), data)
+    .then((res) => res.data)
+    .catch(() => {});
+}

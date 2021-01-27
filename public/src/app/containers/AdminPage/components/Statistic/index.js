@@ -1,49 +1,32 @@
 import React, { memo } from 'react';
 import Table from 'Src/app/components/Table';
 
-export default memo(function Statistic() {
+export default memo(function Statistic({ data = [] }) {
   return (
     <Table
-      bordered
       columns={[
         {
-          title: 'STT',
-          dataIndex: 'id',
-          key: 'id',
+          title: 'Id người chơi',
+          dataIndex: 'user_id',
+          key: 'user_id',
         },
         {
-          title: 'Tổng con Nai',
-          dataIndex: 'nai',
-          key: 'nai',
+          title: 'Tên người chơi',
+          dataIndex: 'user.name',
+          key: 'user',
         },
         {
-          title: 'Tổng con Bầu',
-          dataIndex: 'bau',
-          key: 'bau',
+          title: 'Thời gian đăng nhập lần cuối',
+          dataIndex: 'login_at',
+          key: 'login_at',
         },
         {
-          title: 'Tổng con Gà',
-          dataIndex: 'ga',
-          key: 'ga',
-        },
-        {
-          title: 'Tổng con Tôm',
-          dataIndex: 'tom',
-          key: 'tom',
-        },
-        {
-          title: 'Tổng con Cua',
-          dataIndex: 'cua',
-          key: 'cua',
-        },
-        {
-          title: 'Tổng con Cá',
-          dataIndex: 'ca',
-          key: 'ca',
+          title: 'Tổng số lần đăng nhập',
+          dataIndex: 'count_time',
+          key: 'count_time',
         },
       ]}
-      rowKey={'name'}
-      dataSource={[]}
+      dataSource={data}
     />
   );
 });

@@ -81,7 +81,7 @@ app.post('/webhook', async(req, res) => {
 
 // Config server here
 const ip = process.env.IP || "127.0.0.1";
-const port = process.env.PORT || 3002;
+const port = process.env.PORT || 3000;
 server.listen(port, ip, function() {
     console.log("Express server listening at %s:%d ", ip, port, process.env.PORT);
 });

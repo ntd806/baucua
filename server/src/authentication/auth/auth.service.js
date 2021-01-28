@@ -57,7 +57,7 @@ exports.login = async(username, password, res) => {
         process.env.ACCESS_TOKEN_SECRET || jwtVariable.accessTokenSecret;
 
     const dataForAccessToken = {
-        username: user.username,
+        userId: user.username,
     };
     const accessToken = await authMethod.generateToken(
         dataForAccessToken,

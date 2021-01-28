@@ -19,7 +19,7 @@ import {
   Title,
 } from './styled';
 import { login } from 'Src/services/login';
-import { handleError } from 'Src/utils/handleError';
+import { handleResponse } from 'Src/utils/handleError';
 
 export default memo(function LoginPage({ loading }) {
   const [state, setState] = useState({
@@ -53,13 +53,6 @@ export default memo(function LoginPage({ loading }) {
     };
   }, []);
 
-  // const onRoleChange = useCallback(() => {
-  //   setState((e) => ({
-  //     ...e,
-  //     is_admin: !e.is_admin,
-  //   }));
-  // }, [setState]);
-
   const onInputChange = useCallback(({ currentTarget: { title }, target: { value } }) => {
     setState((e) => ({
       ...e,
@@ -77,13 +70,12 @@ export default memo(function LoginPage({ loading }) {
       loading.current.add('login');
       login(params)
         .then((res) => {
-          if (_.get(res, 'success')) {
+          handleResponse(res, ({ id, accessToken }) => {
             Cookies.set('isLogin', true);
-            Cookies.set('userId', res.result.id);
+            Cookies.set('userId', id);
+            Cookies.set('accessToken', accessToken);
             window.location.href = '/';
-          } else {
-            handleError(_.get(res, 'message'));
-          }
+          });
         })
         .finally(() => loading.current.remove('login'));
     },

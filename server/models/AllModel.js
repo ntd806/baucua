@@ -8,6 +8,28 @@ module.exports = class AllModel {
         this.Op = Sequelize.Op;
     }
 
+    /**
+     * MainAmin
+     * author: ntd806
+     * Time: 01/23/2021
+     */
+    mainAdmin(){
+        class modelAdmin extends Sequelize.Model {}
+        modelAdmin.init({
+            id: {type: Sequelize.INTEGER, autoIncrement: true, allowNull: false, primaryKey: true},
+            user_name:{type: Sequelize.STRING},
+            password:{type: Sequelize.STRING},
+            login_at:{type: Sequelize.STRING},
+            status:{type: Sequelize.DATE},
+            token:{type: Sequelize.STRING},
+        },
+        { sequelize, modelName: 'user_admins',
+            tableName: 'user_admins',
+            timestamps: false
+        });
+        return modelAdmin;
+    }
+
     mainUser(){
         class modelUser extends Sequelize.Model {}
         modelUser.init({
@@ -19,7 +41,6 @@ module.exports = class AllModel {
             created_at:{type: Sequelize.DATE},
             updated_at:{type: Sequelize.DATE},
             status:{type: Sequelize.INTEGER},
-            password:{type: Sequelize.STRING},
             phone: {type: Sequelize.NUMBER}
         },
         { sequelize, modelName: 'users',
@@ -257,6 +278,35 @@ module.exports = class AllModel {
         });
 
         return modelConversionRate;
+    }
+
+    /**
+     * MainUserLogin
+     * author: ntd806
+     * Time: 01/24/2021
+     */
+    mainUserLogin(){
+        class modelUserLogin extends Sequelize.Model {}
+        modelUserLogin.init({
+            id: {type: Sequelize.INTEGER, autoIncrement: true, allowNull: false, primaryKey: true},
+            user_id:{type: Sequelize.STRING},
+            login_at:{type: Sequelize.DATE},
+            token:{type: Sequelize.STRING},
+            time:{type: Sequelize.INTEGER},
+            created_at: {
+                type: Sequelize.DATE,
+                field: 'created_at'
+            },
+            updated_at: {
+                type: Sequelize.DATE,
+                field: 'updated_at'
+            }
+        },
+        { sequelize, modelName: 'login_users',
+            tableName: 'login_users',
+            timestamps: false
+        });
+        return modelUserLogin;
     }
 
 }

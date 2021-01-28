@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState, useMemo, useCallback } from 'react';
-import { Avatar, Button, Space, Input } from 'antd';
-// import moment from 'moment';
+import { Avatar, Button, Space, Input, notification } from 'antd';
+import moment from 'moment';
 import Cookies from 'js-cookie';
 import _ from 'lodash';
 
@@ -17,7 +17,7 @@ import {
 import { getCurrentBreakpoint } from 'Src/styles/media';
 import { getProfile, getTransactionH, getGameH, editProfile } from 'Src/services/profile';
 import Table from 'Src/app/components/Table';
-import { handleError } from 'Src/utils/handleError';
+import { handleResponse } from 'Src/utils/handleError';
 
 const MENU = [
   { name: 'Personal Info', title: 'Personal Info', key: 'PersonalInfo' },
@@ -36,47 +36,70 @@ export default memo(function Profile({ loading }) {
   const [transactionHistory, setTransactionHistory] = useState([]);
   const [gameHistory, setGameHistory] = useState([]);
   const [isEditProfile, setIsEditProfile] = useState(false);
+  const [transactionPaging, setTransactionPaging] = useState({ page: 1, total: 0 });
+  const [gameHistoryPaging, setGameHistoryPaging] = useState({ page: 1, total: 0 });
 
   const getPersonalInfo = useCallback(() => {
     loading.current.add('getPersonalInfo');
     const user_id = Cookies.get('userId');
     getProfile({ user_id })
       .then((res) => {
-        if (_.get(res, 'success')) {
-          const result = _.get(res, 'result', {});
+        handleResponse(res, (data) => {
           const {
             id,
             user: { address, name, phone },
-          } = result;
+          } = data;
           setProfile({ id, name, address, phone });
-        } else {
-          handleError(_.get(res, 'message'));
-        }
+        });
       })
       .finally(() => loading.current.remove('getPersonalInfo'));
   }, [loading, setProfile]);
 
   const getTransactionHistory = useCallback(() => {
     loading.current.add('getTransactionHistory');
-    getTransactionH()
+    const user_id = Cookies.get('userId');
+    getTransactionH({ user_id, page: transactionPaging.page })
       .then((res) => {
-        if (_.get(res, 'result')) {
-          setTransactionHistory(res.result);
-        }
+        handleResponse(res, ({ rows: data, count: total }) => {
+          const transactions = data.map(
+            ({ id, transfer_at, status, summand: amount, destination: { name } }) => ({
+              id,
+              name,
+              amount,
+              time: moment(transfer_at).format('DD/MM/YY hh:mm:ss'),
+              status: Boolean(status) ? 'Success' : 'Failure',
+              type: amount > 0 ? 'Top Up' : 'WithDraw',
+            }),
+          );
+          setTransactionHistory(transactions);
+          setTransactionPaging((e) => ({ ...e, total }));
+        });
       })
       .finally(() => loading.current.remove('getTransactionHistory'));
-  }, [loading]);
+  }, [loading, setTransactionPaging, transactionPaging]);
 
   const getGameHistory = useCallback(() => {
     loading.current.add('getGameHistory');
-    getGameH()
+    const user_id = Cookies.get('userId');
+    getGameH({ user_id, page: gameHistoryPaging.page })
       .then((res) => {
-        if (_.get(res, 'result')) {
-          setGameHistory(res.result);
-        }
+        handleResponse(res, ({ rows: data, count: total }) => {
+          const game = data.map(
+            ({ id, created_at, win, type_bet: type, stake, place_bet: place }) => ({
+              id,
+              time: moment(created_at).format('DD/MM/YY hh:mm:ss'),
+              status: Boolean(win) ? 'Win' : 'Lose',
+              type,
+              stake,
+              place,
+            }),
+          );
+          setGameHistory(game);
+          setGameHistoryPaging((e) => ({ ...e, total }));
+        });
       })
       .finally(() => loading.current.remove('getGameHistory'));
-  }, [loading]);
+  }, [loading, setGameHistory, gameHistoryPaging, setGameHistoryPaging]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -98,9 +121,20 @@ export default memo(function Profile({ loading }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const playGame = useCallback(() => {
+    const BASE_URL = process.env.BASE_URL;
+    window.open(`${BASE_URL}/bet/${Cookies.get('accessToken')}/${Cookies.get('userId')}`);
+  }, []);
+
   const onButtonClick = useCallback(
     ({ currentTarget: { title } }) => {
+      if (['Withdraw', 'Top Up'].some((e) => e === title)) {
+        notification.info({
+          message: 'Coming soon',
+        });
+      }
       if (['Edit Personal Info'].some((e) => e === title)) {
+        setSelect('Personal Info');
         setIsEditProfile(true);
         return;
       }
@@ -109,6 +143,7 @@ export default memo(function Profile({ loading }) {
         'Personal Info': getPersonalInfo,
         'Transaction History': getTransactionHistory,
         'Game History': getGameHistory,
+        'Play Game': playGame,
       };
       setSelect(title);
       _.get(fn, `[${title}]`, () => {})();
@@ -120,6 +155,7 @@ export default memo(function Profile({ loading }) {
       getGameHistory,
       isEditProfile,
       setIsEditProfile,
+      playGame,
     ],
   );
 
@@ -144,14 +180,36 @@ export default memo(function Profile({ loading }) {
     const { phone, name, address } = profile;
     editProfile({ user_id, phone, name, address })
       .then((res) => {
-        if (_.get(res, 'success')) {
+        handleResponse(res, () => {
           onButtonClick({ currentTarget: { title: 'Personal Info' } });
-        } else {
-          handleError(_.get(res, 'message'));
-        }
+        });
       })
       .finally(() => loading.current.remove('editProfile'));
   }, [profile, onButtonClick, loading]);
+
+  const onTransactionTablePageChange = useCallback(
+    (page) => {
+      setTransactionPaging((e) => ({ ...e, page }));
+    },
+    [setTransactionPaging],
+  );
+
+  const onGameHistoryPagingChange = useCallback(
+    (page) => {
+      setGameHistoryPaging((e) => ({ ...e, page }));
+    },
+    [setGameHistoryPaging],
+  );
+
+  useEffect(() => {
+    getTransactionHistory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [transactionPaging.page]);
+
+  useEffect(() => {
+    getGameHistory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameHistoryPaging.page]);
 
   return (
     <Container
@@ -210,7 +268,9 @@ export default memo(function Profile({ loading }) {
       )}
       {select === 'Transaction History' && (
         <Table
-          bordered
+          style={{
+            width: ['xs', 'sm', 'md'].some((e) => e === currentBreakpoint) ? '100%' : '80%',
+          }}
           columns={[
             {
               title: 'Name',
@@ -239,11 +299,15 @@ export default memo(function Profile({ loading }) {
             },
           ]}
           dataSource={transactionHistory}
+          pagination={{ total: transactionPaging.total, current: transactionPaging.page }}
+          onPageChange={onTransactionTablePageChange}
         />
       )}
       {select === 'Game History' && (
         <Table
-          bordered
+          style={{
+            width: ['xs', 'sm', 'md'].some((e) => e === currentBreakpoint) ? '100%' : '80%',
+          }}
           columns={[
             {
               title: 'Type',
@@ -272,7 +336,8 @@ export default memo(function Profile({ loading }) {
             },
           ]}
           dataSource={gameHistory}
-          rowKey={'name'}
+          pagination={{ total: gameHistoryPaging.total, current: gameHistoryPaging.page }}
+          onPageChange={onGameHistoryPagingChange}
         />
       )}
       {/* </ItemContainer> */}

@@ -10,6 +10,13 @@ export default function getUrl(type) {
     gameHistory: `${BASE_URL}/user/matches-history`,
     members: `${BASE_URL}/user/get-members`,
     editProfile: `${BASE_URL}/user/post_edit_profile`,
+    getConversionRate: `${BASE_URL}/user/get_all_conversion_rate`,
+    topUp: `${BASE_URL}/user/post_deposit`,
+    lockUser: `${BASE_URL}/user/blockUser`,
+    settings: `${BASE_URL}/user/setting`,
+    updateSetting: `${BASE_URL}/user/update-setting`,
+    getUsersHistory: `${BASE_URL}/user/get-user-history`,
+    adminLogin: `${BASE_URL}/admin/login`,
   };
   const urlProd = {
     login: 'https://600286dd4f17c800175580c3.mockapi.io/login',

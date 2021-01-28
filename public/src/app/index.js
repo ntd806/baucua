@@ -5,13 +5,15 @@ import AdminPage from 'Containers/AdminPage';
 import LoginPage from 'Containers/LoginPage';
 import RegisterPage from 'Containers/RegisterPage';
 import ProfilePage from 'Containers/ProfilePage';
+import HomePage from 'Containers/HomePage';
+import AdminLoginPage from 'Containers/AdminLoginPage';
 import Loading from 'Components/Loading';
-import { validateLogin } from 'Src/utils/auth';
+import { validateLogin, validateAdmin } from 'Src/utils/auth';
 import { setup as setupCoalesce, resize as resizeCoalesce } from 'Src/styles/background/coalesce';
 import { setup as setupPipeline, resize as resizePipeline } from 'Src/styles/background/pipeline';
 import styled from 'styled-components';
 
-function PrivateRoute({ children, isLogin, ...rest }) {
+function PrivateRoute({ children, isLogin, admin, ...rest }) {
   return (
     <Route
       {...rest}
@@ -21,7 +23,7 @@ function PrivateRoute({ children, isLogin, ...rest }) {
         ) : (
           <Redirect
             to={{
-              pathname: '/login',
+              pathname: admin ? 'admin-login' : '/login',
               state: { from: location },
             }}
           />
@@ -34,14 +36,19 @@ function PrivateRoute({ children, isLogin, ...rest }) {
 function App() {
   const isLogin = validateLogin();
   const loading = useRef();
+  const isAdmin = validateAdmin();
 
   useEffect(() => {
-    if (!['/login', '/register', '/admin', '/profile'].includes(window.location.pathname)) {
-      window.location.href = '/admin';
+    if (
+      !['/login', '/register', '/admin', '/profile', '/home', '/admin-login'].includes(
+        window.location.pathname,
+      )
+    ) {
+      window.location.href = '/profile';
     }
     let setup = () => {};
     let resize = () => {};
-    if (['/login', '/register'].includes(window.location.pathname)) {
+    if (['/login', '/register', '/admin-login'].includes(window.location.pathname)) {
       setup = setupCoalesce;
       resize = resizeCoalesce;
     }
@@ -57,23 +64,31 @@ function App() {
     <Container className={'content--canvas'}>
       <Loading ref={loading} />
       <BrowserRouter>
+        <Route path="/home">
+          <HomePage loading={loading} />
+        </Route>
         <Switch>
-          <PrivateRoute path="/admin" isLogin={isLogin}>
+          <PrivateRoute path="/admin" isLogin={isAdmin} admin={true}>
             <AdminPage loading={loading} />
           </PrivateRoute>
           <PrivateRoute path="/profile" isLogin={isLogin}>
             <ProfilePage loading={loading} />
           </PrivateRoute>
+          <Route exact path="/admin-login">
+            <AdminLoginPage loading={loading} />
+          </Route>
           <Route
             exact
             path="/login"
-            component={() => (isLogin ? <Redirect to="/admin" /> : <LoginPage loading={loading} />)}
+            component={() =>
+              isLogin ? <Redirect to="/profile" /> : <LoginPage loading={loading} />
+            }
           />
           <Route
             exact
             path="/register"
             component={() =>
-              isLogin ? <Redirect to="/admin" /> : <RegisterPage loading={loading} />
+              isLogin ? <Redirect to="/profile" /> : <RegisterPage loading={loading} />
             }
           />
         </Switch>

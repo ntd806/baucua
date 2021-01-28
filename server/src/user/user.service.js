@@ -6,8 +6,11 @@ const MatchesHistory = require('../../models/matcheshistory');
 const Character = require('../../models/characters');
 const BankAccount = require('../../models/bankaccounts');
 const ConversionRate = require('../../models/conversion_rate');
+const UserLogin = require('../../models/userlogin');
 
 const validator = require('validator');
+
+const authService = require('../authentication/auth/auth.service');
 
 let user = new User();
 let transferhistory = new TransferHistory();
@@ -17,7 +20,7 @@ let matcheshistory = new MatchesHistory();
 let character = new Character();
 let bankaccount = new BankAccount();
 let conversionRate = new ConversionRate();
-
+let userLogin = new UserLogin();
 // common -------------
 const getUserById = async (id) => {
   return await user.getUserById(id);;
@@ -26,6 +29,7 @@ const getUserById = async (id) => {
 const signUp = async (params) => {
   let error = null;
   let account = [];
+  const AMOUNT = 100;
 
   if(params.fbUID){
     account = await user.getAccountByFB(params.fbUID);
@@ -77,7 +81,7 @@ const signUp = async (params) => {
   // khởi tạo tài khoản cho userNew
   let bankAccountNewData = {} ;
   bankAccountNewData.user_id = userNew.id;
-  bankAccountNewData.amount = 0;
+  bankAccountNewData.amount = AMOUNT;
   bankAccountNewData.is_block = 1; // mở
   bankAccountNewData.status = 1; // default và không dùng đén
 
@@ -90,7 +94,7 @@ const signUp = async (params) => {
 };
 
 const signIn = async (params) => {
-  const result = await user.login(params);
+  let result = await user.login(params);
   return result;
 }
 
@@ -142,13 +146,13 @@ transferHistoryService.getTransfersHistory = async (query) => {
 
   }
 
-  const result = await transferhistory.mTransferHistory.findAll({
+  const result = await transferhistory.mTransferHistory.findAndCountAll({
     where: {
-      user_id: query.user_id
+      destination_id: query.user_id
     },
     offset: +(limit * page),
     limit: +limit,
-    include: [{model: user.mUser , as: 'destination' , attributes: ['name']},{model: user.mUser , as: 'arrival' , attributes: ['name']}]
+    include: [{model: user.mUser , as: 'destination' , attributes: ['name']},{model: user.mUser , as: 'arrival' , attributes: ['name']} ]
   },{raw: true});
   return result;
 }
@@ -196,8 +200,13 @@ const createOption = async(params) => {
   const result = await option.createOption(params);
 }
 
-const getMatchesHistory = async(params) => {
-  return await matcheshistory.getMatchesHistory(params);
+const getMatchesHistory = async(query) => {
+  let { page = 1, limit = 10 } = query;
+  page = page - 1;
+
+  let pageA = +(limit * page);
+  let limitA = +limit;
+  return await matcheshistory.getMatchesHistoryPagination(query,limitA , pageA);
 }
 
 const getTransfersHistory = async(params) => {
@@ -226,9 +235,7 @@ const getAccount = async (userId) => {
 const blockUser = async (params) => {
   const {user_id, is_block} = params;
 
-  const userInstance = user.getInstance();
-
-  const oUser = await userInstance.findByPk(user_id);
+  const oUser = await user.getUserById(user_id);
 
   if (oUser === null) {
     return false; 
@@ -236,12 +243,12 @@ const blockUser = async (params) => {
 
   //When want to block user and status of user is actived
   if (is_block && oUser.status) {
-    await oUser.update({status: 0});
+    await user.updateUser(user_id, {status: 0});
   }
 
   //When want to unblock user and status of user is blocked
   if (!is_block && !oUser.status) {
-    await oUser.update({status: 1});
+    await user.updateUser(user_id, {status: 1});
   }
 
   return true;
@@ -260,7 +267,14 @@ const endGame = async (params) => {
   console.log(typeof array);
   console.log(array);
   // array.forEach(element => console.log(typeof parseInt(element)));
-  array.forEach(element => bet.push(parseInt(element)));
+  array.forEach(element =>{
+    if(element[0] == '['){
+      bet.push(parseInt(element[1]));
+    }
+    else {
+      bet.push(parseInt(element));
+    }
+  });
   console.log("bet");
   console.log(bet.length);
   if(!params.user_id){
@@ -329,8 +343,8 @@ const getMembers = async (query) => {
   let { page = 1, limit = 10, search } = query;
   page = page - 1;
   const { Op } = user;
-  const result = await user.mUser.findAll({
-    attributes: ['id', 'name', 'address', 'phone'],
+  const result = await user.mUser.findAndCountAll({
+    attributes: ['id', 'name', 'address', 'phone', 'status'],
     where: {
       [Op.or]: [
         {
@@ -353,6 +367,7 @@ const getMembers = async (query) => {
     offset: +(limit * page),
     limit: +limit,
   });
+  console.log(result);
   return result;
 };
 
@@ -364,6 +379,51 @@ const updateUser = async (dataEdit) => {
     userUpdate = await user.getUserById(dataEdit.user_id);
     return userUpdate;
   } else {
+    return null;
+  }
+}
+
+/**
+ * Get setting
+ * Author ntd806
+ * time 01/23/2021
+ */
+const getOption = async (params) => {
+  const {user_id, is_admin} = params;
+  if (is_admin) {
+    return await option.getOption();
+  }
+  else{
+    return null;
+  }
+}
+
+/**
+ * Update setting
+ * Author ntd806
+ * time 01/24/2021
+ */
+const updateOption = async (params) => {
+  const {user_id, is_admin} = params;
+  if (is_admin) {
+    return await option.updateOption(params);
+  }
+  else{
+    return null;
+  }
+}
+
+/**
+ * getUsersHistory
+ * Author ntd806
+ * time 01/24/2021
+ */
+const getUsersHistory = async (params) => {
+  const {user_id, is_admin} = params;
+  if (is_admin) {
+    return await userLogin.getUsersHistory(params);
+  }
+  else{
     return null;
   }
 }
@@ -386,5 +446,8 @@ module.exports = {
   transferHistoryService,
   conversionRateService,
   transferService,
-  getUserById
+  getUserById,
+  getOption,
+  updateOption,
+  getUsersHistory,
 };

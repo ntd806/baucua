@@ -10,27 +10,31 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(express.json());
 router.use(upload.array()); 
 
+let authMiddleware = require('../authentication/auth/auth.middlewares')
+const authService = require('../authentication/auth/auth.service');
 
 
-
-router.post('/setting', setting);
-router.get('/matches-history', matchesHistory);
-router.get('/transfers-history', getTransfersHistory);
-router.get('/choice-to-number-map', getChoiceToNumbberMap);
+router.post('/setting', authMiddleware.isAuth, setting);
+router.get('/setting', authMiddleware.isAuth, getOption);
+router.post('/update-setting', authMiddleware.isAuth, updateOption);
+router.get('/matches-history', authMiddleware.isAuth, matchesHistory);
+router.get('/transfers-history', authMiddleware.isAuth, getTransfersHistory);
+router.get('/choice-to-number-map', authMiddleware.isAuth, getChoiceToNumbberMap);
 
 router.post('/end-game', endGame);
 router.post('/blockUser', blockUser);
 router.post('/wallet', getWallet);
 
-router.get('/get_account', getAccount);
-router.get('/get-members', getMembers);
-router.get('/account', getBankAccount);
-router.get('/get_transfers_history', getTransfersHistory);
-router.get('/get_all_conversion_rate', getAllConversionRate)
-router.post('/post_deposit', deposit);
+router.get('/get_account', authMiddleware.isAuth ,getAccount);
+router.get('/get-members', authMiddleware.isAuth,getMembers);
+router.get('/account', authMiddleware.isAuth,getBankAccount);
+router.get('/get_transfers_history', authMiddleware.isAuth, getTransfersHistory);
+router.get('/get_all_conversion_rate', authMiddleware.isAuth,getAllConversionRate)
+router.post('/post_deposit', authMiddleware.isAuth, deposit);
 router.post('/register', signUp);
 router.post('/login', signIn);
-router.post('/post_edit_profile', postEditProfile);
+router.post('/post_edit_profile', authMiddleware.isAuth, postEditProfile);
+router.get('/get-user-history', authMiddleware.isAuth, getUsersHistory);
 
 
 module.exports = router; 
@@ -47,13 +51,19 @@ async function signUp(req, res, next) {
 async function signIn(req, res, next) {
   try {
     let user = await service.signIn(req.body);
+    let user_id = user.id;
+    let accessToken = await authService.generateAccessToken(user_id);
+    // let refreshToken = await authService.generateRefreshToken();
 
-    if(user && user.status){
+    if(user && user.status) {
       return res.status(200).json({
         result:{
           id: user.id,
           avatar: user.image,
-          name: user.name
+          name: user.name,
+          amount: user.bankaccount['amount'],
+          accessToken: accessToken,
+          // refreshToken: refreshToken
         },
         success: true,
         message: ""
@@ -131,7 +141,7 @@ async function setting(req, res, next) {
 
 async function matchesHistory(req, res, next){
   try {
-    var result = await service.getMatchesHistory(req.query);
+    let result = await service.getMatchesHistory(req.query);
     return res.status(200).json({
       success: true,
       result: result,
@@ -299,7 +309,7 @@ async function blockUser(req,res,next) {
 
     return res.status(200).json({
       success: true,
-      message: ''
+      message: `${req.body.is_block ? 'Lock' : 'Unlock'} người dùng thành công!`,
     });
   } catch (e) {
     res.status(400).json({ Error: e.message })
@@ -342,6 +352,61 @@ async function getMembers(req, res, next) {
     const members = await service.getMembers(req.query);
     return res.status(200).json({
       result: members,
+      success: true,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+/***
+ * Get option
+ * Author: ntd806
+ * time: 01/23/2021
+ */
+async function getOption(req, res) {
+  try {
+    console.log(req.query);
+    const optionList = await service.getOption(req.query);
+    return res.status(200).json({
+      result: optionList,
+      success: true,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+/***
+ * Update option
+ * Author: ntd806
+ * time: 01/24/2021
+ */
+async function updateOption(req, res) {
+  try {
+    const optionList = await service.updateOption(req.body);
+    return res.status(200).json({
+      success: true,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+/***
+ * Update option
+ * Author: ntd806
+ * time: 01/24/2021
+ */
+async function getUsersHistory(req, res) {
+  try {
+    const usersHistoryList = await service.getUsersHistory(req.query);
+    return res.status(200).json({
+      result : usersHistoryList.rows,
+      total: usersHistoryList.count.length,
       success: true,
       message: ''
     });

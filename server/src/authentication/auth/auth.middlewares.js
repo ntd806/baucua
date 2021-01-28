@@ -1,8 +1,7 @@
 const jwtVariable = require('../../variables/jwt');
 
-const userModle = require('../users/users.models');
-
 const authMethod = require('./auth.methods');
+const userService = require('../../user/user.service');
 
 exports.isAuth = async (req, res, next) => {
 	// Lấy access token từ header
@@ -23,9 +22,14 @@ exports.isAuth = async (req, res, next) => {
 			.status(401)
 			.send('Bạn không có quyền truy cập vào tính năng này!');
 	}
+	try {
+		const user = await userService.getUserById(verified.payload.userId);
+		req.user = user;
+		return next();
+	} catch (e) {
+		return res
+			.status(401)
+			.send('Bạn không có quyền truy cập vào tính năng này!');
+	}
 
-	const user = await userModle.getUser(verified.payload.username);
-	req.user = user;
-
-	return next();
 };

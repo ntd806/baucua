@@ -10,30 +10,31 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(express.json());
 router.use(upload.array()); 
 
+let authMiddleware = require('../authentication/auth/auth.middlewares')
+const authService = require('../authentication/auth/auth.service');
 
 
-
-router.post('/setting', setting);
-router.get('/setting', getOption);
-router.post('/update-setting', updateOption);
-router.get('/matches-history', matchesHistory);
-router.get('/transfers-history', getTransfersHistory);
-router.get('/choice-to-number-map', getChoiceToNumbberMap);
+router.post('/setting', authMiddleware.isAuth, setting);
+router.get('/setting', authMiddleware.isAuth, getOption);
+router.post('/update-setting', authMiddleware.isAuth, updateOption);
+router.get('/matches-history', authMiddleware.isAuth, matchesHistory);
+router.get('/transfers-history', authMiddleware.isAuth, getTransfersHistory);
+router.get('/choice-to-number-map', authMiddleware.isAuth, getChoiceToNumbberMap);
 
 router.post('/end-game', endGame);
 router.post('/blockUser', blockUser);
 router.post('/wallet', getWallet);
 
-router.get('/get_account', getAccount);
-router.get('/get-members', getMembers);
-router.get('/account', getBankAccount);
-router.get('/get_transfers_history', getTransfersHistory);
-router.get('/get_all_conversion_rate', getAllConversionRate)
-router.post('/post_deposit', deposit);
+router.get('/get_account', authMiddleware.isAuth ,getAccount);
+router.get('/get-members', authMiddleware.isAuth,getMembers);
+router.get('/account', authMiddleware.isAuth,getBankAccount);
+router.get('/get_transfers_history', authMiddleware.isAuth, getTransfersHistory);
+router.get('/get_all_conversion_rate', authMiddleware.isAuth,getAllConversionRate)
+router.post('/post_deposit', authMiddleware.isAuth, deposit);
 router.post('/register', signUp);
 router.post('/login', signIn);
-router.post('/post_edit_profile', postEditProfile);
-router.get('/get-user-history', getUsersHistory);
+router.post('/post_edit_profile', authMiddleware.isAuth, postEditProfile);
+router.get('/get-user-history', authMiddleware.isAuth, getUsersHistory);
 
 
 module.exports = router; 
@@ -50,14 +51,19 @@ async function signUp(req, res, next) {
 async function signIn(req, res, next) {
   try {
     let user = await service.signIn(req.body);
+    let user_id = user.id;
+    let accessToken = await authService.generateAccessToken(user_id);
+    // let refreshToken = await authService.generateRefreshToken();
 
-    if(user && user.status){
+    if(user && user.status) {
       return res.status(200).json({
         result:{
           id: user.id,
           avatar: user.image,
           name: user.name,
-          amount: user.bankaccount['amount']
+          amount: user.bankaccount['amount'],
+          accessToken: accessToken,
+          // refreshToken: refreshToken
         },
         success: true,
         message: ""

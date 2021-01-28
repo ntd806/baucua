@@ -40,6 +40,8 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 app.use(express.static(path.join(__dirname + '/public')));
+console.log("=====================================");
+console.log(path.join(__dirname + '/public'));
 
 const server = http.createServer(app);
 const io = require('socket.io')(server);

@@ -122,7 +122,6 @@ function newGame() {
   //  imgCenter.style("height", center_H + "px");
    start_9 = select('#start_9');
    start_9.html(0);
-   var loaddingScreen = select("#loadding");
    stake_1 = select("#stake_1");
    let stake_1_W = stake_1.width*scale;
    let stake_1_H = stake_1.height*scale;
@@ -195,6 +194,7 @@ function newGame() {
    let result_7_H = result_7.height*scale;
    result_7.style("width",  result_7_W + "px");
    result_7.style("height", result_7_H + "px");
+   var loaddingScreen = select("#loadding");
    loaddingScreen.remove();
 }
 // this function fires when initial running game

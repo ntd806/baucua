@@ -28,6 +28,8 @@ async function startGame(req, res, next) {
  * Get game page betting
  */
 async function betGame(req, res, next) {
+  console.log(req.user_id);
+  console.log(req.accessToken);
   // console.log(path.join(__dirname, '/public'));
   // res.sendFile(path.join(__dirname + '/../public/index.html'));
   res.render('index');

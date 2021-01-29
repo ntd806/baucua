@@ -35,9 +35,9 @@ function setup() {
 
 function draw() {
    // run sound
-   if(!soundsBegin.isPlaying()){
-      soundsBegin.loop();
-   }
+   // if(!soundsBegin.isPlaying()){
+   //    soundsBegin.loop();
+   // }
 
    if(millis() > START_WAITING_TIME){
      wellcome();
@@ -51,8 +51,8 @@ function draw() {
  */
 function preload() {
    // define sounds
-   soundsBegin = loadSound("../audio/bgm.mp3");
-   soundsLightning   = loadSound("../audio/lightning.mp3");
+   //soundsBegin = loadSound("../audio/bgm.mp3");
+   //soundsLightning   = loadSound("../audio/lightning.mp3");
  }
 
 /**
@@ -355,7 +355,7 @@ async function getResult(count){
   if(count == 1){
     time_spin =1;
     await $.ajax({
-      url: "http://127.0.0.1:3002/user/end-game",
+      url: "http://localhost:3000/user/end-game",
       method: "POST",
       dataType: "JSON",
       data: {user_id: 1,

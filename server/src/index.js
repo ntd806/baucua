@@ -13,7 +13,7 @@ app.use(cors())
 
 // Use `.hbs` for extensions and find partials in `views/partials`.
 app.engine('hbs', hbs.express4({
-    partialsDir: path.join(__dirname, '/views/partials'),
+    //partialsDir: path.join(__dirname, '/views/partials'),
     // OPTIONAL settings
     defaultLayout: path.join(__dirname, '/views/layouts/layout.hbs'),
     extname: ".hbs",

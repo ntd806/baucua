@@ -23,10 +23,10 @@ exports.isAuth = async (req, res, next) => {
 			.send('Bạn không có quyền truy cập vào tính năng này!');
 	}
 	try {
-		// const user = await userService.getUserById(verified.payload.userId);
-		// req.user = user;
-		req.user_id = verified.payload.userId;
-		req.accessToken = accessTokenFromHeader;
+		const user = await userService.getUserById(verified.payload.userId);
+		req.user = user;
+		// req.user = verified.payload.userId;
+		// req.accessToken = accessTokenFromHeader;
 		return next();
 	} catch (e) {
 		return res

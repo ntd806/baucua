@@ -25,6 +25,8 @@ exports.isAuth = async (req, res, next) => {
 	try {
 		// const user = await userService.getUserById(verified.payload.userId);
 		// req.user = user;
+		req.user_id = verified.payload.userId;
+		req.accessToken = accessTokenFromHeader;
 		return next();
 	} catch (e) {
 		return res

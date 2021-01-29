@@ -4,9 +4,11 @@ const path = require('path');
 
 const router = express.Router();
 
+let authMiddleware = require('../authentication/auth/auth.middlewares')
+
 // routes
-router.get('/start', startGame);
-router.get('/bet', betGame);
+router.get('/start' , startGame);
+router.get('/bet', authMiddleware.isAuth, betGame);
 
 module.exports = router;
 

@@ -45,7 +45,8 @@ const hookProcessor = new HookProcessor('116529085375415_566172007077785', io);
 const loadTester = new LoadTester(io);
 
 app.get('/', (req, res) => {
-    res.send("Home page. Server running okay.");
+    // res.send("Home page. Server running okay.");
+    res.render('index');
 });
 // ROUTES GAME OFFLINE
 app.use('/game', require('./game/game.controller'));
@@ -79,7 +80,5 @@ app.post('/webhook', async(req, res) => {
 const ip = process.env.IP || "127.0.0.1";
 const port = process.env.PORT || 3000;
 server.listen(port, ip, function() {
-    console.log("=====================")
-    console.log(path.join(__dirname + '/public'))
     console.log("Express server listening at %s:%d ", ip, port, process.env.PORT);
 });

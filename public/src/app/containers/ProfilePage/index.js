@@ -123,7 +123,7 @@ export default memo(function Profile({ loading }) {
 
   const playGame = useCallback(() => {
     const BASE_URL = process.env.BASE_URL;
-    window.open(`${BASE_URL}/bet/${Cookies.get('accessToken')}/${Cookies.get('userId')}`);
+    window.open(`${BASE_URL}/game/bet?accessToken=${Cookies.get('accessToken')}`);
   }, []);
 
   const onButtonClick = useCallback(

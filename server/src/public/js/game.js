@@ -17,7 +17,7 @@ var stake =5;
 var count = 0;
 var index=0;
 // Keep track of our socket connection
-var socket;
+//var socket;
 function setup() {
    newGame();
   // Start a socket connection to the server

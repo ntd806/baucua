@@ -14,6 +14,9 @@ p {
   /********************************************************************/
   .circle {
     clip-path: circle(50% at 50% 50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .circle.circle__start {
     width: 100px;

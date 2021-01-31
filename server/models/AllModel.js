@@ -37,6 +37,7 @@ module.exports = class AllModel {
             fbUID:{type: Sequelize.STRING},
             gg_email:{type: Sequelize.STRING},
             name:{type: Sequelize.STRING},
+            image:{type: Sequelize.STRING},
             address:{type: Sequelize.STRING},
             created_at:{type: Sequelize.DATE},
             updated_at:{type: Sequelize.DATE},

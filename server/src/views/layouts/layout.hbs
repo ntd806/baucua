@@ -20,12 +20,16 @@
      {{{body}}}
 <div id="game2">
 <div id="holder">
+
+    {{#if user}}
+        <input type="hidden" value="{{user}}" id="info">
+    {{/if}}
     <div class="user-info">
-        <p class="avatar"><img src="https://espc.com.vn/mediacenter/media/images/1595/news/ava/s800_600/mu-cang-chai-1512708804.png"></p>
+        <p class="avatar"><img src="{{user.image}}"></p>
         <div class="info">
-            <a class="nick" href="#" target="_blank">why_1ove_me</a>
+            <a class="nick" href="#" target="_blank">{{user.name}}</a>
             <!-- <a class="logout" href="/auth/logout">(Thoát)</a> -->
-            <p class="amount">Amount: 360$</p>
+            <p class="amount">Amount: {{user.bankaccount.dataValues.amount}}$</p>
         </div>
 
     </div>

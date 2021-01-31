@@ -61,6 +61,8 @@ function preload() {
 function newGame() {
    // fixed frame rate
    frameRate(60);
+   player = document.getElementById("info").value;
+   console.log(player);
    // define canvas
    canvas = select("#game2");
    // Set scale for screen
@@ -358,7 +360,7 @@ async function getResult(count){
       url: "http://localhost:3000/user/end-game",
       method: "POST",
       dataType: "JSON",
-      data: {user_id: 1,
+      data: {user_id: player.user_id,
       bet: bet.toString(),
       type_bet: 1,
       stake

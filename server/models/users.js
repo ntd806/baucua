@@ -63,6 +63,11 @@ module.exports = class User extends Main {
 
   async getUserById(id) {
     let user = await this.mUser.findOne({
+      include:[
+        {
+          model: this.mBankAccount,
+        }
+      ],
       where:{
         id: id
       }

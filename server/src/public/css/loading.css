@@ -426,3 +426,14 @@
 		-moz-transform: translateY(97px);
 	}
 }
+
+@media only screen and (max-width: 400px) {
+	loadingCSS. {
+		left: 35%;
+		top: 35%;
+	}
+}
+
+.loadingCSS {
+	position: absolute; left: 45%; top: 37%; text-align: center; color: rgb(225, 247, 241);
+}

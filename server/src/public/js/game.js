@@ -17,7 +17,7 @@ var stake =5;
 var count = 0;
 var index=0;
 // Keep track of our socket connection
-var socket;
+//var socket;
 function setup() {
    newGame();
   // Start a socket connection to the server
@@ -35,9 +35,9 @@ function setup() {
 
 function draw() {
    // run sound
-   if(!soundsBegin.isPlaying()){
-      soundsBegin.loop();
-   }
+   // if(!soundsBegin.isPlaying()){
+   //    soundsBegin.loop();
+   // }
 
    if(millis() > START_WAITING_TIME){
      wellcome();
@@ -51,8 +51,8 @@ function draw() {
  */
 function preload() {
    // define sounds
-   soundsBegin = loadSound("../audio/bgm.mp3");
-   soundsLightning   = loadSound("../audio/lightning.mp3");
+   //soundsBegin = loadSound("../audio/bgm.mp3");
+   //soundsLightning   = loadSound("../audio/lightning.mp3");
  }
 
 /**
@@ -61,6 +61,8 @@ function preload() {
 function newGame() {
    // fixed frame rate
    frameRate(60);
+   player = document.getElementById("info").value;
+   console.log(player);
    // define canvas
    canvas = select("#game2");
    // Set scale for screen
@@ -122,7 +124,6 @@ function newGame() {
   //  imgCenter.style("height", center_H + "px");
    start_9 = select('#start_9');
    start_9.html(0);
-   var loaddingScreen = select("#loadding");
    stake_1 = select("#stake_1");
    let stake_1_W = stake_1.width*scale;
    let stake_1_H = stake_1.height*scale;
@@ -195,6 +196,7 @@ function newGame() {
    let result_7_H = result_7.height*scale;
    result_7.style("width",  result_7_W + "px");
    result_7.style("height", result_7_H + "px");
+   var loaddingScreen = select("#loadding");
    loaddingScreen.remove();
 }
 // this function fires when initial running game
@@ -355,10 +357,10 @@ async function getResult(count){
   if(count == 1){
     time_spin =1;
     await $.ajax({
-      url: "http://127.0.0.1:3002/user/end-game",
+      url: "http://localhost:3000/user/end-game",
       method: "POST",
       dataType: "JSON",
-      data: {user_id: 1,
+      data: {user_id: player.user_id,
       bet: bet.toString(),
       type_bet: 1,
       stake

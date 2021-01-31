@@ -5,7 +5,7 @@ const userService = require('../../user/user.service');
 
 exports.isAuth = async (req, res, next) => {
 	// Lấy access token từ header
-	const accessTokenFromHeader = req.headers.x_authorization;
+	const accessTokenFromHeader = req.headers.x_authorization || req.query.accessToken;
 	if (!accessTokenFromHeader) {
 		return res.status(401).send('Không tìm thấy access token!');
 	}
@@ -23,8 +23,10 @@ exports.isAuth = async (req, res, next) => {
 			.send('Bạn không có quyền truy cập vào tính năng này!');
 	}
 	try {
-		// const user = await userService.getUserById(verified.payload.userId);
-		// req.user = user;
+		const user = await userService.getUserById(verified.payload.userId);
+		req.user = user;
+		// req.user = verified.payload.userId;
+		// req.accessToken = accessTokenFromHeader;
 		return next();
 	} catch (e) {
 		return res

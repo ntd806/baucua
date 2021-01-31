@@ -7,17 +7,13 @@ const express    = require('express');
 const path       = require('path');
 const hbs        = require('express-hbs');
 const app        = express();
+const cors = require('cors');
 
-// Set Access-Control-Allow
-app.use(function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', "*");
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-});
+app.use(cors())
+
 // Use `.hbs` for extensions and find partials in `views/partials`.
 app.engine('hbs', hbs.express4({
-    partialsDir: path.join(__dirname, '/views/partials'),
+    //partialsDir: path.join(__dirname, '/views/partials'),
     // OPTIONAL settings
     defaultLayout: path.join(__dirname, '/views/layouts/layout.hbs'),
     extname: ".hbs",
@@ -51,7 +47,8 @@ const hookProcessor = new HookProcessor('116529085375415_566172007077785', io);
 const loadTester = new LoadTester(io);
 
 app.get('/', (req, res) => {
-    res.send("Home page. Server running okay.");
+    // res.send("Home page. Server running okay.");
+    res.render('index');
 });
 // ROUTES GAME OFFLINE
 app.use('/game', require('./game/game.controller'));

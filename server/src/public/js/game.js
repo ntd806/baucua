@@ -61,7 +61,10 @@ function preload() {
 function newGame() {
    // fixed frame rate
    frameRate(60);
-   player = document.getElementById("info").value;
+   if(document.getElementById("info")){
+    player = document.getElementById("info").value;
+   }
+   
    // define canvas
    canvas = select("#game2");
    // Set scale for screen
@@ -349,15 +352,16 @@ function StakeClicked(start){
 //khi click nó truyền con đặt vào bet
 
 async function getResult(count){
-  // lưu rồi anh
-  // bên kia ko chuyển đc json sang kia thì soa vẫn để  
+
+  
   if(count == 1){
+
     time_spin =1;
     await $.ajax({
-      url: "http://localhost:3000/user/end-game",
+      url: "http://localhost:3002/user/end-game",
       method: "POST",
       dataType: "JSON",
-      data: {user_id: player.user_id,
+      data: {user_id: player,
       bet: bet.toString(),
       type_bet: 1,
       stake

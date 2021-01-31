@@ -31,6 +31,7 @@ async function startGame(req, res, next) {
 async function betGame(req, res, next) {
   // console.log(path.join(__dirname, '/public'));
   // res.sendFile(path.join(__dirname + '/../public/index.html'));
+  console.log(req.user);
   res.render('index', {
       user: req.user
   });

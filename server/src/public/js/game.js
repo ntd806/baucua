@@ -16,6 +16,8 @@ var bet = [], player = {};
 var stake =5;
 var count = 0;
 var index=0;
+var reload =0;
+var result;
 // Keep track of our socket connection
 //var socket;
 function setup() {
@@ -225,11 +227,11 @@ function BtnClicked(start) {
 /**
  * Images spin
  */
-function spinBonus(time){
+async function spinBonus(time){
     var a = document.getElementById("start_"+ (parseInt(time) % 8 + 1));
-    a.classList.add("bg-spin");
+    await a.classList.add("bg-spin");
     var b= document.getElementById("start_"+ ((parseInt(time) % 8) == 0 ? 8 : (parseInt(time) % 8)) );
-    b.classList.remove("bg-spin");  
+    await b.classList.remove("bg-spin");  
 }
 
 /**
@@ -249,13 +251,23 @@ async function run_time() {
   //  spinBonus(time_run*SPEED);
    if (time_run <= 0) {
     count+=1;
+
     await getResult(count);
     start_9.html("TIME'S UP");
     is_click = false;
     var time_stamp = millis();
     time_spin -= (millis()-time_stamp);
-    if (time_spin > 0 || (time_spin <= 0 && document.getElementById("start_"+result).classList.contains('bg-spin-color'))) {
-     spinBonus(-time_run*SPEED);
+    if(-time_spin >1){
+      reload++;
+      if(reload ==1){
+        console.log(1);
+        location.reload();
+      }
+      
+    }
+    console.log(result);
+    if (time_spin > 0 || (time_spin <= 0 && !document.getElementById("start_"+result).classList.contains('bg-spin'))) {
+      await spinBonus(-time_run*SPEED);
     }
     else{
       index++;
@@ -266,7 +278,7 @@ async function run_time() {
         }else{
           a.innerHTML = `You win`;
         }
-      }   
+      }
     }
 
   } else {start_9.html(time_run.toFixed(2));}
@@ -355,7 +367,7 @@ async function getResult(count){
 
   
   if(count == 1){
-
+    console.log(bet);
     time_spin =1;
     await $.ajax({
       url: "http://localhost:3002/user/end-game",

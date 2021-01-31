@@ -264,8 +264,6 @@ const endGame = async (params) => {
   // var bet = params.bet.split(', ');
   var array = params.bet.split(",");
  // var array = JSON.parse(params.bet);
-  console.log(typeof array);
-  console.log(array);
   // array.forEach(element => console.log(typeof parseInt(element)));
   array.forEach(element =>{
     if(element[0] == '['){
@@ -275,8 +273,6 @@ const endGame = async (params) => {
       bet.push(parseInt(element));
     }
   });
-  console.log("bet");
-  console.log(bet.length);
   if(!params.user_id){
     return {
       success: false,
@@ -306,23 +302,24 @@ const endGame = async (params) => {
   }
   var result  = Math.floor(Math.random() * 8) + 1;
   for (const element of bet) {
-    var data = {
-      user_id: params.user_id,
-      win: element == result ? 1 : 0,
-      lose: element == result ? 0: 1,
-      type_bet: params.type_bet,
-      place_bet: element,
-      stake: params.stake
-    }
-    var getAmount = await bankaccount.getAmount(params.user_id);
-    if(result == element){
-      await bankaccount.addAmount(params.user_id, parseInt(getAmount) + parseInt(params.stake)*8);
-    }else{
-      await bankaccount.addAmount(params.user_id, parseInt(getAmount) - parseInt(params.stake));
-    }
-    data.status = 1;
-    await matcheshistory.createMatchesHistory(data);
-    
+    if(element){
+      var data = {
+        user_id: params.user_id,
+        win: element == result ? 1 : 0,
+        lose: element == result ? 0: 1,
+        type_bet: params.type_bet,
+        place_bet: element,
+        stake: params.stake
+      }
+      var getAmount = await bankaccount.getAmount(params.user_id);
+      if(result == element){
+        await bankaccount.addAmount(params.user_id, parseInt(getAmount) + parseInt(params.stake)*8);
+      }else{
+        await bankaccount.addAmount(params.user_id, parseInt(getAmount) - parseInt(params.stake));
+      }
+      data.status = 1;
+      await matcheshistory.createMatchesHistory(data);
+    } 
   };
   
   return {

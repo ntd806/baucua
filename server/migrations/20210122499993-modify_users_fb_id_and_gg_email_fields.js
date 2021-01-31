@@ -17,14 +17,14 @@ module.exports = {
     await queryInterface.addColumn('users', 
     'fbUID', {
       type: Sequelize.STRING,
-      allowNull: true,
+      allowNull: false,
       after: "id"
     }
     );
     await queryInterface.addColumn('users', 
     'gg_email', {
       type: Sequelize.STRING,
-      allowNull: true,
+      allowNull: false,
       after: "fbUID"
     }
     );

@@ -62,7 +62,6 @@ function newGame() {
    // fixed frame rate
    frameRate(60);
    player = document.getElementById("info").value;
-   console.log(player);
    // define canvas
    canvas = select("#game2");
    // Set scale for screen
@@ -117,7 +116,6 @@ function newGame() {
    start_8.style("width",  start_8_W + "px");
    start_8.style("height", start_8_H + "px");
    imgCenter = select("#img-center");
-      console.log(imgCenter);
   //  let center_W = imgCenter.width*scale;
   //  let center_H = imgCenter.height*scale;
   //  imgCenter.style("width",  center_W + "px");
@@ -253,7 +251,6 @@ async function run_time() {
     is_click = false;
     var time_stamp = millis();
     time_spin -= (millis()-time_stamp);
-    console.log(time_spin);
     if (time_spin > 0 || (time_spin <= 0 && document.getElementById("start_"+result).classList.contains('bg-spin-color'))) {
      spinBonus(-time_run*SPEED);
     }

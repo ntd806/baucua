@@ -126,6 +126,10 @@ module.exports = class User extends Main {
         }
       });
     }
-    return result[0];
+    if(result && result[0]){
+      return result[0];
+    }else {
+      return 0;
+    }
   }
 };

@@ -42,6 +42,7 @@ module.exports = router;
 async function signUp(req, res, next) {
   try {
     let result =  await service.signUp(req.body);
+    console.log(result);
     return res.status(200).json(result);
   } catch (e) {
     res.status(400).json({ Error: e.message });

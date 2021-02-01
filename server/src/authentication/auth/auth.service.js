@@ -115,7 +115,7 @@ exports.generateRefreshToken = async () => {
 }
 
 exports.verifyToken = async (tokenFromClient) => {
-    const accessTokenSecret = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7fSwiaWF0IjoxNjExNzYxMjMxLCJleHAiOjE2MTE3NjE4MzF9.wI5LDnWqXUKAKflKqmYw5PNBENdK82dyq6gt0JiLIDo";//process.env.ACCESS_TOKEN_SECRET || jwtVariable.accessTokenSecret;
+    const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || jwtVariable.accessTokenSecret;
     let verifyToken = await authMethod.verifyToken(tokenFromClient, accessTokenSecret);
     return verifyToken ? true : false;
 }

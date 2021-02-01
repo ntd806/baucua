@@ -36,8 +36,6 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 app.use(express.static(path.join(__dirname + '/public')));
-console.log("=====================================");
-console.log(path.join(__dirname + '/public'));
 
 const server = http.createServer(app);
 const io = require('socket.io')(server);
@@ -63,7 +61,7 @@ app.get('/load/:num', async(req, res) => {
 });
 
 app.get('/webhook', function(req, res) {
-    if (req.query['hub.verify_token'] === 'anh_hoang_dep_trai_vo_doi') {
+    if (req.query['hub.verify_token'] === 'GameBet') {
         res.send(req.query['hub.challenge']);
         return;
     }
@@ -80,7 +78,7 @@ app.post('/webhook', async(req, res) => {
 
 // Config server here
 const ip = process.env.IP || "127.0.0.1";
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3002;
 server.listen(port, ip, function() {
     console.log("Express server listening at %s:%d ", ip, port, process.env.PORT);
 });

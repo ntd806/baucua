@@ -58,7 +58,7 @@ exports.login = async(username, password, res) => {
 
     console.log(user);
     const dataForAccessToken = {
-        userId: user.username,
+        userId: user.user_name,
     };
     const accessToken = await authMethod.generateToken(
         dataForAccessToken,

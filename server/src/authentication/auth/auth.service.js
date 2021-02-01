@@ -56,6 +56,7 @@ exports.login = async(username, password, res) => {
     const accessTokenSecret =
         process.env.ACCESS_TOKEN_SECRET || jwtVariable.accessTokenSecret;
 
+    console.log(user);
     const dataForAccessToken = {
         userId: user.username,
     };
@@ -64,7 +65,7 @@ exports.login = async(username, password, res) => {
         accessTokenSecret,
         accessTokenLife,
     );
-    console.log(dataForAccessToken);
+
     if (!accessToken) {
         return {
             success: false,

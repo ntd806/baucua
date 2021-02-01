@@ -64,6 +64,7 @@ exports.login = async(username, password, res) => {
         accessTokenSecret,
         accessTokenLife,
     );
+    console.log(dataForAccessToken);
     if (!accessToken) {
         return {
             success: false,

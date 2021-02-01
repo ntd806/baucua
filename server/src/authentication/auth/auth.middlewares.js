@@ -6,8 +6,6 @@ const userService = require('../../user/user.service');
 exports.isAuth = async (req, res, next) => {
 	// Lấy access token từ header
 	const accessTokenFromHeader = req.headers.accesstoken || req.query.accessToken || req.headers.accessToken;
-	console.log('accessToken',req.headers.accesstoken);
-	console.log(req.headers);
 	if (!accessTokenFromHeader) {
 		return res.status(401).send('Not found access token!');
 	}
@@ -19,7 +17,7 @@ exports.isAuth = async (req, res, next) => {
 		accessTokenFromHeader,
 		accessTokenSecret,
 	);
-	console.log(verified);
+	// console.log(verified);
 	if (!verified) {
 		return res
 			.status(401)

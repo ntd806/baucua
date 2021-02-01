@@ -122,7 +122,7 @@ exports.verifyToken = async (tokenFromClient) => {
 
 exports.refreshToken = async(req, res) => {
     // Lấy access token từ header
-    const accessTokenFromHeader = req.headers.x_authorization;
+    const accessTokenFromHeader = req.headers.x_authorization || req.headers.accesstoken || req.query.accessToken || req.headers.accessToken;
     if (!accessTokenFromHeader) {
         return res.status(400).send('Không tìm thấy access token.');
     }

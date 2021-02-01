@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 
 export default function request({ isRequestToken, ...params }) {
   let headers = {};
-  if (isRequestToken) headers.x_authorization = Cookies.get('accessToken');
+  const accesstoken = Cookies.get('accessToken');
+  if (isRequestToken) headers.accesstoken = accesstoken;
   return axios({ ...params, headers });
 }

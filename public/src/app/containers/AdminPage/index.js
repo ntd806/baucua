@@ -114,6 +114,7 @@ export default memo(function AdminPage({ loading }) {
         Cookies.remove('userId');
         Cookies.remove('isLogin');
         Cookies.remove('refreshToken');
+        Cookies.remove('image');
         window.location.href = '/admin';
         return;
       }

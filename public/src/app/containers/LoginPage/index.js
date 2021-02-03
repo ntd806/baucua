@@ -103,6 +103,8 @@ export default memo(function LoginPage({ loading }) {
   const onLoginGoogle = useCallback(
     (response) => {
       const gg_email = _.get(response, 'profileObj.email', undefined);
+      const image = _.get(response, 'profileObj.imageUrl', undefined);
+      document.cookie = `image=${image};path=/`;
       if (gg_email) onLogin('gg_email', gg_email);
     },
     [onLogin],

@@ -11,6 +11,7 @@ instance.interceptors.response.use(
       Cookies.remove('userId');
       Cookies.remove('isLogin');
       Cookies.remove('refreshToken');
+      Cookies.remove('image');
       window.location.href = '/';
     }
     return Promise.reject(error);

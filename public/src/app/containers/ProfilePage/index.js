@@ -27,6 +27,7 @@ const MENU = [
   { name: 'Play Game', title: 'Play Game', key: 'PlayGame' },
   { name: 'Withdraw', title: 'Withdraw', key: 'Withdraw' },
   { name: 'Top Up', title: 'Top Up', key: 'TopUp' },
+  { name: 'Logout', title: 'Logout', key: 'Logout' },
 ];
 
 export default memo(function Profile({ loading }) {
@@ -136,6 +137,14 @@ export default memo(function Profile({ loading }) {
       if (['Edit Personal Info'].some((e) => e === title)) {
         setSelect('Personal Info');
         setIsEditProfile(true);
+        return;
+      }
+      if (title === 'Logout') {
+        Cookies.remove('accessToken');
+        Cookies.remove('userId');
+        Cookies.remove('isLogin');
+        Cookies.remove('refreshToken');
+        window.location.href = '/';
         return;
       }
       if (isEditProfile) setIsEditProfile(false);
@@ -250,7 +259,12 @@ export default memo(function Profile({ loading }) {
               {isEditProfile ? (
                 <>
                   <Input onChange={onTextChange} title={'name'} value={profile.name} />
-                  <Input onChange={onTextChange} title={'phone'} value={profile.phone} />
+                  <Input
+                    onChange={onTextChange}
+                    type={'number'}
+                    title={'phone'}
+                    value={profile.phone}
+                  />
                   <Input onChange={onTextChange} title={'address'} value={profile.address} />
                 </>
               ) : (

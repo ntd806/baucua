@@ -6,6 +6,7 @@ import { FacebookOutlined, GoogleOutlined } from '@ant-design/icons';
 import GoogleLogin from 'react-google-login';
 import _ from 'lodash';
 import Cookies from 'js-cookie';
+import moment from 'moment';
 
 import {
   Container,
@@ -71,9 +72,13 @@ export default memo(function LoginPage({ loading }) {
       login(params)
         .then((res) => {
           handleResponse(res, ({ id, accessToken }) => {
-            Cookies.set('isLogin', true);
-            Cookies.set('userId', id);
-            Cookies.set('accessToken', accessToken);
+            let now = new Date();
+            const time = now.getTime();
+            const expires = time + 599999;
+            now.setTime(expires);
+            document.cookie = `isLogin=true;expires=${now.toUTCString()};path=/`;
+            document.cookie = `userId=${id};expires=${now.toUTCString()};path=/`;
+            document.cookie = `accessToken=${accessToken};expires=${now.toUTCString()};path=/`;
             window.location.href = '/';
           });
         })

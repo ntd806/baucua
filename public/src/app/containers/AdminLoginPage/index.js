@@ -1,6 +1,4 @@
 import React, { memo, useCallback, useState } from 'react';
-import _ from 'lodash';
-import Cookies from 'js-cookie';
 import { Input, Button } from 'antd';
 
 import { Container, FormContainer, InfoGroup, Title } from './styled';
@@ -19,9 +17,13 @@ export default memo(function AdminLoginPage({ loading }) {
     login(params)
       .then((res) => {
         handleResponse(res, ({ accessToken, refreshToken, user: { id } }) => {
-          Cookies.set('accessToken', accessToken);
-          Cookies.set('refreshToken', refreshToken);
-          Cookies.set('userId', id);
+          let now = new Date();
+          const time = now.getTime();
+          const expires = time + 599999;
+          now.setTime(expires);
+          document.cookie = `userId=${id};expires=${now.toUTCString()};path=/`;
+          document.cookie = `accessToken=${accessToken};expires=${now.toUTCString()};path=/`;
+          document.cookie = `refreshToken=${refreshToken};expires=${now.toUTCString()};path=/`;
           window.location.href = '/admin';
         });
       })

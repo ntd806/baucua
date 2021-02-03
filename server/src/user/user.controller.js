@@ -53,6 +53,13 @@ async function signIn(req, res, next) {
   try {
     let user = await service.signIn(req.body);
     let user_id = user.id;
+    let loginUser = await service.loginUsersService.check(user_id);
+    if (!loginUser) {
+      loginUser = await service.loginUsersService.create(user_id);
+    } else {
+      await service.loginUsersService.update(loginUser, 1);
+    }
+
     let accessToken = await authService.generateAccessToken(user_id);
     // let refreshToken = await authService.generateRefreshToken();
 

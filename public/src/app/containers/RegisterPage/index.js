@@ -162,6 +162,7 @@ export default memo(function RegisterPage({ loading }) {
               title={'phone'}
               value={state.phone}
               placeholder={'Phone'}
+              type={'number'}
             />
           </InfoGroup>
         ) : (

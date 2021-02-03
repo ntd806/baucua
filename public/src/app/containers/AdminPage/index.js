@@ -109,6 +109,15 @@ export default memo(function AdminPage({ loading }) {
 
   const onButtonClick = useCallback(
     ({ currentTarget: { title } }) => {
+      if (title === 'Logout') {
+        Cookies.remove('accessToken');
+        Cookies.remove('userId');
+        Cookies.remove('isLogin');
+        Cookies.remove('refreshToken');
+        Cookies.remove('image');
+        window.location.href = '/admin';
+        return;
+      }
       if (['Statistic', 'Members'].some((e) => e === title)) {
         const fn = {
           Members: getMembers,
@@ -312,10 +321,10 @@ export default memo(function AdminPage({ loading }) {
     [getUsersHistory],
   );
 
-  const playGame = useCallback(() => {
-    const BASE_URL = process.env.BASE_URL;
-    window.open(`${BASE_URL}/game/bet?accessToken=${Cookies.get('accessToken')}`);
-  }, []);
+  // const playGame = useCallback(() => {
+  //   const BASE_URL = process.env.BASE_URL;
+  //   window.open(`${BASE_URL}/game/bet?accessToken=${Cookies.get('accessToken')}`);
+  // }, []);
 
   return (
     <LayoutContainer>
@@ -329,9 +338,11 @@ export default memo(function AdminPage({ loading }) {
                 <Button title={'Statistic'} onClick={onButtonClick}>
                   {'Thống kê'}
                 </Button>
-                <Button onClick={playGame}> {'Bắt đầu game'}</Button>
                 <Button title={'Members'} onClick={onButtonClick}>
                   {'Quản lý thành viên'}
+                </Button>
+                <Button title={'Logout'} onClick={onButtonClick}>
+                  {'Đăng xuất'}
                 </Button>
               </GroupButton>
             </Card>

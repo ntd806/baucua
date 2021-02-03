@@ -1,0 +1,10 @@
+{
+  "apps": [
+    {
+      "name": "NODEJS",
+      "cwd": "server/src/",
+      "script": "index.js",
+      "watch": false
+    }
+  ]
+}

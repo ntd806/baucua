@@ -38,11 +38,11 @@ app.use(bodyParser.urlencoded({
 app.use(express.static(path.join(__dirname + '/public')));
 
 const server = http.createServer(app);
-const io = require('socket.io')(server);
-const HookProcessor = require('./hookProcessor');
-const LoadTester = require('./loadTester');
-const hookProcessor = new HookProcessor('116529085375415_566172007077785', io);
-const loadTester = new LoadTester(io);
+// const io = require('socket.io')(server);
+// const HookProcessor = require('./hookProcessor');
+// const LoadTester = require('./loadTester');
+// const hookProcessor = new HookProcessor('116529085375415_566172007077785', io);
+// const loadTester = new LoadTester(io);
 
 app.get('/', (req, res) => {
     // res.send("Home page. Server running okay.");
@@ -54,27 +54,27 @@ app.use('/user', require('./user/user.controller'));
 app.use('/admin', require('./admin/admin.controller'));
 
 // For load testing game
-app.get('/load/:num', async(req, res) => {
-    const numberOfUser = parseInt(req.params.num, 10) || 1000;
-    await loadTester.runLoadTest(numberOfUser);
-    res.status(200).send("OK");
-});
+// app.get('/load/:num', async(req, res) => {
+//     const numberOfUser = parseInt(req.params.num, 10) || 1000;
+//     await loadTester.runLoadTest(numberOfUser);
+//     res.status(200).send("OK");
+// });
 
-app.get('/webhook', function(req, res) {
-    if (req.query['hub.verify_token'] === 'GameBet') {
-        res.send(req.query['hub.challenge']);
-        return;
-    }
-    res.send('Error, wrong validation token');
-});
+// app.get('/webhook', function(req, res) {
+//     if (req.query['hub.verify_token'] === 'GameBet') {
+//         res.send(req.query['hub.challenge']);
+//         return;
+//     }
+//     res.send('Error, wrong validation token');
+// });
 
-app.post('/webhook', async(req, res) => {
-    const hookObject = req.body;
-    console.log(JSON.stringify(hookObject, null, 2));
-    await hookProcessor.processHook(hookObject);
+// app.post('/webhook', async(req, res) => {
+//     const hookObject = req.body;
+//     console.log(JSON.stringify(hookObject, null, 2));
+//     await hookProcessor.processHook(hookObject);
 
-    res.status(200).send("OK");
-});
+//     res.status(200).send("OK");
+// });
 
 // Config server here
 const ip = process.env.IP || "127.0.0.1";

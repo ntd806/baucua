@@ -15,6 +15,8 @@ const authService = require('../authentication/auth/auth.service');
 
 
 router.post('/setting', authMiddleware.isAuth, setting);
+router.post('/create-setting', authMiddleware.isAuth, createOptions);
+router.post('/create-conversion_rates', authMiddleware.isAuth, createConversionRates);
 router.get('/setting', authMiddleware.isAuth, getOption);
 router.post('/update-setting', authMiddleware.isAuth, updateOption);
 router.get('/matches-history', authMiddleware.isAuth, matchesHistory);
@@ -53,13 +55,6 @@ async function signIn(req, res, next) {
   try {
     let user = await service.signIn(req.body);
     let user_id = user.id;
-    let loginUser = await service.loginUsersService.check(user_id);
-    if (!loginUser) {
-      loginUser = await service.loginUsersService.create(user_id);
-    } else {
-      await service.loginUsersService.update(loginUser, 1);
-    }
-
     let accessToken = await authService.generateAccessToken(user_id);
     // let refreshToken = await authService.generateRefreshToken();
 
@@ -415,6 +410,40 @@ async function getUsersHistory(req, res) {
     return res.status(200).json({
       result : usersHistoryList.rows,
       total: usersHistoryList.count.length,
+      success: true,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+/***
+ * Create options
+ * Author: ntd806
+ * time: 01/24/2021
+ */
+async function createOptions(req, res) {
+  try {
+    const usersHistoryList = await service.createOption(req.body);
+    return res.status(200).json({
+      success: true,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+/***
+ * Create ConversionRates
+ * Author: ntd806
+ * time: 01/24/2021
+ */
+async function createConversionRates(req, res) {
+  try {
+    const usersHistoryList = await service.createConversionRates(req.body);
+    return res.status(200).json({
       success: true,
       message: ''
     });

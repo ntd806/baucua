@@ -425,30 +425,13 @@ const getUsersHistory = async (params) => {
   }
 }
 
-const loginUsersService = {}
-loginUsersService.check = async (user_id) => {
-  if (user_id) {
-     let loginUser = await userLogin.getLoginUsersCurrentDateByUserId(user_id);
-     return loginUser;
-  }
-
-  return null;
-}
-loginUsersService.create = async (user_id) => {
-    let data = {};
-    data.user_id = user_id;
-    data.time = 1;
-    let loginUser = await userLogin.createLoginUsers(data);
-    return loginUser;
-}
-
-loginUsersService.update = async (loginUser, count) => {
-  let dataUpdate = {
-    id: loginUser.id,
-    time: loginUser.time + count,
-    login_at: new Date()
-  };
-  await userLogin.updateLoginUsersById(dataUpdate.id, dataUpdate);
+/**
+ * createConversionRates
+ * Author ntd806
+ * time 01/24/2021
+ */
+const createOption = async(params) => {
+  const result = await conversionRate.createConversionRates(params);
 }
 
 module.exports = {
@@ -473,5 +456,4 @@ module.exports = {
   getOption,
   updateOption,
   getUsersHistory,
-  loginUsersService
 };

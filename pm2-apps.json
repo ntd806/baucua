@@ -5,13 +5,6 @@
       "cwd": "server/src/",
       "script": "index.js",
       "watch": false
-    },
-    {
-      "name": "REACTJS",
-      "cwd": "public/scripts/",
-      "script": "start.js",
-      "watch": false,
-       "exec_mode": "cluster",
     }
   ]
 }

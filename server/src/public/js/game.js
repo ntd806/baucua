@@ -37,10 +37,10 @@ function setup() {
 
 function draw() {
    // run sound
-   // if(!soundsBegin.isPlaying()){
-   //    soundsBegin.loop();
-   // }
-
+   if(!soundsBegin.loop){
+      soundsBegin.play();
+   }
+   
    if(millis() > START_WAITING_TIME){
      wellcome();
    }
@@ -53,7 +53,7 @@ function draw() {
  */
 function preload() {
    // define sounds
-   //soundsBegin = loadSound("../audio/bgm.mp3");
+   soundsBegin = loadSound("../audio/bgm.mp3", 0.4);
    //soundsLightning   = loadSound("../audio/lightning.mp3");
  }
 
@@ -400,3 +400,11 @@ async function getResult(count){
 
   }
 }
+
+function loadSound(url, vol){
+    var audio = new Audio();
+    audio.src = url;
+    audio.preload = "auto";
+    audio.volume = vol;
+    return audio;
+  }

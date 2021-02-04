@@ -364,10 +364,11 @@ export default memo(function AdminPage({ loading }) {
           notification.success({
             message: 'Thêm thành công!',
           });
+          getSetting();
         });
       })
       .finally(() => loading.current.remove('serviceAddOption'));
-  }, [addOptionState]);
+  }, [addOptionState, getSetting]);
 
   const onAddOptionChange = useCallback(
     (key, value) => {
@@ -392,10 +393,11 @@ export default memo(function AdminPage({ loading }) {
           notification.success({
             message: 'Thêm thành công!',
           });
+          getConversionRate();
         });
       })
       .finally(() => loading.current.remove('serviceAddConversionRate'));
-  }, [addConversionRateState]);
+  }, [addConversionRateState, getConversionRate]);
 
   const onAddConversionRateChange = useCallback(
     (key, value) => {

@@ -53,7 +53,7 @@ function draw() {
  */
 function preload() {
    // define sounds
-   soundsBegin = loadAudio("../audio/bgm.mp3", 0.4);
+   soundsBegin = loadSound("../audio/bgm.mp3", 0.4);
    //soundsLightning   = loadSound("../audio/lightning.mp3");
  }
 
@@ -401,7 +401,7 @@ async function getResult(count){
   }
 }
 
-function loadAudio(url, vol){
+function loadSound(url, vol){
     var audio = new Audio();
     audio.src = url;
     audio.preload = "auto";

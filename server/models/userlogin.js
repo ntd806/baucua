@@ -38,12 +38,12 @@ module.exports = class UserLogin extends Main {
           [Op.between]: [startDate, endDate]
         },
       }],
-      group: ['user_id'],
-      limit: limit,
-      offset: +(limit * (page - 1)),
-      order: [
-        ['login_at', 'ASC']
-      ],
+      // group: ['user_id'],
+      // limit: limit,
+      // offset: +(limit * (page - 1)),
+      // order: [
+      //   ['login_at', 'ASC']
+      // ],
     });
   }
 

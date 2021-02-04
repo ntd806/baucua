@@ -48,3 +48,15 @@ export function login(data) {
     .then((res) => res.data)
     .catch(() => {});
 }
+
+export function addOption(data) {
+  return request({ isRequestToken: true, method: 'post', url: getUrl('addOption'), data })
+    .then((res) => res.data)
+    .catch(() => {});
+}
+
+export function addConversionRate(data) {
+  return request({ isRequestToken: true, method: 'post', url: getUrl('addConversionRate'), data })
+    .then((res) => res.data)
+    .catch(() => {});
+}

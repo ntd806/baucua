@@ -37,13 +37,13 @@ export default memo(function RegisterPage({ loading }) {
   const onClick = useCallback(
     ({ currentTarget: { title } }) => {
       switch (title) {
-        case 'Trước':
+        case 'Prev':
           setCurrentStep(0);
           break;
-        case 'Tiếp':
+        case 'Next':
           setCurrentStep(1);
           break;
-        case 'Đăng ký':
+        case 'Register':
           loading.current.add('register');
           register(state)
             .then((res) => {
@@ -132,14 +132,14 @@ export default memo(function RegisterPage({ loading }) {
       <FormContainer>
         <Steps type="navigation" size="small" current={currentStep}>
           <Step
-            title="Bước 1"
+            title="Step 1"
             status={!(state.fbUID || state.gg_email) ? 'finish' : 'process'}
-            description="Liên kết tài khoản."
+            description="Link your account."
           />
           <Step
-            title="Bước 2"
+            title="Step 2"
             status={!(state.name && state.address && state.phone) ? 'finish' : 'process'}
-            description="Thông tin cá nhân."
+            description="Personal information."
           />
         </Steps>
         {currentStep ? (
@@ -205,14 +205,14 @@ export default memo(function RegisterPage({ loading }) {
           </Login>
           <ActionButtonGroup>
             {currentStep ? (
-              <Button title={'Trước'} onClick={onClick}>
-                {'Trước'}
+              <Button title={'Prev'} onClick={onClick}>
+                {'Prev'}
               </Button>
             ) : (
               <div />
             )}
             <Button
-              title={currentStep ? 'Đăng ký' : 'Tiếp'}
+              title={currentStep ? 'Register' : 'Next'}
               disabled={
                 !(currentStep
                   ? state.name && state.address && state.phone
@@ -220,7 +220,7 @@ export default memo(function RegisterPage({ loading }) {
               }
               onClick={onClick}
             >
-              {currentStep ? 'Đăng ký' : 'Tiếp'}
+              {currentStep ? 'Register' : 'Next'}
             </Button>
           </ActionButtonGroup>
         </ActionContainer>

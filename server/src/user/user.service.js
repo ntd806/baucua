@@ -425,15 +425,6 @@ const getUsersHistory = async (params) => {
   }
 }
 
-/**
- * createConversionRates
- * Author ntd806
- * time 01/24/2021
- */
-const createOption = async(params) => {
-  const result = await conversionRate.createConversionRates(params);
-}
-
 module.exports = {
   signUp,
   signIn,

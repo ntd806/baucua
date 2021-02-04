@@ -421,13 +421,12 @@ async function updateOption(req, res) {
 async function getUsersHistory(req, res) {
   try {
     const usersHistoryList = await service.getUsersHistory(req.query);
-    return common.responseSuccess(res, '',usersHistoryList );
-    // return res.status(200).json({
-    //   result : usersHistoryList.rows,
-    //   total: usersHistoryList.count.length,
-    //   success: true,
-    //   message: ''
-    // });
+    return res.status(200).json({
+      result : usersHistoryList.rows,
+      total: usersHistoryList.count.length,
+      success: true,
+      message: ''
+    });
   } catch (e) {
     res.status(400).json({ Error: e.message })
   }

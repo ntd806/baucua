@@ -24,26 +24,27 @@ module.exports = class UserLogin extends Main {
     let {page = 1, limit = 10} = data;
     const startDate = new Date(data.startDate);
     const endDate = new Date(data.endDate);
-    return await this.mUserLogin.findAndCountAll({
-      attributes: ['id', 'user_id', 'login_at', [sequelize.fn('sum', sequelize.col('time')), 'count_time']],
-      include: [
-        {
-          model: this.mUser,
-          attributes: ['name']
-        }
-      ],
-      // where: [{
-      //   login_at: {
-      //     [Op.between]: [startDate, endDate]
-      //   },
-      // }],
-      // group: ['user_id'],
-      // limit: limit,
-      // offset: +(limit * (page - 1)),
-      // order: [
-      //   ['login_at', 'ASC']
-      // ],
-    });
+    return null;
+    // return await this.mUserLogin.findAndCountAll({
+    //   attributes: ['id', 'user_id', 'login_at', [sequelize.fn('sum', sequelize.col('time')), 'count_time']],
+    //   include: [
+    //     {
+    //       model: this.mUser,
+    //       attributes: ['name']
+    //     }
+    //   ],
+    //   where: [{
+    //     login_at: {
+    //       [Op.between]: [startDate, endDate]
+    //     },
+    //   }],
+    //   group: ['user_id'],
+    //   limit: limit,
+    //   offset: +(limit * (page - 1)),
+    //   order: [
+    //     ['login_at', 'ASC']
+    //   ],
+    // });
   }
 
   async getLoginUsersCurrentDateByUserId(userId) {

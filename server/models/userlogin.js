@@ -38,7 +38,7 @@ module.exports = class UserLogin extends Main {
           [Op.between]: [startDate, endDate]
         },
       }],
-      group: ['login_users.user_id'],
+      group: ['user_id'],
       limit: limit,
       offset: +(limit * (page - 1)),
       order: [

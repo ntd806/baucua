@@ -32,17 +32,17 @@ module.exports = class UserLogin extends Main {
           attributes: ['name']
         }
       ],
-      where: [{
-        login_at: {
-          [Op.between]: [startDate, endDate]
-        },
-      }],
-      group: ['user_id'],
-      limit: limit,
-      offset: +(limit * (page - 1)),
-      order: [
-        ['login_at', 'ASC']
-      ],
+      // where: [{
+      //   login_at: {
+      //     [Op.between]: [startDate, endDate]
+      //   },
+      // }],
+      // group: ['user_id'],
+      // limit: limit,
+      // offset: +(limit * (page - 1)),
+      // order: [
+      //   ['login_at', 'ASC']
+      // ],
     });
   }
 

@@ -26,7 +26,7 @@ module.exports = class UserLogin extends Main {
     const endDate = new Date(data.endDate);
     // return null;
     return await this.mUserLogin.findAndCountAll({
-      attributes: ['id', 'user_id', 'login_at'],
+      attributes: ['id', 'user_id', 'login_at'], // , [sequelize.fn('sum', sequelize.col('time')), 'count_time']
       include: [
         {
           model: this.mUser,
@@ -38,7 +38,7 @@ module.exports = class UserLogin extends Main {
           [Op.between]: [startDate, endDate]
         },
       }],
-      // group: ['user_id'],
+      group: ['user_id'],
       limit: limit,
       offset: +(limit * (page - 1)),
       order: [

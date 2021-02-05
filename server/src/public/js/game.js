@@ -37,13 +37,16 @@ function setup() {
 
 function draw() {
    // run sound
-   if(!soundsBegin.loop){
-      soundsBegin.play();
-   }
+  if(!soundsBegin.loop){
+    const playPromise = soundsBegin.play();
+    if (playPromise !== null){
+      playPromise.catch(() => { playPromise.play(); })
+    }
+  }
    
-   if(millis() > START_WAITING_TIME){
+  if(millis() > START_WAITING_TIME){
      wellcome();
-   }
+  }
 
    run_time();
 }

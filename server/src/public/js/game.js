@@ -266,12 +266,10 @@ async function run_time() {
     if(-time_spin >1){
       reload++;
       if(reload ==1){
-        console.log(1);
         location.reload();
       }
       
     }
-    console.log(result);
     if (time_spin > 0 || (time_spin <= 0 && !document.getElementById("start_"+result).classList.contains('bg-spin'))) {
       await spinBonus(-time_run*SPEED);
     }
@@ -279,7 +277,8 @@ async function run_time() {
       index++;
       if(index = 1){
         var a = document.getElementById("oval_2");
-        if(bet.indexOf(result)==-1){
+
+        if(bet.indexOf(result+"")==-1){
           a.innerHTML= `You lose`;
         }else{
           a.innerHTML = `You win`;
@@ -376,7 +375,7 @@ async function getResult(count){
     console.log(bet);
     time_spin =1;
     await $.ajax({
-      url: "http://gamaspeed/user/end-game",
+      url: "http://gamaspeed.com/user/end-game",
       method: "POST",
       dataType: "JSON",
       data: {user_id: player,

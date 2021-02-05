@@ -40,7 +40,7 @@ function draw() {
   if(!soundsBegin.loop){
     const playPromise = soundsBegin.play();
     if (playPromise !== null){
-      playPromise.catch(() => { soundsBegin.play(); })
+      playPromise.catch(() => { soundsBegin.autoplay })
     }
   }
    

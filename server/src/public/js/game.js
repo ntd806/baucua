@@ -40,7 +40,7 @@ function draw() {
   if(!soundsBegin.loop){
     const playPromise = soundsBegin.play();
     if (playPromise !== null){
-      playPromise.catch(() => { playPromise.play(); })
+      playPromise.catch(() => { soundsBegin.play(); })
     }
   }
    
@@ -56,8 +56,8 @@ function draw() {
  */
 function preload() {
    // define sounds
-   soundsBegin = loadSound("../audio/bgm.mp3", 0.4);
-   //soundsLightning   = loadSound("../audio/lightning.mp3");
+   soundsBegin = loadSound("../audio/bgm.mp3", 0.2);
+   soundsLightning   = loadSound("../audio/lightning.mp3", 1);
  }
 
 /**
@@ -214,7 +214,7 @@ function mousePressed() {
 
 
 function BtnClicked(start) {
-  // soundsLightning.play();
+  soundsLightning.play();
   var lightning = document.getElementById('light');
   // var para = document.createElement("span");
   if(time_run > 0){
@@ -410,4 +410,4 @@ function loadSound(url, vol){
     audio.preload = "auto";
     audio.volume = vol;
     return audio;
-  }
+}

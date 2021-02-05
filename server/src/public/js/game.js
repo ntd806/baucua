@@ -36,19 +36,6 @@ function setup() {
 }
 
 function draw() {
-   // run sound
-var promise = soundsBegin.play();
-if (promise !== undefined) {
-  promise.then(_=> {
-    // Autoplay started!
-    soundsBegin.play();
-  }).catch(error => {
-    // Autoplay was prevented.
-    // Show a "Play" button so that user can start playback.
-    console.log(error);
-  });
-}
-   
   if(millis() > START_WAITING_TIME){
      wellcome();
   }
@@ -61,8 +48,8 @@ if (promise !== undefined) {
  */
 function preload() {
    // define sounds
-   soundsBegin = loadSound("../audio/bgm.mp3", 0.2);
-   soundsLightning   = loadSound("../audio/lightning.mp3", 1);
+   soundsBegin = loadSound("../audio/bgm.mp3", 0.2, true);
+   soundsLightning   = loadSound("../audio/lightning.mp3", 1, false);
  }
 
 /**
@@ -219,11 +206,12 @@ function mousePressed() {
 
 
 function BtnClicked(start) {
-  var promise = soundsLightning.play();
+var promise = soundsLightning.play();
 if (promise !== undefined) {
-  promise.then(_=> {
+    promise.then(_=> {
     // Autoplay started!
     soundsBegin.play();
+    soundsLightning.play();
   }).catch(error => {
     // Autoplay was prevented.
     // Show a "Play" button so that user can start playback.
@@ -419,12 +407,12 @@ async function getResult(count){
   }
 }
 
-function loadSound(url, vol){
+function loadSound(url, vol, loop){
     var audio = new Audio();
     audio.crossOrigin = 'anonymous'
     audio.src = url;
     audio.preload = "auto";
     audio.volume = vol;
-    audio.loop = true;
+    audio.loop = loop;
     return audio;
 }

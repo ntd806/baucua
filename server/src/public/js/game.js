@@ -37,9 +37,17 @@ function setup() {
 
 function draw() {
    // run sound
-  if(soundsBegin.paused){
+var promise = soundsBegin.play();
+if (promise !== undefined) {
+  promise.then(_=> {
+    // Autoplay started!
     soundsBegin.play();
-  }
+  }).catch(error => {
+    // Autoplay was prevented.
+    // Show a "Play" button so that user can start playback.
+    console.log(error);
+  });
+}
    
   if(millis() > START_WAITING_TIME){
      wellcome();
@@ -216,8 +224,8 @@ function BtnClicked(start) {
   // var para = document.createElement("span");
   if(time_run > 0){
     lightning.classList.add("blink-one");
-   lightning.style.display = "block";
-   setTimeout(()=>{ 
+    lightning.style.display = "block";
+    setTimeout(()=>{ 
     lightning.style.display = "none"; 
     add_image(start);
    }, 2000);

@@ -406,6 +406,7 @@ async function getResult(count){
 
 function loadSound(url, vol){
     var audio = new Audio();
+    audio.crossOrigin = 'anonymous'
     audio.src = url;
     audio.preload = "auto";
     audio.volume = vol;

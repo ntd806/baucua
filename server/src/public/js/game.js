@@ -37,11 +37,8 @@ function setup() {
 
 function draw() {
    // run sound
-  if(!soundsBegin.loop){
-    const playPromise = soundsBegin.play();
-    if (playPromise !== null){
-      playPromise.catch(() => { soundsBegin.autoplay })
-    }
+  if(soundsBegin.paused){
+    soundsBegin.play();
   }
    
   if(millis() > START_WAITING_TIME){
@@ -410,5 +407,6 @@ function loadSound(url, vol){
     audio.src = url;
     audio.preload = "auto";
     audio.volume = vol;
+    audio.loop = true;
     return audio;
 }

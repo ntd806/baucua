@@ -9,7 +9,12 @@ module.exports = class Option extends Main {
     this.mOption = this.mainOption();
   }
 
-  createOption(data){
+   /**
+   * Create option
+   * Author: ntd806
+   * time: 01/23/2021
+   */
+  async createOption(data){
     return this.mOption.create(data);
   }
 

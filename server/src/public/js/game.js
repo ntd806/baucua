@@ -219,7 +219,17 @@ function mousePressed() {
 
 
 function BtnClicked(start) {
-  soundsLightning.play();
+  var promise = soundsLightning.play();
+if (promise !== undefined) {
+  promise.then(_=> {
+    // Autoplay started!
+    soundsBegin.play();
+  }).catch(error => {
+    // Autoplay was prevented.
+    // Show a "Play" button so that user can start playback.
+    console.log(error);
+  });
+}
   var lightning = document.getElementById('light');
   // var para = document.createElement("span");
   if(time_run > 0){

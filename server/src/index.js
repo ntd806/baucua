@@ -48,9 +48,6 @@ app.get('/', (req, res) => {
     // res.send("Home page. Server running okay.");
     res.render('index');
 });
-app.get('/.well-known/pki-validation/0D6C0F990BA79953D3096E3646D895A5.txt', (req, res) => {
-  res.sendFile(path.join(__dirname + '/public/.well-known/pki-validation/0D6C0F990BA79953D3096E3646D895A5.txt'));
-});
 // ROUTES GAME OFFLINE
 app.use('/game', require('./game/game.controller'));
 app.use('/user', require('./user/user.controller'));

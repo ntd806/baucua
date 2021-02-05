@@ -53,15 +53,23 @@ async function signUp(req, res, next) {
 
 async function signIn(req, res, next) {
   try {
+    let accessToken = null;
     let user = await service.signIn(req.body);
-    let user_id = user.id;
-    // let loginUser = await service.loginUsersService.check(user_id);
-    // if (!loginUser) {
-    //   loginUser = await service.loginUsersService.create(user_id);
-    // } else {
-    //   await service.loginUsersService.update(loginUser, 1);
-    // }
-    let accessToken = await authService.generateAccessToken(user_id);
+    if (user) {
+      let user_id = user.id;
+      let loginUser = await service.loginUsersService.check(user_id);
+      if (!loginUser) {
+        loginUser = await service.loginUsersService.create(user_id);
+        console.log("Taoj moiw");
+      } else {
+
+        await service.loginUsersService.update(loginUser, 1);
+        console.log("Update");
+      }
+      accessToken = await authService.generateAccessToken(user_id);
+    }
+
+
     // let refreshToken = await authService.generateRefreshToken();
 
     if(user && user.status) {

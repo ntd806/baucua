@@ -36,14 +36,9 @@ function setup() {
 }
 
 function draw() {
-   // run sound
-   if(!soundsBegin.loop){
-      soundsBegin.play();
-   }
-   
-   if(millis() > START_WAITING_TIME){
+  if(millis() > START_WAITING_TIME){
      wellcome();
-   }
+  }
 
    run_time();
 }
@@ -53,8 +48,8 @@ function draw() {
  */
 function preload() {
    // define sounds
-   soundsBegin = loadSound("../audio/bgm.mp3", 0.4);
-   //soundsLightning   = loadSound("../audio/lightning.mp3");
+   soundsBegin = loadSound("../audio/bgm.mp3", 0.2, true);
+   soundsLightning   = loadSound("../audio/lightning.mp3", 1, false);
  }
 
 /**
@@ -211,13 +206,24 @@ function mousePressed() {
 
 
 function BtnClicked(start) {
-  // soundsLightning.play();
+var promise = soundsLightning.play();
+if (promise !== undefined) {
+    promise.then(_=> {
+    // Autoplay started!
+    soundsBegin.play();
+    soundsLightning.play();
+  }).catch(error => {
+    // Autoplay was prevented.
+    // Show a "Play" button so that user can start playback.
+    console.log(error);
+  });
+}
   var lightning = document.getElementById('light');
   // var para = document.createElement("span");
   if(time_run > 0){
     lightning.classList.add("blink-one");
-   lightning.style.display = "block";
-   setTimeout(()=>{ 
+    lightning.style.display = "block";
+    setTimeout(()=>{ 
     lightning.style.display = "none"; 
     add_image(start);
    }, 2000);
@@ -401,10 +407,12 @@ async function getResult(count){
   }
 }
 
-function loadSound(url, vol){
+function loadSound(url, vol, loop){
     var audio = new Audio();
+    audio.crossOrigin = 'anonymous'
     audio.src = url;
     audio.preload = "auto";
     audio.volume = vol;
+    audio.loop = loop;
     return audio;
-  }
+}

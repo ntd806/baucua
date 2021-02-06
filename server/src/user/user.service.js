@@ -82,7 +82,7 @@ const signUp = async (params) => {
   let bankAccountNewData = {} ;
   bankAccountNewData.user_id = userNew.id;
   bankAccountNewData.amount = AMOUNT;
-  bankAccountNewData.is_block = 1; // mở
+  bankAccountNewData.is_block = 0; // mở
   bankAccountNewData.status = 1; // default và không dùng đén
 
   let bankAccountNew = await bankaccount.createBankAccount(bankAccountNewData).catch(e => error = e);

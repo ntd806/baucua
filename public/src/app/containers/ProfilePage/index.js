@@ -3,6 +3,7 @@ import { Avatar, Button, Space, Input, notification } from 'antd';
 import moment from 'moment';
 import Cookies from 'js-cookie';
 import _ from 'lodash';
+import { PlusOutlined } from '@ant-design/icons';
 
 import AvatarImage from 'Src/images/avatar.png';
 import {
@@ -34,7 +35,17 @@ const MENU = [
 export default memo(function Profile({ loading }) {
   const [currentBreakpoint, setCurrentBreakpoint] = useState(() => getCurrentBreakpoint(window));
   const [select, setSelect] = useState('Personal Info');
-  const [profile, setProfile] = useState({ name: '', address: '', phone: '', avatar: '' });
+  const [profile, setProfile] = useState({
+    name: '',
+    address: '',
+    phone: '',
+    avatar: '',
+    bank: '',
+    newPhone: {
+      code: '',
+      phone: '',
+    },
+  });
   const [transactionHistory, setTransactionHistory] = useState([]);
   const [gameHistory, setGameHistory] = useState([]);
   const [isEditProfile, setIsEditProfile] = useState(false);
@@ -49,9 +60,14 @@ export default memo(function Profile({ loading }) {
         handleResponse(res, (data) => {
           const {
             id,
-            user: { address, name, phone },
+            user: {
+              address,
+              name,
+              phone,
+              bankaccount: { amount: bank },
+            },
           } = data;
-          setProfile({ id, name, address, phone });
+          setProfile((e) => ({ ...e, id, name, address, phone, bank }));
         });
       })
       .finally(() => loading.current.remove('getPersonalInfo'));
@@ -188,7 +204,10 @@ export default memo(function Profile({ loading }) {
   const onEditProfile = useCallback(() => {
     loading.current.add('editProfile');
     const user_id = Cookies.get('userId');
-    const { phone, name, address } = profile;
+    let { phone, name, address, newPhone } = profile;
+    if (newPhone.phone && newPhone.code) {
+      phone = `+${newPhone.code}${newPhone.phone}`;
+    }
     editProfile({ user_id, phone, name, address })
       .then((res) => {
         handleResponse(res, () => {
@@ -222,6 +241,31 @@ export default memo(function Profile({ loading }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameHistoryPaging.page]);
 
+  const onInputChange = useCallback(
+    ({ currentTarget: { title }, target: { value } }) => {
+      if (
+        value !== '' &&
+        title === 'code' &&
+        _.findIndex(new RegExp(`^([0-9]*)$`).exec(value)) === -1
+      ) {
+        return;
+      }
+      if (
+        value.length > 9 ||
+        (value !== '' &&
+          title === 'phone' &&
+          _.findIndex(new RegExp(`^([0-9]*)$`).exec(value)) === -1)
+      ) {
+        return;
+      }
+      setProfile((e) => ({
+        ...e,
+        newPhone: { ...e.newPhone, [title]: value },
+      }));
+    },
+    [setProfile],
+  );
+
   return (
     <Container
       prefixCls={`profile-container`}
@@ -253,20 +297,33 @@ export default memo(function Profile({ loading }) {
           <ProfileSpace prefixCls={'profile-space'} size={'small'}>
             <ProfileTitle>
               <Text>{'Name:'}</Text>
-              <Text>{'Phone:'}</Text>
+              <Text>{isEditProfile ? 'Old Phone:' : 'Phone:'}</Text>
+              {isEditProfile && <Text>{'New Phone:'}</Text>}
               <Text>{'Address:'}</Text>
-              {/* <Text>{'Account linking'}</Text> */}
+              {!isEditProfile && <Text>{'Bank:'}</Text>}
             </ProfileTitle>
             <div>
               {isEditProfile ? (
                 <>
                   <Input onChange={onTextChange} title={'name'} value={profile.name} />
-                  <Input
-                    onChange={onTextChange}
-                    type={'number'}
-                    title={'phone'}
-                    value={profile.phone}
-                  />
+                  <Input onChange={onTextChange} disabled title={'phone'} value={profile.phone} />
+                  {isEditProfile && (
+                    <div style={{ display: 'flex' }}>
+                      <Input
+                        value={profile.newPhone.code}
+                        onChange={onInputChange}
+                        title={'code'}
+                        style={{ width: 80 }}
+                        prefix={<PlusOutlined />}
+                      />
+                      <Input
+                        onChange={onInputChange}
+                        title={'phone'}
+                        value={profile.newPhone.phone}
+                        placeholder={'Phone'}
+                      />
+                    </div>
+                  )}
                   <Input onChange={onTextChange} title={'address'} value={profile.address} />
                 </>
               ) : (
@@ -276,7 +333,7 @@ export default memo(function Profile({ loading }) {
                   <Text>{profile.address}</Text>
                 </>
               )}
-              {/* <Text>{'Account linking'}</Text> */}
+              {!isEditProfile && <Text>{`${profile.bank} Euro`}</Text>}
             </div>
           </ProfileSpace>
           {isEditProfile && <Button onClick={onEditProfile}>{'Submit'}</Button>}

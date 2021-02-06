@@ -57,6 +57,9 @@ export default memo(function AdminPage({ loading }) {
   const [userHistoryParams, setUserHistoryParams] = useState({
     startDate: moment().subtract(7, 'd'),
     endDate: moment(),
+    limit: 10,
+    page: 1,
+    total: 0,
   });
   const [addOptionState, setAddOptionState] = useState({
     gameType: '',
@@ -88,16 +91,19 @@ export default memo(function AdminPage({ loading }) {
       is_admin: true,
       startDate: moment(userHistoryParams.startDate).format(),
       endDate: moment(userHistoryParams.endDate).format(),
+      limit: userHistoryParams.limit,
+      page: userHistoryParams.page,
     })
       .then((res) => {
         handleResponse(res, (data) => {
           setUserHistory(
             data.map((e) => ({ ...e, login_at: moment(e.login_at).format('DD/MM/YYYY hh:mm:ss') })),
           );
+          setUserHistoryParams((e) => ({ ...e, total: res.total }));
         });
       })
       .finally(() => loading.current.remove('getUsersHistory'));
-  }, [loading, setUserHistory, userHistoryParams]);
+  }, [loading, setUserHistory, setUserHistoryParams]);
 
   const getSetting = useCallback(() => {
     loading.current.add('getSetting');
@@ -210,7 +216,6 @@ export default memo(function AdminPage({ loading }) {
   useEffect(() => {
     getConversionRate();
     getSetting();
-    getUsersHistory();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -260,10 +265,22 @@ export default memo(function AdminPage({ loading }) {
     [setMemberParams],
   );
 
+  const onUserHistoryPageChange = useCallback(
+    (page) => {
+      setUserHistoryParams((e) => ({ ...e, page }));
+    },
+    [setUserHistoryParams],
+  );
+
   useEffect(() => {
     getMembers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [memberParams.page]);
+
+  useEffect(() => {
+    getUsersHistory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userHistoryParams.page]);
 
   const onSettingSelectChange = useCallback(
     (id) => {
@@ -368,10 +385,13 @@ export default memo(function AdminPage({ loading }) {
         });
       })
       .finally(() => loading.current.remove('serviceAddOption'));
-  }, [addOptionState, getSetting]);
+  }, [addOptionState, getSetting, loading]);
 
   const onAddOptionChange = useCallback(
     (key, value) => {
+      if (value !== '' && _.findIndex(new RegExp(`^([0-9]*)$`).exec(value)) === -1) {
+        return;
+      }
       setAddOptionState((e) => ({
         ...e,
         [key]: value,
@@ -397,10 +417,13 @@ export default memo(function AdminPage({ loading }) {
         });
       })
       .finally(() => loading.current.remove('serviceAddConversionRate'));
-  }, [addConversionRateState, getConversionRate]);
+  }, [addConversionRateState, getConversionRate, loading]);
 
   const onAddConversionRateChange = useCallback(
     (key, value) => {
+      if (value !== '' && _.findIndex(new RegExp(`^([0-9]*)$`).exec(value)) === -1) {
+        return;
+      }
       setAddConversionRateState((e) => ({
         ...e,
         [key]: value,
@@ -460,7 +483,13 @@ export default memo(function AdminPage({ loading }) {
               }
               bordered={false}
             >
-              {select === 'Statistic' && <Statistic data={userHistory} />}
+              {select === 'Statistic' && (
+                <Statistic
+                  data={userHistory}
+                  paging={userHistoryParams}
+                  onPageChange={onUserHistoryPageChange}
+                />
+              )}
               {select === 'Members' && (
                 <Members
                   data={members}

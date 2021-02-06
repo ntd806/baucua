@@ -9,14 +9,12 @@ export default memo(function Options({ state: { percent, gameType }, onChange })
       <StyledSpace size={'small'}>
         <Card title={'Loại game'}>
           <Input
-            type={'number'}
             onChange={({ currentTarget: { value } }) => onChange('gameType', value)}
             value={gameType}
           />
         </Card>
         <Card title={'Tỉ lệ thắng'}>
           <Input
-            type={'number'}
             onChange={({ currentTarget: { value } }) => onChange('percent', value)}
             value={percent}
           />

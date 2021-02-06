@@ -1,7 +1,7 @@
 /*global FB*/
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import { Steps, Space, Button, Avatar, Input } from 'antd';
-import { FacebookOutlined, GoogleOutlined } from '@ant-design/icons';
+import { FacebookOutlined, GoogleOutlined, PlusOutlined } from '@ant-design/icons';
 import _ from 'lodash';
 import GoogleLogin from 'react-google-login';
 import { Link } from 'react-router-dom';
@@ -32,6 +32,7 @@ export default memo(function RegisterPage({ loading }) {
     name: null,
     address: null,
     phone: null,
+    code: null,
   });
 
   const onClick = useCallback(
@@ -45,7 +46,7 @@ export default memo(function RegisterPage({ loading }) {
           break;
         case 'Register':
           loading.current.add('register');
-          register(state)
+          register({ ...state, phone: `+${state.code}${state.phone}` })
             .then((res) => {
               handleResponse(res, () => {
                 history.push('/login');
@@ -111,6 +112,21 @@ export default memo(function RegisterPage({ loading }) {
 
   const onInputChange = useCallback(
     ({ currentTarget: { title }, target: { value } }) => {
+      if (
+        value !== '' &&
+        title === 'code' &&
+        _.findIndex(new RegExp(`^([0-9]*)$`).exec(value)) === -1
+      ) {
+        return;
+      }
+      if (
+        value.length > 9 ||
+        (value !== '' &&
+          title === 'phone' &&
+          _.findIndex(new RegExp(`^([0-9]*)$`).exec(value)) === -1)
+      ) {
+        return;
+      }
       setState((e) => ({
         ...e,
         [title]: value,
@@ -157,13 +173,21 @@ export default memo(function RegisterPage({ loading }) {
               value={state.address}
               placeholder={'Address'}
             />
-            <Input
-              onChange={onInputChange}
-              title={'phone'}
-              value={state.phone}
-              placeholder={'Phone'}
-              type={'number'}
-            />
+            <div style={{ display: 'flex' }}>
+              <Input
+                value={state.code}
+                onChange={onInputChange}
+                title={'code'}
+                style={{ width: 80 }}
+                prefix={<PlusOutlined />}
+              />
+              <Input
+                onChange={onInputChange}
+                title={'phone'}
+                value={state.phone}
+                placeholder={'Phone'}
+              />
+            </div>
           </InfoGroup>
         ) : (
           <ButtonGroup>

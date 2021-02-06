@@ -9,14 +9,12 @@ export default memo(function Options({ state: { type, number }, onChange }) {
       <StyledSpace size={'small'}>
         <Card title={'Loại'}>
           <Input
-            type={'number'}
             onChange={({ currentTarget: { value } }) => onChange('type', value)}
             value={type}
           />
         </Card>
         <Card title={'Tỉ lệ'}>
           <Input
-            type={'number'}
             onChange={({ currentTarget: { value } }) => onChange('number', value)}
             value={number}
           />

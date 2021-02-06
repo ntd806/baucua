@@ -375,7 +375,7 @@ async function getResult(count){
     console.log(bet);
     time_spin =1;
     await $.ajax({
-      url: "http://gamaspeed.com/user/end-game",
+      url: "http://localhost:3002/user/end-game",
       method: "POST",
       dataType: "JSON",
       data: {user_id: player,

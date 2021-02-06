@@ -15,6 +15,9 @@ module.exports = class Option extends Main {
    * time: 01/23/2021
    */
   async createOption(data){
+    if(!data.is_play){
+      data.is_play = 0;
+    }
     return this.mOption.create(data);
   }
 

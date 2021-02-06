@@ -5,8 +5,6 @@ import { Space, Input, Button } from 'antd';
 import { FacebookOutlined, GoogleOutlined } from '@ant-design/icons';
 import GoogleLogin from 'react-google-login';
 import _ from 'lodash';
-import Cookies from 'js-cookie';
-import moment from 'moment';
 
 import {
   Container,

@@ -38,7 +38,7 @@ module.exports = class UserLogin extends Main {
         },
       }],
       group: ['user_id'],
-      limit: limit,
+      limit: Number(limit),
       offset: +(limit * (page - 1)),
       order: [
         ['login_at', 'ASC']

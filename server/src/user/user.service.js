@@ -196,9 +196,9 @@ conversionRateService.getAll = async () => {
     return await conversionRate.getAll();
 }
 
-// const createOption = async(params) => {
-//   const result = await option.createOption(params);
-// }
+const createOption = async(params) => {
+  const result = await option.createOption(params);
+}
 
 const getMatchesHistory = async(query) => {
   let { page = 1, limit = 10 } = query;

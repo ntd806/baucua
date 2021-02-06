@@ -17,6 +17,8 @@ export default function getUrl(type) {
     updateSetting: `${BASE_URL}/user/update-setting`,
     getUsersHistory: `${BASE_URL}/user/get-user-history`,
     adminLogin: `${BASE_URL}/admin/login`,
+    addOption: `${BASE_URL}/user/create-setting`,
+    addConversionRate: `${BASE_URL}/user/create-conversion_rates`,
   };
   const urlProd = {
     login: 'https://600286dd4f17c800175580c3.mockapi.io/login',

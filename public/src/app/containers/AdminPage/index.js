@@ -13,10 +13,14 @@ import {
   getSetting as serviceGetSetting,
   updateSetting as serviceUpdateSetting,
   getUsersHistory as serviceGetUsersHistory,
+  addConversionRate as serviceAddConversionRate,
+  addOption as serviceAddOption,
 } from 'Src/services/admin';
 import Members from './components/Members';
 import Statistic from './components/Statistic';
 import Options from './components/Options';
+import AddOptions from './components/AddOptions';
+import AddConversionRate from './components/AddConversionRate';
 import TopUp from './components/TopUp';
 import { handleResponse } from 'Src/utils/handleError';
 
@@ -25,6 +29,8 @@ const { RangePicker } = DatePicker;
 
 export default memo(function AdminPage({ loading }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalAddOptionVisible, setIsModalAddOptionVisible] = useState(false);
+  const [isModalConversionRateVisible, setIsModalConversionRateVisible] = useState(false);
   const [select, setSelect] = useState('Statistic');
   const [members, setMembers] = useState([]);
   const [memberParams, setMemberParams] = useState({
@@ -51,6 +57,17 @@ export default memo(function AdminPage({ loading }) {
   const [userHistoryParams, setUserHistoryParams] = useState({
     startDate: moment().subtract(7, 'd'),
     endDate: moment(),
+    limit: 10,
+    page: 1,
+    total: 0,
+  });
+  const [addOptionState, setAddOptionState] = useState({
+    gameType: '',
+    percent: '',
+  });
+  const [addConversionRateState, setAddConversionRateState] = useState({
+    type: '',
+    number: '',
   });
 
   const getMembers = useCallback(() => {
@@ -74,16 +91,19 @@ export default memo(function AdminPage({ loading }) {
       is_admin: true,
       startDate: moment(userHistoryParams.startDate).format(),
       endDate: moment(userHistoryParams.endDate).format(),
+      limit: userHistoryParams.limit,
+      page: userHistoryParams.page,
     })
       .then((res) => {
         handleResponse(res, (data) => {
           setUserHistory(
             data.map((e) => ({ ...e, login_at: moment(e.login_at).format('DD/MM/YYYY hh:mm:ss') })),
           );
+          setUserHistoryParams((e) => ({ ...e, total: res.total }));
         });
       })
       .finally(() => loading.current.remove('getUsersHistory'));
-  }, [loading, setUserHistory, userHistoryParams]);
+  }, [loading, setUserHistory, setUserHistoryParams]);
 
   const getSetting = useCallback(() => {
     loading.current.add('getSetting');
@@ -136,8 +156,19 @@ export default memo(function AdminPage({ loading }) {
 
   const handleCancel = useCallback(() => {
     setIsModalVisible(false);
+    setIsModalAddOptionVisible(false);
+    setIsModalConversionRateVisible(false);
     setSettingState({ isEdit: false, percent: '', gameTypeSelected: '' });
-  }, [setIsModalVisible, setSettingState]);
+    setAddOptionState({ percent: '', gameType: '' });
+    setAddConversionRateState({ type: '', number: '' });
+  }, [
+    setIsModalVisible,
+    setSettingState,
+    setIsModalAddOptionVisible,
+    setAddOptionState,
+    setIsModalConversionRateVisible,
+    setAddConversionRateState,
+  ]);
 
   const onSearchChange = useCallback(
     ({ currentTarget: { value } }) => {
@@ -185,7 +216,6 @@ export default memo(function AdminPage({ loading }) {
   useEffect(() => {
     getConversionRate();
     getSetting();
-    getUsersHistory();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -235,10 +265,22 @@ export default memo(function AdminPage({ loading }) {
     [setMemberParams],
   );
 
+  const onUserHistoryPageChange = useCallback(
+    (page) => {
+      setUserHistoryParams((e) => ({ ...e, page }));
+    },
+    [setUserHistoryParams],
+  );
+
   useEffect(() => {
     getMembers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [memberParams.page]);
+
+  useEffect(() => {
+    getUsersHistory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userHistoryParams.page]);
 
   const onSettingSelectChange = useCallback(
     (id) => {
@@ -326,6 +368,70 @@ export default memo(function AdminPage({ loading }) {
   //   window.open(`${BASE_URL}/game/bet?accessToken=${Cookies.get('accessToken')}`);
   // }, []);
 
+  const showModalAddOption = useCallback(() => {
+    setIsModalAddOptionVisible(true);
+  }, [setIsModalAddOptionVisible]);
+
+  const addOption = useCallback(() => {
+    loading.current.add('serviceAddOption');
+    const { gameType: game_type, percent: proportionality } = addOptionState;
+    serviceAddOption({ game_type, proportionality })
+      .then((res) => {
+        handleResponse(res, () => {
+          notification.success({
+            message: 'Thêm thành công!',
+          });
+          getSetting();
+        });
+      })
+      .finally(() => loading.current.remove('serviceAddOption'));
+  }, [addOptionState, getSetting, loading]);
+
+  const onAddOptionChange = useCallback(
+    (key, value) => {
+      if (value !== '' && _.findIndex(new RegExp(`^([0-9]*)$`).exec(value)) === -1) {
+        return;
+      }
+      setAddOptionState((e) => ({
+        ...e,
+        [key]: value,
+      }));
+    },
+    [setAddOptionState],
+  );
+
+  const showModalAddConversionRate = useCallback(() => {
+    setIsModalConversionRateVisible(true);
+  }, [setIsModalConversionRateVisible]);
+
+  const addConversionRate = useCallback(() => {
+    loading.current.add('serviceAddConversionRate');
+    const { type, number: number_conversion } = addConversionRateState;
+    serviceAddConversionRate({ type, number_conversion })
+      .then((res) => {
+        handleResponse(res, () => {
+          notification.success({
+            message: 'Thêm thành công!',
+          });
+          getConversionRate();
+        });
+      })
+      .finally(() => loading.current.remove('serviceAddConversionRate'));
+  }, [addConversionRateState, getConversionRate, loading]);
+
+  const onAddConversionRateChange = useCallback(
+    (key, value) => {
+      if (value !== '' && _.findIndex(new RegExp(`^([0-9]*)$`).exec(value)) === -1) {
+        return;
+      }
+      setAddConversionRateState((e) => ({
+        ...e,
+        [key]: value,
+      }));
+    },
+    [setAddConversionRateState],
+  );
+
   return (
     <LayoutContainer>
       <Header>{'Dashboard'}</Header>
@@ -335,6 +441,8 @@ export default memo(function AdminPage({ loading }) {
             <Card title="Menu" bordered={false}>
               <GroupButton>
                 <Button onClick={showModal}>{'Tùy chọn'}</Button>
+                <Button onClick={showModalAddOption}>{'Thêm loại game'}</Button>
+                <Button onClick={showModalAddConversionRate}>{'Thêm hệ chuyển đổi'}</Button>
                 <Button title={'Statistic'} onClick={onButtonClick}>
                   {'Thống kê'}
                 </Button>
@@ -375,7 +483,13 @@ export default memo(function AdminPage({ loading }) {
               }
               bordered={false}
             >
-              {select === 'Statistic' && <Statistic data={userHistory} />}
+              {select === 'Statistic' && (
+                <Statistic
+                  data={userHistory}
+                  paging={userHistoryParams}
+                  onPageChange={onUserHistoryPageChange}
+                />
+              )}
               {select === 'Members' && (
                 <Members
                   data={members}
@@ -404,6 +518,28 @@ export default memo(function AdminPage({ loading }) {
           onSelectChange={onSettingSelectChange}
           onPercentChange={onPercentChange}
         />
+      </Modal>
+      <Modal
+        title="Thêm loại game"
+        visible={isModalAddOptionVisible}
+        onOk={addOptionState.percent && addOptionState.gameType ? addOption : null}
+        onCancel={handleCancel}
+        okText={'Thêm'}
+        cancelText={'Hủy'}
+      >
+        <AddOptions state={addOptionState} onChange={onAddOptionChange} />
+      </Modal>
+      <Modal
+        title="Thêm hệ chuyển đổi"
+        visible={isModalConversionRateVisible}
+        onOk={
+          addConversionRateState.type && addConversionRateState.number ? addConversionRate : null
+        }
+        onCancel={handleCancel}
+        okText={'Thêm'}
+        cancelText={'Hủy'}
+      >
+        <AddConversionRate state={addConversionRateState} onChange={onAddConversionRateChange} />
       </Modal>
       <Modal
         title={`Nạp tiền tài khoản ${topUpState.name}`}

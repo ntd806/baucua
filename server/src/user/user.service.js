@@ -425,15 +425,9 @@ const getUsersHistory = async (params) => {
   }
 }
 
-/**
- * createConversionRates
- * Author ntd806
- * time 01/24/2021
- */
-const createOption = async(params) => {
+const createConversionRates = async (params) => {
   const result = await conversionRate.createConversionRates(params);
 }
-
 
 const loginUsersService = {}
 loginUsersService.check = async (user_id) => {
@@ -483,6 +477,6 @@ module.exports = {
   getOption,
   updateOption,
   getUsersHistory,
-  loginUsersService
-
+  loginUsersService,
+  createConversionRates,
 };

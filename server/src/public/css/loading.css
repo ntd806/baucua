@@ -428,7 +428,7 @@
 }
 
 @media only screen and (max-width: 400px) {
-	loadingCSS. {
+	.loadingCSS {
 		left: 35%;
 		top: 35%;
 	}

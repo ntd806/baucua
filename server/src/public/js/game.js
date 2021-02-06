@@ -36,14 +36,9 @@ function setup() {
 }
 
 function draw() {
-   // run sound
-   if(!soundsBegin.loop){
-      soundsBegin.play();
-   }
-   
-   if(millis() > START_WAITING_TIME){
+  if(millis() > START_WAITING_TIME){
      wellcome();
-   }
+  }
 
    run_time();
 }
@@ -53,8 +48,8 @@ function draw() {
  */
 function preload() {
    // define sounds
-   soundsBegin = loadSound("../audio/bgm.mp3", 0.4);
-   //soundsLightning   = loadSound("../audio/lightning.mp3");
+   soundsBegin = loadSound("../audio/bgm.mp3", 0.2, true);
+   soundsLightning   = loadSound("../audio/lightning.mp3", 1, false);
  }
 
 /**
@@ -121,84 +116,8 @@ function newGame() {
    start_8.style("width",  start_8_W + "px");
    start_8.style("height", start_8_H + "px");
    imgCenter = select("#img-center");
-  //  let center_W = imgCenter.width*scale;
-  //  let center_H = imgCenter.height*scale;
-  //  imgCenter.style("width",  center_W + "px");
-  //  imgCenter.style("height", center_H + "px");
    start_9 = select('#start_9');
    start_9.html(0);
-   stake_1 = select("#stake_1");
-   let stake_1_W = stake_1.width*scale;
-   let stake_1_H = stake_1.height*scale;
-  //  stake_1.style("width",  stake_1_W + "px");
-  //  stake_1.style("height", stake_1_H + "px");
-
-   stake_2 = select("#stake_2");
-   let stake_2_W = stake_2.width*scale;
-   let stake_2_H = stake_2.height*scale;
-  //  stake_2.style("width",  stake_2_W + "px");
-  //  stake_2.style("height", stake_2_H + "px");
-
-
-   stake_3 = select("#stake_3");
-   let stake_3_W = stake_3.width*scale;
-   let stake_3_H = stake_3.height*scale;
-  //  stake_3.style("width",  stake_3_W + "px");
-  //  stake_3.style("height", stake_3_H + "px");
-
-   stake_4 = select("#stake_4");
-   let stake_4_W = stake_4.width*scale;
-   let stake_4_H = stake_4.height*scale;
-  //  stake_4.style("width",  stake_4_W + "px");
-  //  stake_4.style("height", stake_4_H + "px");
-
-   result_1 = select("#result_1");
-   let result_1_W = result_1.width*scale;
-   let result_1_H = result_1.height*scale;
-  //  result_1.style("width",  result_1_W + "px");
-  //  result_1.style("height", result_1_H + "px");
-
-   result_2 = select("#result_2");
-   let result_2_W = result_2.width*scale;
-   let result_2_H = result_2.height*scale;
-  //  result_2.style("width",  result_2_W + "px");
-  //  result_2.style("height", result_2_H + "px");
-   
-   result_3 = select("#result_3");
-   let result_3_W = result_3.width*scale;
-   let result_3_H = result_3.height*scale;
-  //  result_3.style("width",  result_3_W + "px");
-  //  result_3.style("height", result_3_H + "px");
-
-   result_4 = select("#result_4");
-   let result_4_W = result_4.width*scale;
-   let result_4_H = result_4.height*scale;
-  //  result_4.style("width",  result_4_W + "px");
-  //  result_4.style("height", result_4_H + "px");
-
-   result_5 = select("#result_5");
-   let result_5_W = result_5.width*scale;
-   let result_5_H = result_5.height*scale;
-  //  result_5.style("width",  result_5_W + "px");
-  //  result_5.style("height", result_5_H + "px");
-
-   result_6 = select("#result_6");
-   let result_6_W = result_6.width*scale;
-   let result_6_H = result_6.height*scale;
-  //  result_6.style("width",  result_6_W + "px");
-  //  result_6.style("height", result_6_H + "px");
-
-   result_8 = select("#result_8");
-   let result_8_W = result_8.width*scale;
-   let result_8_H = result_8.height*scale;
-  //  result_8.style("width",  result_8_W + "px");
-  //  result_8.style("height", result_8_H + "px");
-
-   result_7 = select("#result_7");
-   let result_7_W = result_7.width*scale;
-   let result_7_H = result_7.height*scale;
-  //  result_7.style("width",  result_7_W + "px");
-  //  result_7.style("height", result_7_H + "px");
    var loaddingScreen = select("#loadding");
    loaddingScreen.remove();
 }
@@ -211,13 +130,24 @@ function mousePressed() {
 
 
 function BtnClicked(start) {
-  // soundsLightning.play();
+var promise = soundsLightning.play();
+if (promise !== undefined) {
+    promise.then(_=> {
+    // Autoplay started!
+    soundsBegin.play();
+    soundsLightning.play();
+  }).catch(error => {
+    // Autoplay was prevented.
+    // Show a "Play" button so that user can start playback.
+    soundsLightning.pause();
+  });
+}
   var lightning = document.getElementById('light');
   // var para = document.createElement("span");
   if(time_run > 0){
     lightning.classList.add("blink-one");
-   lightning.style.display = "block";
-   setTimeout(()=>{ 
+    lightning.style.display = "block";
+    setTimeout(()=>{ 
     lightning.style.display = "none"; 
     add_image(start);
    }, 2000);
@@ -260,12 +190,10 @@ async function run_time() {
     if(-time_spin >1){
       reload++;
       if(reload ==1){
-        console.log(1);
         location.reload();
       }
       
     }
-    console.log(result);
     if (time_spin > 0 || (time_spin <= 0 && !document.getElementById("start_"+result).classList.contains('bg-spin'))) {
       await spinBonus(-time_run*SPEED);
     }
@@ -273,7 +201,8 @@ async function run_time() {
       index++;
       if(index = 1){
         var a = document.getElementById("oval_2");
-        if(bet.indexOf(result)==-1){
+
+        if(bet.indexOf(result+"")==-1){
           a.innerHTML= `You lose`;
         }else{
           a.innerHTML = `You win`;
@@ -401,10 +330,12 @@ async function getResult(count){
   }
 }
 
-function loadSound(url, vol){
+function loadSound(url, vol, loop){
     var audio = new Audio();
+    audio.crossOrigin = 'anonymous'
     audio.src = url;
     audio.preload = "auto";
     audio.volume = vol;
+    audio.loop = loop;
     return audio;
-  }
+}

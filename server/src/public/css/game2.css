@@ -8,6 +8,11 @@
 	margin: 0;
 	padding: 0;
 }
+body {
+	background-image: url('../img/b1.jpg');
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
 
 #game2 {
 	position: relative;
@@ -440,7 +445,7 @@
 	}
 
 	.bg-spin {
-		background-color: white !important;
+		background-color: #8FBC8F !important;
 	}
 
 	.user-info{

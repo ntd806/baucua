@@ -82,7 +82,7 @@ const signUp = async (params) => {
   let bankAccountNewData = {} ;
   bankAccountNewData.user_id = userNew.id;
   bankAccountNewData.amount = AMOUNT;
-  bankAccountNewData.is_block = 1; // mở
+  bankAccountNewData.is_block = 0; // mở
   bankAccountNewData.status = 1; // default và không dùng đén
 
   let bankAccountNew = await bankaccount.createBankAccount(bankAccountNewData).catch(e => error = e);
@@ -196,9 +196,9 @@ conversionRateService.getAll = async () => {
     return await conversionRate.getAll();
 }
 
-const createOption = async(params) => {
-  const result = await option.createOption(params);
-}
+// const createOption = async(params) => {
+//   const result = await option.createOption(params);
+// }
 
 const getMatchesHistory = async(query) => {
   let { page = 1, limit = 10 } = query;
@@ -429,6 +429,31 @@ const createConversionRates = async (params) => {
   const result = await conversionRate.createConversionRates(params);
 }
 
+const loginUsersService = {}
+loginUsersService.check = async (user_id) => {
+  if (user_id) {
+    let loginUser = await userLogin.getLoginUsersCurrentDateByUserId(user_id);
+    return loginUser;
+  }
+
+  return null;
+}
+loginUsersService.create = async (user_id) => {
+  let data = {};
+  data.user_id = user_id;
+  data.time = 1;
+  let loginUser = await userLogin.createLoginUsers(data);
+  return loginUser;
+}
+
+loginUsersService.update = async (loginUser, count) => {
+  let dataUpdate = {
+    id: loginUser.id,
+    time: loginUser.time + count,
+    login_at: new Date()
+  };
+  await userLogin.updateLoginUsersById(dataUpdate.id, dataUpdate);
+}
 
 module.exports = {
   signUp,
@@ -452,5 +477,6 @@ module.exports = {
   getOption,
   updateOption,
   getUsersHistory,
-  createConversionRates
+  loginUsersService,
+  createConversionRates,
 };

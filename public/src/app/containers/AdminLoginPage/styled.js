@@ -1,11 +1,6 @@
 import styled from 'styled-components/macro';
 import { Space } from 'antd';
 
-const color = {
-  facebook: '#4468BE',
-  google: '#BF4D3B',
-};
-
 export const Container = styled.div`
   height: 100vh;
   display: flex;

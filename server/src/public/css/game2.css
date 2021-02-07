@@ -15,7 +15,7 @@
 	width: 634px;
 	height: 634px;
 	margin: 0px auto;
-	border: 5px solid #000;
+	/* border: 5px solid #000; */
 	border-radius: 5px;
 	box-sizing: border-box;
 	overflow: hidden;
@@ -147,7 +147,7 @@
 	width: 84vw;
 	height: 84vw;
 	margin: 0px auto;
-	border: 5px solid #000;
+	/* border: 5px solid #000; */
 	border-radius: 5px;
 	box-sizing: border-box;
 	overflow: hidden;
@@ -284,7 +284,7 @@
 		width: 84vw;
 		height: 84vw;
 		margin: 0px auto;
-		border: 5px solid #000;
+		/* border: 5px solid #000; */
 		border-radius: 5px;
 		box-sizing: border-box;
 		overflow: hidden;
@@ -434,13 +434,9 @@
 	.text-center{
 		text-align: center;
 	}
-	.mt-2 {
-		/*margin-top: 5px;*/
-		/*margin-left: 5px;*/
-	}
 
 	.bg-spin {
-		background-color: white !important;
+		background-color: #8FBC8F !important;
 	}
 
 	.user-info{

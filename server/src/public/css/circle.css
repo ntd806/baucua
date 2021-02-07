@@ -49,133 +49,141 @@ p {
   }
   #start_1 {
     top: 0%; left: 42.5%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
   #start_2 {
     top: 7.6%; right: 23.9%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
   #start_3 {
     top: 25.35%; right: 16.4%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
   #start_4 {
     bottom: 41%; right: 23.9%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
   #start_5 {
     bottom: 33.4%; left: 42.5%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
   #start_6 {
     bottom: 41%; left: 24.5%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
   #start_7 {
     top: 25.5%; left: 17%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
   #start_8 {
     top: 7.5%; left: 24.5%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
   #start_9{
     height: 6%;
     width: 15%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
   #stake_1{
     height: 6%;
     width: 6%;
     bottom: 20%; left: 27.9%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
   #stake_2{
     height: 6%;
     width: 6%;
     bottom: 20%; left: 40.7%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
   #stake_3{
     height: 6%;
     width: 6%;
     bottom: 20%; left: 53.6%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
   #stake_4{
     height: 6%;
     width: 6%;
     bottom: 20%; 
     right: 27.5%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
 #result_1 {
     height: 5%;
     width: 5%;
     bottom: 6%; left: 17.7%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
   #result_2 {
     height: 5%;
     width: 5%;
     bottom: 6%; left: 26.2%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
   #result_3 {
     height: 5%;
     width: 5%;
     bottom: 6%;  left: 34.55%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
   #result_4 {
    height: 5%;
     width: 5%;
     bottom: 6%;  left: 43%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
   #result_5 {
    height: 5%;
     width: 5%;
     bottom: 6%;  right: 43.6%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
   #result_6 {
    height: 5%;
     width: 5%;
     bottom: 6%;  right: 35.2%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
   #result_7 {
    height: 5%;
     width: 5%;
     bottom: 6%; right: 26.7%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
   #result_8 {
    height: 5%;
     width: 5%;
     bottom: 6%;  right: 18.3%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
   #start_22 {
    height: 5%;
     width: 5%;
     bottom: 30%; left: 26.1%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
   #start_23 {
    height: 5%;
     width: 5%;
     bottom: 30%;  right: 25.2%;
-    background-color: blueviolet
+    /*background-color: blueviolet*/
   }
+  #oval_1 {
+    height: 4%;
+    width: 23%;
+    bottom: 13%;
+    left: 20%;
+    text-align: center;
+    /* background-color: blueviolet; */
+   }
   #oval_2 {
     height: 4%;
     width: 23%;
     bottom: 13%;
     right: 18%;
     text-align: center;
-    background-color: blueviolet;
+    /*background-color: blueviolet*/;
    }
   #loadding {
     width: 100%; height: 100%; background-color: rgb(64, 71, 69); position: absolute; top: 0; left: 0; z-index: 10000;
@@ -219,3 +227,15 @@ p {
       height: 50px !important; */
       position: absolute;
     }
+.rotate {
+  animation: rotation 8s infinite linear;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}

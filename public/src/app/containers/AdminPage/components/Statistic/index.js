@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import Table from 'Src/app/components/Table';
 
-export default memo(function Statistic({ data = [] }) {
+export default memo(function Statistic({ data = [], paging: { total, page }, onPageChange }) {
   return (
     <Table
       columns={[
@@ -27,6 +27,8 @@ export default memo(function Statistic({ data = [] }) {
         },
       ]}
       dataSource={data}
+      pagination={{ total, current: page }}
+      onPageChange={onPageChange}
     />
   );
 });

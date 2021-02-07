@@ -20,7 +20,7 @@ body {
 	width: 634px;
 	height: 634px;
 	margin: 0px auto;
-	border: 5px solid #000;
+	/* border: 5px solid #000; */
 	border-radius: 5px;
 	box-sizing: border-box;
 	overflow: hidden;
@@ -152,7 +152,7 @@ body {
 	width: 84vw;
 	height: 84vw;
 	margin: 0px auto;
-	border: 5px solid #000;
+	/* border: 5px solid #000; */
 	border-radius: 5px;
 	box-sizing: border-box;
 	overflow: hidden;
@@ -289,7 +289,7 @@ body {
 		width: 84vw;
 		height: 84vw;
 		margin: 0px auto;
-		border: 5px solid #000;
+		/* border: 5px solid #000; */
 		border-radius: 5px;
 		box-sizing: border-box;
 		overflow: hidden;
@@ -438,10 +438,6 @@ body {
 	
 	.text-center{
 		text-align: center;
-	}
-	.mt-2 {
-		/*margin-top: 5px;*/
-		/*margin-left: 5px;*/
 	}
 
 	.bg-spin {

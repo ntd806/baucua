@@ -169,6 +169,14 @@ p {
     bottom: 30%;  right: 25.2%;
     /*background-color: blueviolet*/
   }
+  #oval_1 {
+    height: 4%;
+    width: 23%;
+    bottom: 13%;
+    left: 20%;
+    text-align: center;
+    /* background-color: blueviolet; */
+   }
   #oval_2 {
     height: 4%;
     width: 23%;

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Betting</title>
+<title>Gamaspeed.com</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="../../css/loading.css">
@@ -13,7 +13,6 @@
 <script src="../../js/config.js" charset="utf-8"></script>
 <script src="../../js/game.js" charset="utf-8"></script>
 </head>
-
 <body>
      {{{body}}}
 <div id="game2">
@@ -23,12 +22,11 @@
         <input type="hidden" value="{{user.id}}" id="info">
     {{/if}}
     <div class="user-info">
-        <p class="avatar"><img src="{{user.image}}"></p>
+        <p style="color: aliceblue; left: 0%;" >{{user.name}}</p>
+        {{!-- <p class="avatar"><img src="{{user.image}}"></p> --}}
         <div class="info">
-            <p style="color: aliceblue;" >{{user.name}}</p>
-            <p class="amount" style="color: aliceblue;">Amount: {{user.bankaccount.dataValues.amount}} €</p>
+            
         </div>
-
     </div>
     <div class="circle circle__item" id = "start_1" onclick="BtnClicked(this)" att = "1">
         <img src="../../img/vq1-02.png" class="img-center rotate">
@@ -60,19 +58,22 @@
     <div class="circle circle__item oval" id ="oval" style="left: 3%;"></div>
     <div class="circle circle__item oval" id = "oval" style="right: 1%;">
     </div>
+     <div class="oval__item" id="oval_1">
+         <h3 class="mt-2" style="color: aliceblue;">Point: {{user.bankaccount.dataValues.amount}} </h3>
+    </div>
     <div class="oval__item" id="oval_2">
     </div>
     <div class="circle circle__item ring" id = "stake_1" onclick="StakeClicked(this)" att = "5">
-        <p class="mt-2">5€</p>
+        <h2 class="mt-2" style="color: #ed1313;" >5</h2>
     </div>
     <div class="circle circle__item text-center" id = "stake_2" onclick="StakeClicked(this)" att = "10">
-        <p class="mt-2">10€</p>
+        <h2 class="mt-2" style="color: #ed1313;">10</h2>
     </div>
     <div class="circle circle__item text-center" id = "stake_3" onclick="StakeClicked(this)" att = "20">
-        <p class="mt-2">20€</p>
+        <h2 class="mt-2" style="color: #ed1313;">20</h2>
     </div>
     <div class="circle circle__item text-center" id = "stake_4" onclick="StakeClicked(this)" att = "30">
-        <p class="mt-2">30€</p>
+        <h2 class="mt-2" style="color: #ed1313;">30</h2>
     </div>
 
     <div class="circle circle__item" id = "result_1" class="result">

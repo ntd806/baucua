@@ -130,27 +130,17 @@ function mousePressed() {
 
 
 function BtnClicked(start) {
-var promise = soundsLightning.play();
-if (promise !== undefined) {
-    promise.then(_=> {
-    // Autoplay started!
-    soundsBegin.play();
-    soundsLightning.play();
-  }).catch(error => {
-    // Autoplay was prevented.
-    // Show a "Play" button so that user can start playback.
-    soundsLightning.pause();
-  });
-}
+
   var lightning = document.getElementById('light');
   // var para = document.createElement("span");
   if(time_run > 0){
+    playsound();
     lightning.classList.add("blink-one");
     lightning.style.display = "block";
     setTimeout(()=>{ 
     lightning.style.display = "none"; 
     add_image(start);
-   }, 2000);
+   }, 1000);
   }
 }
 
@@ -200,12 +190,12 @@ async function run_time() {
     else{
       index++;
       if(index = 1){
-        var a = document.getElementById("oval_2");
+        var a = document.getElementById("notify");
 
         if(bet.indexOf(result+"")==-1){
-          a.innerHTML= `You lose`;
+          a.innerHTML= `YOU LOSE`;
         }else{
-          a.innerHTML = `You win`;
+          a.innerHTML = `YOU WIN`;
         }
       }
     }
@@ -338,4 +328,19 @@ function loadSound(url, vol, loop){
     audio.volume = vol;
     audio.loop = loop;
     return audio;
+}
+
+function playsound() {
+var promise = soundsLightning.play();
+  if (promise !== undefined) {
+      promise.then(_=> {
+      // Autoplay started!
+      soundsBegin.play();
+      soundsLightning.play();
+    }).catch(error => {
+      // Autoplay was prevented.
+      // Show a "Play" button so that user can start playback.
+      soundsLightning.pause();
+    });
+  }
 }

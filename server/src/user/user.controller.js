@@ -44,7 +44,6 @@ module.exports = router;
 async function signUp(req, res, next) {
   try {
     let result =  await service.signUp(req.body);
-    console.log(result);
     return res.status(200).json(result);
   } catch (e) {
     res.status(400).json({ Error: e.message });
@@ -60,11 +59,9 @@ async function signIn(req, res, next) {
       let loginUser = await service.loginUsersService.check(user_id);
       if (!loginUser) {
         loginUser = await service.loginUsersService.create(user_id);
-        console.log("Taoj moiw");
       } else {
 
         await service.loginUsersService.update(loginUser, 1);
-        console.log("Update");
       }
       accessToken = await authService.generateAccessToken(user_id);
     }
@@ -88,7 +85,7 @@ async function signIn(req, res, next) {
     } else {
       return res.status(200).json({
         success: false,
-        message: 'Đăng nhập thất bại'
+        message: 'Login fail'
       });
     }
   } catch (e) {
@@ -306,7 +303,7 @@ async function postEditProfile(req, res, next) {
         return common.responseError(res, 200, "User không tồn tại");
       }
     } else {
-      return common.responseError(res, 200, "Không xác định được đang chỉnh sữa user nha");
+      return common.responseError(res, 200, "Không xác định được đang chỉnh sửa người dùng");
     }
   } catch (e) {
     return common.responseErrorCatch(res, e);

@@ -9,13 +9,17 @@
 <link rel="stylesheet" type="text/css" href="../../css/game2.css">
 <link rel="stylesheet" type="text/css" href="../../css/circle.css">
 <link rel="stylesheet" type="text/css" href="../../css/ring.css">
+<link rel="stylesheet" type="text/css" href="../../css/start.css">
 <script src="../../js/p5.js"></script>
 <script src="../../js/config.js" charset="utf-8"></script>
 <script src="../../js/game.js" charset="utf-8"></script>
 </head>
 <body>
+<div class="stars" style="z-index: -2000;"></div>
+{{!-- <div class="twinkling"></div> --}}
+<div class="clouds" style="z-index: -2000;"></div>
      {{{body}}}
-<div id="game2">
+<div id="game2" style="z-index: 2000;">
 <div id="holder">
 
     {{#if user}}
@@ -62,18 +66,19 @@
          <h3 class="mt-2" style="color: aliceblue;">Point: {{user.bankaccount.dataValues.amount}} </h3>
     </div>
     <div class="oval__item" id="oval_2">
+        <h3 class="mt-2" id="notify" style="color: aliceblue;"></h3>
     </div>
     <div class="circle circle__item ring" id = "stake_1" onclick="StakeClicked(this)" att = "5">
-        <h2 class="mt-2" style="color: #ed1313;" >5</h2>
+        <p  style="color: #ed1313;" >5</p>
     </div>
     <div class="circle circle__item text-center" id = "stake_2" onclick="StakeClicked(this)" att = "10">
-        <h2 class="mt-2" style="color: #ed1313;">10</h2>
+        <p style="color: #ed1313;" >10</p>
     </div>
     <div class="circle circle__item text-center" id = "stake_3" onclick="StakeClicked(this)" att = "20">
-        <h2 class="mt-2" style="color: #ed1313;">20</h2>
+        <p style="color: #ed1313;" >20</p>
     </div>
     <div class="circle circle__item text-center" id = "stake_4" onclick="StakeClicked(this)" att = "30">
-        <h2 class="mt-2" style="color: #ed1313;">30</h2>
+        <p style="color: #ed1313;" >30</p>
     </div>
 
     <div class="circle circle__item" id = "result_1" class="result">

@@ -3,7 +3,8 @@ import { Avatar, Button, Space, Input, notification } from 'antd';
 import moment from 'moment';
 import Cookies from 'js-cookie';
 import _ from 'lodash';
-import { PlusOutlined } from '@ant-design/icons';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 import AvatarImage from 'Src/images/avatar.png';
 import {
@@ -41,10 +42,7 @@ export default memo(function Profile({ loading }) {
     phone: '',
     avatar: '',
     bank: '',
-    newPhone: {
-      code: '',
-      phone: '',
-    },
+    newPhone: '',
   });
   const [transactionHistory, setTransactionHistory] = useState([]);
   const [gameHistory, setGameHistory] = useState([]);
@@ -205,8 +203,8 @@ export default memo(function Profile({ loading }) {
     loading.current.add('editProfile');
     const user_id = Cookies.get('userId');
     let { phone, name, address, newPhone } = profile;
-    if (newPhone.phone && newPhone.code) {
-      phone = `+${newPhone.code}${newPhone.phone}`;
+    if (newPhone) {
+      phone = newPhone;
     }
     editProfile({ user_id, phone, name, address })
       .then((res) => {
@@ -240,31 +238,6 @@ export default memo(function Profile({ loading }) {
     getGameHistory();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameHistoryPaging.page]);
-
-  const onInputChange = useCallback(
-    ({ currentTarget: { title }, target: { value } }) => {
-      if (
-        value !== '' &&
-        title === 'code' &&
-        _.findIndex(new RegExp(`^([0-9]*)$`).exec(value)) === -1
-      ) {
-        return;
-      }
-      if (
-        value.length > 9 ||
-        (value !== '' &&
-          title === 'phone' &&
-          _.findIndex(new RegExp(`^([0-9]*)$`).exec(value)) === -1)
-      ) {
-        return;
-      }
-      setProfile((e) => ({
-        ...e,
-        newPhone: { ...e.newPhone, [title]: value },
-      }));
-    },
-    [setProfile],
-  );
 
   return (
     <Container
@@ -309,18 +282,11 @@ export default memo(function Profile({ loading }) {
                   <Input onChange={onTextChange} disabled title={'phone'} value={profile.phone} />
                   {isEditProfile && (
                     <div style={{ display: 'flex' }}>
-                      <Input
-                        value={profile.newPhone.code}
-                        onChange={onInputChange}
-                        title={'code'}
-                        style={{ width: 80 }}
-                        prefix={<PlusOutlined />}
-                      />
-                      <Input
-                        onChange={onInputChange}
-                        title={'phone'}
-                        value={profile.newPhone.phone}
-                        placeholder={'Phone'}
+                      <PhoneInput
+                        country={'us'}
+                        value={profile.newPhone}
+                        prefix={'+'}
+                        onChange={(newPhone) => setProfile({ ...profile, newPhone })}
                       />
                     </div>
                   )}

@@ -1,13 +1,13 @@
 /*global FB*/
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import { Steps, Space, Button, Avatar, Input } from 'antd';
-import { FacebookOutlined, GoogleOutlined, PlusOutlined } from '@ant-design/icons';
+import { FacebookOutlined, GoogleOutlined } from '@ant-design/icons';
 import _ from 'lodash';
 import GoogleLogin from 'react-google-login';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
-import PhoneInput from 'react-phone-input-2'
-import 'react-phone-input-2/lib/style.css'
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 import {
   Container,
@@ -34,7 +34,6 @@ export default memo(function RegisterPage({ loading }) {
     name: null,
     address: null,
     phone: null,
-    code: null,
   });
 
   const onClick = useCallback(
@@ -48,7 +47,7 @@ export default memo(function RegisterPage({ loading }) {
           break;
         case 'Register':
           loading.current.add('register');
-          register({ ...state, phone: `+${state.code}${state.phone}` })
+          register(state)
             .then((res) => {
               handleResponse(res, () => {
                 history.push('/login');
@@ -115,13 +114,6 @@ export default memo(function RegisterPage({ loading }) {
   const onInputChange = useCallback(
     ({ currentTarget: { title }, target: { value } }) => {
       if (
-        value !== '' &&
-        title === 'code' &&
-        _.findIndex(new RegExp(`^([0-9]*)$`).exec(value)) === -1
-      ) {
-        return;
-      }
-      if (
         value.length > 9 ||
         (value !== '' &&
           title === 'phone' &&
@@ -176,30 +168,12 @@ export default memo(function RegisterPage({ loading }) {
               placeholder={'Address'}
             />
             <div style={{ display: 'flex' }}>
-              <Input
-                value={state.code}
-                onChange={onInputChange}
-                title={'code'}
-                style={{ width: 80 }}
-                prefix={<PlusOutlined />}
-              />
-              <Input
-                onChange={onInputChange}
-                title={'phone'}
-                value={state.phone}
-                placeholder={'Phone'}
-              />
               <PhoneInput
-                title={'phone'}
                 country={'us'}
                 value={state.phone}
-                onChange={onInputChange}
-                    inputProps={{
-                    name: 'phone',
-                        required: true,
-                        autoFocus: true
-                }}
-            />
+                prefix={'+'}
+                onChange={(phone) => setState({ ...state, phone })}
+              />
             </div>
           </InfoGroup>
         ) : (

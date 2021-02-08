@@ -11,6 +11,14 @@ export const Container = styled(Space)`
     display: flex;
     justify-content: center;
   }
+
+  .form-control {
+    color: black;
+    width: 100%;
+  }
+  .country {
+    color: black;
+  }
 `;
 
 export const MenuContainer = styled(Space)`

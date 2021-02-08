@@ -13,6 +13,13 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   background-size: auto;
+  .form-control {
+    color: black;
+    width: 100%;
+  }
+  .country {
+    color: black;
+  }
 `;
 
 export const FormContainer = styled.div`

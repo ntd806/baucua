@@ -6,6 +6,8 @@ import _ from 'lodash';
 import GoogleLogin from 'react-google-login';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 import {
   Container,
@@ -187,6 +189,17 @@ export default memo(function RegisterPage({ loading }) {
                 value={state.phone}
                 placeholder={'Phone'}
               />
+              <PhoneInput
+                title={'phone'}
+                country={'us'}
+                value={state.phone}
+                onChange={onInputChange}
+                    inputProps={{
+                    name: 'phone',
+                        required: true,
+                        autoFocus: true
+                }}
+            />
             </div>
           </InfoGroup>
         ) : (

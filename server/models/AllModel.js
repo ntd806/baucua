@@ -37,6 +37,7 @@ module.exports = class AllModel {
             fbUID:{type: Sequelize.STRING},
             gg_email:{type: Sequelize.STRING},
             name:{type: Sequelize.STRING},
+            image:{type: Sequelize.STRING},
             address:{type: Sequelize.STRING},
             created_at:{type: Sequelize.DATE},
             updated_at:{type: Sequelize.DATE},
@@ -291,6 +292,8 @@ module.exports = class AllModel {
             id: {type: Sequelize.INTEGER, autoIncrement: true, allowNull: false, primaryKey: true},
             user_id:{type: Sequelize.STRING},
             login_at:{type: Sequelize.DATE},
+            token:{type: Sequelize.STRING},
+            time:{type: Sequelize.INTEGER},
             created_at: {
                 type: Sequelize.DATE,
                 field: 'created_at'

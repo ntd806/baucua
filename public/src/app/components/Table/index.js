@@ -30,7 +30,7 @@ export default memo(function Table({
             <tr key={idx}>
               <>
                 {columns.map(({ dataIndex }, id) => (
-                  <td key={`${dataIndex}-${id}`}>{e[dataIndex]}</td>
+                  <td key={`${dataIndex}-${id}`}>{_.get(e, dataIndex)}</td>
                 ))}
                 {!_.isEmpty(actions) &&
                   (actionCondition ? (

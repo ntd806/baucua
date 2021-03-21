@@ -10,6 +10,8 @@ const UserLogin = require('../../models/userlogin');
 
 const validator = require('validator');
 
+const authService = require('../authentication/auth/auth.service');
+
 let user = new User();
 let transferhistory = new TransferHistory();
 let bankAccount = new BankAccountModel();
@@ -92,8 +94,7 @@ const signUp = async (params) => {
 };
 
 const signIn = async (params) => {
-  const result = await user.login(params);
-  console.log(result.bankaccount['amount']);
+  let result = await user.login(params);
   return result;
 }
 

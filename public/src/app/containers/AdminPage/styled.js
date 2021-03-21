@@ -44,4 +44,5 @@ export const SearchContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  overflow: auto;
 `;

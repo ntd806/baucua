@@ -121,6 +121,11 @@ export default memo(function Profile({ loading }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const playGame = useCallback(() => {
+    const BASE_URL = process.env.BASE_URL;
+    window.open(`${BASE_URL}/game/bet?accessToken=${Cookies.get('accessToken')}`);
+  }, []);
+
   const onButtonClick = useCallback(
     ({ currentTarget: { title } }) => {
       if (['Withdraw', 'Top Up'].some((e) => e === title)) {
@@ -138,6 +143,7 @@ export default memo(function Profile({ loading }) {
         'Personal Info': getPersonalInfo,
         'Transaction History': getTransactionHistory,
         'Game History': getGameHistory,
+        'Play Game': playGame,
       };
       setSelect(title);
       _.get(fn, `[${title}]`, () => {})();
@@ -149,6 +155,7 @@ export default memo(function Profile({ loading }) {
       getGameHistory,
       isEditProfile,
       setIsEditProfile,
+      playGame,
     ],
   );
 

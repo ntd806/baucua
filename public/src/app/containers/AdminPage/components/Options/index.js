@@ -20,7 +20,7 @@ export default memo(function Options({
         {game_type}
       </Option>
     ));
-  }, [settings, isEdit]);
+  }, [settings]);
 
   const current = useMemo(() => {
     let record = _.find(settings, { is_play: 1 });

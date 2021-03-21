@@ -15,6 +15,8 @@ export default function getUrl(type) {
     lockUser: `${BASE_URL}/user/blockUser`,
     settings: `${BASE_URL}/user/setting`,
     updateSetting: `${BASE_URL}/user/update-setting`,
+    getUsersHistory: `${BASE_URL}/user/get-user-history`,
+    adminLogin: `${BASE_URL}/admin/login`,
   };
   const urlProd = {
     login: 'https://600286dd4f17c800175580c3.mockapi.io/login',

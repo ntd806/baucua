@@ -1,4 +1,6 @@
 const { ANIMAlS } = require('../constants');
+const User = require('../../models/users');
+let user = new User();
 
 const startGame = () => {
   let result = [];
@@ -16,6 +18,13 @@ const startGame = () => {
   return result;
 };
 
+const getUser = async (user_id) => {
+  if (user_id || user_id === 0) {
+    var getUser = await user.getUserById(user_id);
+  }
+  return getUser;
+}
+
 module.exports = {
-  startGame,
+  startGame, getUser
 };

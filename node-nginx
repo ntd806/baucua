@@ -1,0 +1,148 @@
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    # File mặc định khi vào thư mục
+    index index.html index.htm index.js;
+
+    # Điều chỉnh kích thước gói upload tối đa
+    client_max_body_size 25M;
+
+    # Domain name của web app, có thể một hoặc nhiều domain cùng trỏ đến
+    server_name cdm368.club;
+    
+    access_log  /var/log/nginx/cmd368.access.log;
+    
+    location / {
+            proxy_pass http://localhost:3000;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+    }
+
+    location /login {
+       return 301 http://localhost:3000/login;
+    }
+
+    location /gameHistory {
+       return 301 http://localhost:3000/gameHistory;
+    }
+
+    location /transactionHistory {
+       return 301 http://localhost:3000/transactionHistory;
+    }
+
+    location /profile {
+       return 301 http://localhost:3000/profile;
+    }
+
+    location /register {
+       return 301 http://localhost:3000/register;
+    }
+
+    location /members {
+       return 301 http://localhost:3000/members;
+    }
+
+    location /getConversionRate {
+        return 301 http://localhost:3000/getConversionRate;
+    }
+
+    location /topUp {
+        return 301 http://localhost:3000/topUp;
+    }
+
+    location /lockUser {
+        return 301 http://localhost:3000/lockUser;
+    }
+
+    location /settings {
+        return 301 http://localhost:3000/settings;
+    }
+
+    location /updateSetting {
+        return 301 http://localhost:3000/updateSetting;
+    }
+
+    location /getUsersHistory {
+        return 301 http://localhost:3000/getUsersHistory;
+    }
+
+    location /adminLogin {
+        return 301 http://localhost:3000/adminLogin;
+    }
+
+    location /addConversionRate {
+        return 301 http://localhost:3000/addConversionRate;
+    }
+
+    location /addOption {
+        return 301 http://localhost:3000/addOption;
+    }
+
+    location /user/login {
+    return 301 http://localhost:3002/user/login;
+    }
+
+    location /user/register {
+    return 301 http://localhost:3002/user/register;
+    }
+
+    location /user/get_account {
+    return 301 http://localhost:3002/user/get_account;
+    }
+
+    location /user/transfers-history {
+    return 301 http://localhost:3002/user/transfers-history;
+    }
+
+    location /user/matches-history {
+    return 301 http://localhost:3002/user/matches-history;
+    }
+
+    location /user/get-members {
+        return 301 http://localhost:3002/user/get-members;
+    }
+
+    location /user/post_edit_profile {
+        return 301 http://localhost:3002/user/post_edit_profile;
+    }
+
+    location /user/get_all_conversion_rate {
+        return 301 http://localhost:3002/user/get_all_conversion_rate;
+    }
+
+    location /user/post_deposit {
+        return 301 http://localhost:3002/user/post_deposit;
+    }
+
+    location /user/blockUser {
+        return 301 http://localhost:3002/user/blockUser;
+    }
+
+    location /user/setting {
+        return 301 http://localhost:3002/user/setting;
+    }
+
+    location /user/update-setting {
+        return 301 http://localhost:3002/user/update-setting;
+    }
+
+    location /user/get-user-history {
+        return 301 http://localhost:3002/user/get-user-history;
+    }
+
+    location /admin/login {
+        return 301 http://localhost:3002/admin/login;
+    }
+
+    location /user/create-setting {
+        return 301 http://localhost:3002/user/create-setting;
+    }
+
+    location /user/create-conversion_rates {
+        return 301 http://localhost:3002/user/create-conversion_rates;
+    }
+}

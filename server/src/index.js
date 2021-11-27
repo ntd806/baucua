@@ -7,9 +7,20 @@ const express    = require('express');
 const path       = require('path');
 const hbs        = require('express-hbs');
 const app        = express();
-const cors = require('cors');
+// const cors = require('cors');
+// const corsOptions ={
+//   origin:'*', 
+//   credentials:true,            //access-control-allow-credentials:true
+//   optionSuccessStatus:200,
+// }
 
-app.use(cors())
+// app.use(cors())
+
+// CORS (Cross-Origin Resource Sharing) headers to support Cross-site HTTP requests
+app.all('*', (req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  next();
+});
 
 // Use `.hbs` for extensions and find partials in `views/partials`.
 app.engine('hbs', hbs.express4({

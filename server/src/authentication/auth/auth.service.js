@@ -39,8 +39,8 @@ exports.login = async(username, password, res) => {
             message: 'Tên đăng nhập không tồn tại.'
         };
     }
-    // let hash = bcrypt.hashSync(password, 10);
-    // console.log(hash);
+    let hash = bcrypt.hashSync(password, 10);
+    console.log(hash);
     const isPasswordValid = bcrypt.compareSync(password, user.password);
     // console.log(isPasswordValid)
     if (!isPasswordValid) {

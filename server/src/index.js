@@ -7,9 +7,13 @@ const express    = require('express');
 const path       = require('path');
 const hbs        = require('express-hbs');
 const app        = express();
-const cors = require('cors');
-app.use(cors())
+// const cors = require('cors');
+// app.use(cors())
+// Request methods you wish to allow
 
+  // Set to true if you need the website to include cookies in the requests sent
+
+// Set to true if you need the website to include cookies in the requests sent
 // Use `.hbs` for extensions and find partials in `views/partials`.
 app.engine('hbs', hbs.express4({
     //partialsDir: path.join(__dirname, '/views/partials'),
@@ -35,6 +39,18 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 app.use(express.static(path.join(__dirname + '/public')));
+
+app.use(function (req, res, next) {
+
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', '*');
+
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+});
 
 const server = http.createServer(app);
 // const io = require('socket.io')(server);

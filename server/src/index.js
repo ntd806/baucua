@@ -7,9 +7,16 @@ const express    = require('express');
 const path       = require('path');
 const hbs        = require('express-hbs');
 const app        = express();
-// const cors = require('cors');
-// app.use(cors())
-// Request methods you wish to allow
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Methods', 'DELETE, PUT');
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  if ('OPTIONS' == req.method) {
+     res.sendStatus(200);
+   }
+   else {
+     next();
+   }});
 
   // Set to true if you need the website to include cookies in the requests sent
 
@@ -40,17 +47,17 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static(path.join(__dirname + '/public')));
 
-app.use(function (req, res, next) {
+// app.use(function (req, res, next) {
 
-  // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'http://cmd386.club');
+//   // Website you wish to allow to connect
+//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
 
-  // Request methods you wish to allow
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+//   // Request methods you wish to allow
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
-  // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-});
+//   // Request headers you wish to allow
+//   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+// });
 
 const server = http.createServer(app);
 // const io = require('socket.io')(server);
@@ -64,9 +71,9 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 // ROUTES GAME OFFLINE
-app.use('/game', require('./game/game.controller'));
-app.use('/user', require('./user/user.controller'));
-app.use('/admin', require('./admin/admin.controller'));
+app.use('/api/game', require('./game/game.controller'));
+app.use('/api/user', require('./user/user.controller'));
+app.use('/api/admin', require('./admin/admin.controller'));
 
 // For load testing game
 // app.get('/load/:num', async(req, res) => {

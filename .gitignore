@@ -1,7 +1,7 @@
-public/.env
-server/.env
-config/config.json
+/public/.env
+/server/.env
+/server/config/config.json
 /public/server/node_modules
 /public/node_modules
-public/.eslintcache
-public/build
+/public/.eslintcache
+/public/build

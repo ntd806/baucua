@@ -66,10 +66,10 @@ const server = http.createServer(app);
 // const hookProcessor = new HookProcessor('116529085375415_566172007077785', io);
 // const loadTester = new LoadTester(io);
 
-app.get('/', (req, res) => {
-    res.send("Home page. Server running okay.");
-    // res.render('index');
-});
+// app.get('/', (req, res) => {
+//     res.send("Home page. Server running okay.");
+//     // res.render('index');
+// });
 // ROUTES GAME OFFLINE
 app.use('/game', require('./game/game.controller'));
 app.use('/user', require('./user/user.controller'));

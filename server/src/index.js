@@ -71,9 +71,9 @@ app.get('/', (req, res) => {
     // res.render('index');
 });
 // ROUTES GAME OFFLINE
-app.use('/api/game', require('./game/game.controller'));
-app.use('/api/user', require('./user/user.controller'));
-app.use('/api/admin', require('./admin/admin.controller'));
+app.use('/game', require('./game/game.controller'));
+app.use('/user', require('./user/user.controller'));
+app.use('/admin', require('./admin/admin.controller'));
 
 // For load testing game
 // app.get('/load/:num', async(req, res) => {
@@ -100,7 +100,7 @@ app.use('/api/admin', require('./admin/admin.controller'));
 
 // Config server here
 const ip = process.env.IP || "127.0.0.1";
-const port = process.env.PORT || 3002;
+const port = process.env.PORT || 3000;
 server.listen(port, ip, function() {
     console.log("Express server listening at %s:%d ", ip, port, process.env.PORT);
 });

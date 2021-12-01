@@ -67,8 +67,8 @@ const server = http.createServer(app);
 // const loadTester = new LoadTester(io);
 
 app.get('/', (req, res) => {
-    // res.send("Home page. Server running okay.");
-    res.render('index');
+    res.send("Home page. Server running okay.");
+    // res.render('index');
 });
 // ROUTES GAME OFFLINE
 app.use('/api/game', require('./game/game.controller'));

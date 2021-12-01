@@ -7,16 +7,16 @@ const express    = require('express');
 const path       = require('path');
 const hbs        = require('express-hbs');
 const app        = express();
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://cmd386.club");
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  if ('OPTIONS' == req.method) {
-     res.sendStatus(200);
-   }
-   else {
-     next();
-   }});
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   if ('OPTIONS' == req.method) {
+//      res.sendStatus(200);
+//    }
+//    else {
+//      next();
+//    }});
 
   // Set to true if you need the website to include cookies in the requests sent
 
@@ -47,17 +47,17 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static(path.join(__dirname + '/public')));
 
-// app.use(function (req, res, next) {
+app.use(function (req, res, next) {
 
-//   // Website you wish to allow to connect
-//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
-//   // Request methods you wish to allow
-//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
-//   // Request headers you wish to allow
-//   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-// });
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+});
 
 const server = http.createServer(app);
 // const io = require('socket.io')(server);

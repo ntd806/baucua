@@ -78,7 +78,7 @@ app.use('/admin', require('./admin/admin.controller'));
 
 // Config server here
 const ip = process.env.IP || "127.0.0.1";
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3002;
 server.listen(port, ip, function() {
     console.log("Express server listening at %s:%d ", ip, port);
 });

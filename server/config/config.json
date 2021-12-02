@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "MYSQL_USER",
-    "password": "MYSQL_PASSWORD",
+    "username": "ntd806",
+    "password": "Hochiminh@2021",
     "database": "nagavn_db",
-    "host": "mysql_db",
+    "host": "localhost",
     "dialect": "mysql"
   },
   "test": {

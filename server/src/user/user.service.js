@@ -82,7 +82,7 @@ const signUp = async (params) => {
   let bankAccountNewData = {} ;
   bankAccountNewData.user_id = userNew.id;
   bankAccountNewData.amount = AMOUNT;
-  bankAccountNewData.is_block = 1; // mở
+  bankAccountNewData.is_block = 0; // mở
   bankAccountNewData.status = 1; // default và không dùng đén
 
   let bankAccountNew = await bankaccount.createBankAccount(bankAccountNewData).catch(e => error = e);
@@ -264,8 +264,6 @@ const endGame = async (params) => {
   // var bet = params.bet.split(', ');
   var array = params.bet.split(",");
  // var array = JSON.parse(params.bet);
-  console.log(typeof array);
-  console.log(array);
   // array.forEach(element => console.log(typeof parseInt(element)));
   array.forEach(element =>{
     if(element[0] == '['){
@@ -275,8 +273,6 @@ const endGame = async (params) => {
       bet.push(parseInt(element));
     }
   });
-  console.log("bet");
-  console.log(bet.length);
   if(!params.user_id){
     return {
       success: false,
@@ -306,23 +302,24 @@ const endGame = async (params) => {
   }
   var result  = Math.floor(Math.random() * 8) + 1;
   for (const element of bet) {
-    var data = {
-      user_id: params.user_id,
-      win: element == result ? 1 : 0,
-      lose: element == result ? 0: 1,
-      type_bet: params.type_bet,
-      place_bet: element,
-      stake: params.stake
-    }
-    var getAmount = await bankaccount.getAmount(params.user_id);
-    if(result == element){
-      await bankaccount.addAmount(params.user_id, parseInt(getAmount) + parseInt(params.stake)*8);
-    }else{
-      await bankaccount.addAmount(params.user_id, parseInt(getAmount) - parseInt(params.stake));
-    }
-    data.status = 1;
-    await matcheshistory.createMatchesHistory(data);
-    
+    if(element){
+      var data = {
+        user_id: params.user_id,
+        win: element == result ? 1 : 0,
+        lose: element == result ? 0: 1,
+        type_bet: params.type_bet,
+        place_bet: element,
+        stake: params.stake
+      }
+      var getAmount = await bankaccount.getAmount(params.user_id);
+      if(result == element){
+        await bankaccount.addAmount(params.user_id, parseInt(getAmount) + parseInt(params.stake)*8);
+      }else{
+        await bankaccount.addAmount(params.user_id, parseInt(getAmount) - parseInt(params.stake));
+      }
+      data.status = 1;
+      await matcheshistory.createMatchesHistory(data);
+    } 
   };
   
   return {
@@ -428,6 +425,36 @@ const getUsersHistory = async (params) => {
   }
 }
 
+const createConversionRates = async (params) => {
+  const result = await conversionRate.createConversionRates(params);
+}
+
+const loginUsersService = {}
+loginUsersService.check = async (user_id) => {
+  if (user_id) {
+    let loginUser = await userLogin.getLoginUsersCurrentDateByUserId(user_id);
+    return loginUser;
+  }
+
+  return null;
+}
+loginUsersService.create = async (user_id) => {
+  let data = {};
+  data.user_id = user_id;
+  data.time = 1;
+  let loginUser = await userLogin.createLoginUsers(data);
+  return loginUser;
+}
+
+loginUsersService.update = async (loginUser, count) => {
+  let dataUpdate = {
+    id: loginUser.id,
+    time: loginUser.time + count,
+    login_at: new Date()
+  };
+  await userLogin.updateLoginUsersById(dataUpdate.id, dataUpdate);
+}
+
 module.exports = {
   signUp,
   signIn,
@@ -450,4 +477,6 @@ module.exports = {
   getOption,
   updateOption,
   getUsersHistory,
+  loginUsersService,
+  createConversionRates,
 };

@@ -2,60 +2,59 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Betting</title>
+<title>Gamaspeed.com</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="../../css/loading.css">
 <link rel="stylesheet" type="text/css" href="../../css/game2.css">
 <link rel="stylesheet" type="text/css" href="../../css/circle.css">
 <link rel="stylesheet" type="text/css" href="../../css/ring.css">
+<link rel="stylesheet" type="text/css" href="../../css/start.css">
 <script src="../../js/p5.js"></script>
-<!-- <script src="../../js/p5.sound.js"></script> -->
 <script src="../../js/config.js" charset="utf-8"></script>
 <script src="../../js/game.js" charset="utf-8"></script>
-<script src="../../js/socket.io.js" charset="utf-8"></script>
 </head>
-
 <body>
+<div class="stars" style="z-index: -2000;"></div>
+{{!-- <div class="twinkling"></div> --}}
+<div class="clouds" style="z-index: -2000;"></div>
      {{{body}}}
-<div id="game2">
+<div id="game2" style="z-index: 2000;">
 <div id="holder">
 
     {{#if user}}
-        <input type="hidden" value="{{user}}" id="info">
+        <input type="hidden" value="{{user.id}}" id="info">
     {{/if}}
     <div class="user-info">
-        <p class="avatar"><img src="{{user.image}}"></p>
+        <p style="color: aliceblue; left: 0%;" >{{user.name}}</p>
+        {{!-- <p class="avatar"><img src="{{user.image}}"></p> --}}
         <div class="info">
-            <a class="nick" href="#" target="_blank">{{user.name}}</a>
-            <!-- <a class="logout" href="/auth/logout">(Thoát)</a> -->
-            <p class="amount">Amount: {{user.bankaccount.dataValues.amount}}$</p>
+            
         </div>
-
     </div>
     <div class="circle circle__item" id = "start_1" onclick="BtnClicked(this)" att = "1">
-        <img src="../../img/vq1-02.png" class="img-center">
+        <img src="../../img/vq1-02.png" class="img-center rotate">
     </div>
     <div class="circle circle__item" id = "start_2" onclick="BtnClicked(this)" att = "2">
-        <img src="../../img/vq1-03.png" class="img-center">
+        <img src="../../img/vq1-03.png" class="img-center rotate">
     </div>
     <div class="circle circle__item" id = "start_3" onclick="BtnClicked(this)" att = "3">
-        <img src="../../img/vq1-04.png" class="img-center">
+        <img src="../../img/vq1-04.png" class="img-center rotate">
     </div>
     <div class="circle circle__item" id = "start_4" onclick="BtnClicked(this)" att = "4">
-        <img src="../../img/vq1-05.png" class="img-center">
+        <img src="../../img/vq1-05.png" class="img-center rotate">
     </div>
     <div class="circle circle__item" id = "start_5" onclick="BtnClicked(this)" att = "5">
-        <img src="../../img/vq1-06.png" class="img-center">
+        <img src="../../img/vq1-06.png" class="img-center rotate">
     </div>
     <div class="circle circle__item" id = "start_6" onclick="BtnClicked(this)" att = "6">
-        <img src="../../img/vq1-07.png" class="img-center">
+        <img src="../../img/vq1-07.png" class="img-center rotate">
     </div>
     <div class="circle circle__item" id = "start_7" onclick="BtnClicked(this)" att = "7">
-        <img src="../../img/vq1-08.png" class="img-center">
+        <img src="../../img/vq1-08.png" class="img-center rotate">
     </div>
     <div class="circle circle__item" id = "start_8" onclick="BtnClicked(this)" att = "8">
-        <img src="../../img/vq1-09.png" class="img-center">
+        <img src="../../img/vq1-09.png" class="img-center rotate">
     </div>
     <div class="start_9" id = "start_9">
         <p><span >0.0</span></p>
@@ -63,19 +62,23 @@
     <div class="circle circle__item oval" id ="oval" style="left: 3%;"></div>
     <div class="circle circle__item oval" id = "oval" style="right: 1%;">
     </div>
+     <div class="oval__item" id="oval_1">
+         <h3 class="mt-2" style="color: aliceblue;">Point: {{user.bankaccount.dataValues.amount}} </h3>
+    </div>
     <div class="oval__item" id="oval_2">
+        <h3 class="mt-2" id="notify" style="color: aliceblue;"></h3>
     </div>
     <div class="circle circle__item ring" id = "stake_1" onclick="StakeClicked(this)" att = "5">
-        <p class="mt-2">5$</p>
+        <p  style="color: #ed1313;" >5</p>
     </div>
     <div class="circle circle__item text-center" id = "stake_2" onclick="StakeClicked(this)" att = "10">
-        <p class="mt-2">10$</p>
+        <p style="color: #ed1313;" >10</p>
     </div>
     <div class="circle circle__item text-center" id = "stake_3" onclick="StakeClicked(this)" att = "20">
-        <p class="mt-2">20$</p>
+        <p style="color: #ed1313;" >20</p>
     </div>
     <div class="circle circle__item text-center" id = "stake_4" onclick="StakeClicked(this)" att = "30">
-        <p class="mt-2">30$</p>
+        <p style="color: #ed1313;" >30</p>
     </div>
 
     <div class="circle circle__item" id = "result_1" class="result">
@@ -96,17 +99,17 @@
     </div>
 
     <div class="circle circle__item" id = "start_22">
-        <img src="../../img/vq-20.png" class="img-american">
+        <img src="../../img/vq-20.png" class="img-american rotate">
     </div>
     <div class="circle circle__item" id = "start_23">
-        <img src="../../img/vq-21.png" class="img-american">
+        <img src="../../img/vq-21.png" class="img-american rotate">
     </div>
-    <img src="../../img/tc-01.png" id="light" style="display: none;">
+    <img src="../../img/tc-01.png" id="light" style="display: none; height: 100%; width: 100%">
 	<img src="../../img/bg2.png" id = "bg2" class="bg2">
 </div>
 </div>
 <div id="loadding">
-     <div class="loadingCSS">
+    <div class="loadingCSS">
         <p>LOADING</p>
         <p>GAME ONLINE</p>
     </div>

@@ -1,4 +1,4 @@
-﻿﻿@charset "utf-8";
+﻿@charset "utf-8";
 /* CSS Document */
 
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@800&display=swap');
@@ -15,7 +15,7 @@
 	width: 634px;
 	height: 634px;
 	margin: 0px auto;
-	border: 5px solid #000;
+	/* border: 5px solid #000; */
 	border-radius: 5px;
 	box-sizing: border-box;
 	overflow: hidden;
@@ -147,7 +147,7 @@
 	width: 84vw;
 	height: 84vw;
 	margin: 0px auto;
-	border: 5px solid #000;
+	/* border: 5px solid #000; */
 	border-radius: 5px;
 	box-sizing: border-box;
 	overflow: hidden;
@@ -284,7 +284,7 @@
 		width: 84vw;
 		height: 84vw;
 		margin: 0px auto;
-		border: 5px solid #000;
+		/* border: 5px solid #000; */
 		border-radius: 5px;
 		box-sizing: border-box;
 		overflow: hidden;
@@ -414,10 +414,8 @@
 	}
 
 	.img-center {
-		margin-left: 16px !important;
-		margin-top: 8px !important;
-		height: 82px !important;
-		width: 70px !important;
+    height: 70% !important;
+    width: 70% !important;
 	}
 	
 	.result-image {
@@ -436,13 +434,9 @@
 	.text-center{
 		text-align: center;
 	}
-	.mt-2 {
-		margin-top: 5px;
-		margin-left: 5px;
-	}
 
 	.bg-spin {
-		background-color: white !important;
+		background-color: #8FBC8F !important;
 	}
 
 	.user-info{
@@ -493,6 +487,18 @@
 		vertical-align: baseline;
 		font-size: 15px;
 	}
+
+@media only screen and (max-width: 350px) {
+	.mt-2 {
+		margin-top: 1px;
+		margin-left: 0;
+		font-size: 0.6em !important;
+	}
+	#stake_1 {
+		padding: 1px !important;
+		bottom: 20% !important;
+	}
+}
 
 @media only screen and (max-width: 400px) {
 	.img-center {
@@ -565,4 +571,89 @@
 		width: 20px;
 		margin-left: 2px;
 	}
+}
+
+
+@media only screen and (max-width: 425px) {
+	.img-center {
+		margin-left: 0px !important;
+		margin-top: 0px !important;
+		height: 50px !important;
+		width: 50px !important;
+	}
+
+	.start_9 {
+		font-size: 0.6em;
+		font-weight: 700;
+		color: honeydew;
+	}
+
+	#stake_1 {
+		font-size: 0.6em;
+		padding: 0px;
+		margin-left: -3px;
+		bottom: 19% !important;
+	}
+
+	.mt-2 {
+		margin-top: 3px;
+		margin-left: 0;
+		font-size: 0.6em;
+	}
+
+	.avatar {
+		float: left;
+		width: 25px;
+		/* height: 24px; */
+		height: 25px;
+		border-radius: 50% !important;
+		-moz-border-radius: 50%;
+		-webkit-border-radius: 7px;
+		overflow: hidden;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		font-size: 100%;
+	}
+
+	.nick {
+		float: left;
+		font-size: 0.7em;
+
+	}
+
+	.amount {
+		font-size: 7px;
+	}
+
+	#start_22 {
+		height: 7% !important;
+		width: 7% !important;
+		bottom: 30% !important;
+		left: 25.1% !important;
+	}
+
+	#start_23 {
+		height: 7% !important;
+		width: 7% !important;
+		bottom: 30% !important;
+		right: 24.2% !important;
+	}
+
+
+	.img-american {
+		height: 20px;
+		width: 20px;
+		margin-left: 2px;
+	}
+}
+
+@media only screen and (max-width: 768px) {
+	#stake_1 {
+		bottom: 19.5% !important;
+	}
+}
+
+#stake_1 {
+	bottom: 19.5%;
 }

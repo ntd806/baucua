@@ -15,6 +15,8 @@ const authService = require('../authentication/auth/auth.service');
 
 
 router.post('/setting', authMiddleware.isAuth, setting);
+router.post('/create-setting', authMiddleware.isAuth, createOptions);
+router.post('/create-conversion_rates', authMiddleware.isAuth, createConversionRates);
 router.get('/setting', authMiddleware.isAuth, getOption);
 router.post('/update-setting', authMiddleware.isAuth, updateOption);
 router.get('/matches-history', authMiddleware.isAuth, matchesHistory);
@@ -50,9 +52,21 @@ async function signUp(req, res, next) {
 
 async function signIn(req, res, next) {
   try {
+    let accessToken = null;
     let user = await service.signIn(req.body);
-    let user_id = user.id;
-    let accessToken = await authService.generateAccessToken(user_id);
+    if (user) {
+      let user_id = user.id;
+      let loginUser = await service.loginUsersService.check(user_id);
+      if (!loginUser) {
+        loginUser = await service.loginUsersService.create(user_id);
+      } else {
+
+        await service.loginUsersService.update(loginUser, 1);
+      }
+      accessToken = await authService.generateAccessToken(user_id);
+    }
+
+
     // let refreshToken = await authService.generateRefreshToken();
 
     if(user && user.status) {
@@ -71,7 +85,7 @@ async function signIn(req, res, next) {
     } else {
       return res.status(200).json({
         success: false,
-        message: 'Đăng nhập thất bại'
+        message: 'Login fail'
       });
     }
   } catch (e) {
@@ -289,7 +303,7 @@ async function postEditProfile(req, res, next) {
         return common.responseError(res, 200, "User không tồn tại");
       }
     } else {
-      return common.responseError(res, 200, "Không xác định được đang chỉnh sữa user nha");
+      return common.responseError(res, 200, "Không xác định được đang chỉnh sửa người dùng");
     }
   } catch (e) {
     return common.responseErrorCatch(res, e);
@@ -407,6 +421,40 @@ async function getUsersHistory(req, res) {
     return res.status(200).json({
       result : usersHistoryList.rows,
       total: usersHistoryList.count.length,
+      success: true,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+/***
+ * Create options
+ * Author: ntd806
+ * time: 01/24/2021
+ */
+async function createOptions(req, res) {
+  try {
+    const usersHistoryList = await service.createOption(req.body);
+    return res.status(200).json({
+      success: true,
+      message: ''
+    });
+  } catch (e) {
+    res.status(400).json({ Error: e.message })
+  }
+}
+
+/***
+ * Create ConversionRates
+ * Author: ntd806
+ * time: 01/24/2021
+ */
+async function createConversionRates(req, res) {
+  try {
+    const usersHistoryList = await service.createConversionRates(req.body);
+    return res.status(200).json({
       success: true,
       message: ''
     });

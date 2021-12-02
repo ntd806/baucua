@@ -9,7 +9,6 @@ let authMiddleware = require('../authentication/auth/auth.middlewares')
 // routes
 router.get('/start' , startGame);
 router.get('/bet', authMiddleware.isAuth, betGame);
-// router.get('/bet', betGame);
 
 module.exports = router;
 
@@ -31,9 +30,7 @@ async function startGame(req, res, next) {
 async function betGame(req, res, next) {
   // console.log(path.join(__dirname, '/public'));
   // res.sendFile(path.join(__dirname + '/../public/index.html'));
-  let user = await service.getUser(req.query.user_id);
-  console.log(user.bankaccount.dataValues.amount);
   res.render('index', {
-      user: user
+      user: req.user
   });
 }

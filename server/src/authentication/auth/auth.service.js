@@ -39,8 +39,8 @@ exports.login = async(username, password, res) => {
             message: 'Tên đăng nhập không tồn tại.'
         };
     }
-    // let hash = bcrypt.hashSync(password, 10);
-    // console.log(hash);
+    let hash = bcrypt.hashSync(password, 10);
+    console.log(hash);
     const isPasswordValid = bcrypt.compareSync(password, user.password);
     // console.log(isPasswordValid)
     if (!isPasswordValid) {
@@ -56,14 +56,16 @@ exports.login = async(username, password, res) => {
     const accessTokenSecret =
         process.env.ACCESS_TOKEN_SECRET || jwtVariable.accessTokenSecret;
 
+    console.log(user);
     const dataForAccessToken = {
-        userId: user.username,
+        userId: user.user_name,
     };
     const accessToken = await authMethod.generateToken(
         dataForAccessToken,
         accessTokenSecret,
         accessTokenLife,
     );
+
     if (!accessToken) {
         return {
             success: false,
@@ -115,14 +117,14 @@ exports.generateRefreshToken = async () => {
 }
 
 exports.verifyToken = async (tokenFromClient) => {
-    const accessTokenSecret = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7fSwiaWF0IjoxNjExNzYxMjMxLCJleHAiOjE2MTE3NjE4MzF9.wI5LDnWqXUKAKflKqmYw5PNBENdK82dyq6gt0JiLIDo";//process.env.ACCESS_TOKEN_SECRET || jwtVariable.accessTokenSecret;
+    const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || jwtVariable.accessTokenSecret;
     let verifyToken = await authMethod.verifyToken(tokenFromClient, accessTokenSecret);
     return verifyToken ? true : false;
 }
 
 exports.refreshToken = async(req, res) => {
     // Lấy access token từ header
-    const accessTokenFromHeader = req.headers.x_authorization;
+    const accessTokenFromHeader = req.headers.x_authorization || req.headers.accesstoken || req.query.accessToken || req.headers.accessToken;
     if (!accessTokenFromHeader) {
         return res.status(400).send('Không tìm thấy access token.');
     }

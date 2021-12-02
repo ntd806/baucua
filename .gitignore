@@ -1,1 +1,8 @@
-public/.env
+/client/.env
+/client/nodemodules
+/client/build
+/client/.eslintcache
+/server/.env
+/server/nodemodules
+/server/dis
+/server/config/*

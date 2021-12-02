@@ -23,7 +23,7 @@ services:
   nginx:
     depends_on:
       - api
-      - client
+      # - client
     restart: always
     build:
       dockerfile: Dockerfile
